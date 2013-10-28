@@ -12,7 +12,7 @@ class Glucose(TimeStampedModel):
     category = models.ForeignKey('Category')
     record_date = models.DateField('Date')
     record_time = models.TimeField('Time')
-    notes = models.TextField('Notes', blank=True, default='')
+    notes = models.TextField('Notes', null=False, blank=True, default='')
 
     def __unicode__(self):
         return str(self.value)
