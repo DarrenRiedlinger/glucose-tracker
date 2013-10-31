@@ -1,13 +1,12 @@
-from django.conf.urls import patterns
-from django.conf.urls import url
+from django.conf.urls import patterns, url
 
-from .views import GlucoseDetailView
+from .views import GlucoseCreateView
 
 
 urlpatterns = patterns('',
     url(
-        regex=r'^(?P<pk>\d+)/$',
-        view=GlucoseDetailView.as_view(),
-        name='detail'
+        regex=r'^add$',
+        view=GlucoseCreateView.as_view(),
+        name='add_glucose',
     ),
 )

@@ -1,0 +1,19 @@
+{% extends 'bootstrap.html' %}
+
+{% load bootstrap3 %}
+
+{% block bootstrap3_content %}
+    <div class="container">
+        <h1>{% block title %}(no title){% endblock %}</h1>
+
+        <p>
+            <a href="/">Home</a>
+            <a href="{% url 'add_glucose' %}">Add Glucose</a>
+        </p>
+
+        {% block content %}(no content){% endblock %}
+    </div>
+
+    {% bootstrap_javascript jquery=True %}
+
+{% endblock %}

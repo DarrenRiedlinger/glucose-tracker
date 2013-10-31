@@ -103,16 +103,27 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
-    # Local apps
-    'core',
-    'glucoses',
-
     # 3rd-party apps
     'south',
     'compressor',
+    'bootstrap3',
+
+    # Local apps
+    'core',
+    'glucoses',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+
+# Bootstrap3 app configuration
+BOOTSTRAP3 = {
+    'include_jquery': False,
+    'jquery_url': '/static/jquery/jquery.min.js',
+    'base_url': '/static/bootstrap/',
+    'css_url': '/static/bootstrap/css/bootstrap.min.css',
+    'theme_url': '/static/bootstrap/css/bootstrap-theme.min.css',
+    'javascript_url': '/static/bootstrap/js/bootstrap.min.js',
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
