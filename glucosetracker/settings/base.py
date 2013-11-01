@@ -106,24 +106,17 @@ INSTALLED_APPS = (
     # 3rd-party apps
     'south',
     'compressor',
-    'bootstrap3',
+    'crispy_forms',
 
     # Local apps
     'core',
     'glucoses',
 )
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+# Django-crispy-forms settings
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-# Bootstrap3 app configuration
-BOOTSTRAP3 = {
-    'include_jquery': False,
-    'jquery_url': '/static/jquery/jquery.min.js',
-    'base_url': '/static/bootstrap/',
-    'css_url': '/static/bootstrap/css/bootstrap.min.css',
-    'theme_url': '/static/bootstrap/css/bootstrap-theme.min.css',
-    'javascript_url': '/static/bootstrap/js/bootstrap.min.js',
-}
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
