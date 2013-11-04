@@ -38,10 +38,20 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
+          <ul class="nav navbar-nav navbar-right">
+              {% if user.is_authenticated %}
+                <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user }} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Account Settings</a></li>
+                  <li><a href="#">Change Password</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Help</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Log Out</a></li>
+                </ul>
+                </li>
+              {% endif %}
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container -->
