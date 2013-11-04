@@ -24,7 +24,6 @@
   </head>
 
   <body>
-  {% block body %}
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -49,11 +48,12 @@
     </nav>
 
     <div class="container">
-
       <div class="row">
         <div class="col-lg-12">
           <h3>{% block heading %}{% endblock %}</h3>
+          {% block content %}
           <p>Complete with pre-defined file paths that you won't have to change!</p>
+          {% endblock %}
         </div>
       </div>
 
@@ -66,6 +66,5 @@
     <script src="{{ STATIC_URL }}jquery/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
     {% endcompress %}
-  {% endblock %}
   </body>
 </html>

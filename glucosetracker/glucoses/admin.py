@@ -10,6 +10,9 @@ class GlucoseAdmin(admin.ModelAdmin):
         'record_date',
         'record_time',
         'notes',
+        'user',
+        'created',
+        'modified',
     ]
 
 

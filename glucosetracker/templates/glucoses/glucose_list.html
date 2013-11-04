@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block heading %}Glucose Data{% endblock %}
+
+{% block content %}
+{% if glucose_list %}
+    <table id="glucoses">
+        {% for glucose in glucose_list %}
+            <tr>
+                <td><a href="{% url 'glucose_detail' glucose.id %}>{{ glucose.value }}</a></td>
+                <td>{{ glucose.record_date }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+{% endblock %}

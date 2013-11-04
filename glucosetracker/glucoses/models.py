@@ -7,6 +7,7 @@ from core.models import TimeStampedModel
 class Glucose(TimeStampedModel):
     class Meta:
         ordering = ['-record_date', '-record_time']
+
     user = models.ForeignKey(User)
     value = models.IntegerField()
     category = models.ForeignKey('Category')
@@ -22,6 +23,7 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
         ordering = ['id']
+
     name = models.CharField(unique=True, max_length=255)
 
     def __unicode__(self):
