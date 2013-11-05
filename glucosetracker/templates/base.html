@@ -12,7 +12,9 @@
 
         <!-- CSS -->
         {% compress css %}
-        <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
         {% block extracss %}{% endblock %}
         {% endcompress %}
 
@@ -60,9 +62,7 @@
 
         <div class="container">
           <div class="row">
-                      <ol class="breadcrumb">
         {% block breadcrumbs %}{% endblock %}
-        </ol>
             <div class="col-lg-12">
                 <div class="page-header">
                     <h3>{% block heading %}{% endblock %}</h3>
@@ -78,7 +78,8 @@
         {% compress js %}
         <script src="{{ STATIC_URL }}jquery/jquery.min.js"></script>
         <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
-        <script src="{{ STATIC_URL }}momentjs/moment-with-langs.js"></script>
+        <script src="{{ STATIC_URL }}momentjs/moment.min.js"></script>
+        <script src="{{ STATIC_URL }}datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
         {% block extrajs %}{% endblock %}
         {% endcompress %}
     </body>

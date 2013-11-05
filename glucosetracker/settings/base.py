@@ -107,7 +107,6 @@ INSTALLED_APPS = (
     'south',
     'compressor',
     'crispy_forms',
-    'bootstrap3_datetime',
 
     # Local apps
     'core',

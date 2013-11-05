@@ -1,27 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'glucoses/glucose_input_form.html' %}
 
 {% block heading %}Add Glucose{% endblock %}
 
 {% block breadcrumbs %}
-    <li><a href="/">Home</a></li>
-    <li><a href="{% url 'glucose_list' %}">Glucose Data</a></li>
-    <li class="active">Add Glucose</li>
-{% endblock %}
-
-{% load crispy_forms_tags %}
-
-{% block content %}
-   {% crispy form %}
-{% endblock %}
-
-{% block extrajs %}
-<script type="text/javascript">
-$(function() {
-    $('#id_value').focus()
-});
-
-$(function () {
-    $('#id_record_date').datetimepicker();
-});
-</script>
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'glucose_list' %}">Glucose Data</a></li>
+        <li class="active">Add Glucose</li>
+    </ol>
 {% endblock %}
