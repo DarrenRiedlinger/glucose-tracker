@@ -8,30 +8,55 @@
 {% endblock %}
 
 {% block content %}
-{% if glucose_list %}
-<table id="example">
-    <thead>
-        <tr>
-            <th>Value</th>
-            <th>Category</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Notes</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for glucose in glucose_list %}
-        <tr>
-            <td><a href="{% url 'glucose_update' glucose.id %}">{{ glucose.value }}</a></td>
-            <td>{{ glucose.category }}</td>
-            <td>{{ glucose.record_date }}</td>
-            <td>{{ glucose.record_time }}</td>
-            <td>{{ glucose.notes }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
+<div class="well btn-toolbar" role="toolbar">
+    <div class="btn-group">
+        <a href="{% url 'glucose_create'%}">
+        <button type="button" class="btn btn-primary">New Glucose</button>
+        </a>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Reports <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Charts</a></li>
+        <li><a href="#">Filtered Data</a></li>
+        <li class="divider"></li>
+        <li><a href="#">E-mail a Report</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="well">
+    {% if glucose_list %}
+    <table id="glucose_table">
+        <thead>
+            <tr>
+                <th>Value</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for glucose in glucose_list %}
+            <tr>
+                <td><a href="{% url 'glucose_update' glucose.id %}">{{ glucose.value }}</a></td>
+                <td>{{ glucose.category }}</td>
+                <td>{{ glucose.record_date }}</td>
+                <td>{{ glucose.record_time }}</td>
+                <td>{{ glucose.notes }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p><em>No data to display. Please use the button above to add a new
+        entry.</em></p>
+    {% endif %}
+    <br>
+</div>
 {% endblock %}
 
 {% block extracss %}
@@ -44,11 +69,11 @@
 <script src="{{ STATIC_URL }}datatables/extras/TableTools/media/js/TableTools.min.js"></script>
 <script type="text/javascript">
 $(document).ready( function () {
-	$('#example').dataTable( {
+	$('#glucose_table').dataTable( {
 		"sDom": 'T<"clear">lrtip',
         "oTableTools": {
 			"sSwfPath": "{{ STATIC_URL }}datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf",
-		    "aButtons": [ "csv", "xls", "pdf", "print" ]
+		    "aButtons": [ "csv", "pdf", "print" ]
 		},
 		"aaSorting": [ [2,'desc'], [3,'desc']]
 	} );
