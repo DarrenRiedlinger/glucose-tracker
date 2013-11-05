@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from .views import GlucoseCreateView, GlucoseListView, GlucoseDetailView
+from .views import GlucoseCreateView, GlucoseListView, GlucoseUpdateView
 
 
 urlpatterns = patterns('',
@@ -15,8 +15,8 @@ urlpatterns = patterns('',
         name='glucose_list',
     ),
     url(
-        regex=r'^detail/(?P<pk>\d+)/',
-        view=GlucoseDetailView.as_view(),
-        name='glucose_detail',
+        regex=r'^(?P<pk>\d+)/edit/',
+        view=GlucoseUpdateView.as_view(),
+        name='glucose_update',
     ),
 )

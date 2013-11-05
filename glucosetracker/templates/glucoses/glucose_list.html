@@ -2,15 +2,56 @@
 
 {% block heading %}Glucose Data{% endblock %}
 
+{% block breadcrumbs %}
+    <li><a href="/">Home</a></li>
+    <li class="active">Glucose Data</li>
+{% endblock %}
+
 {% block content %}
 {% if glucose_list %}
-    <table id="glucoses">
+<table id="example">
+    <thead>
+        <tr>
+            <th>Value</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
         {% for glucose in glucose_list %}
-            <tr>
-                <td><a href="{% url 'glucose_detail' glucose.id %}>{{ glucose.value }}</a></td>
-                <td>{{ glucose.record_date }}</td>
-            </tr>
+        <tr>
+            <td><a href="{% url 'glucose_update' glucose.id %}">{{ glucose.value }}</a></td>
+            <td>{{ glucose.category }}</td>
+            <td>{{ glucose.record_date }}</td>
+            <td>{{ glucose.record_time }}</td>
+            <td>{{ glucose.notes }}</td>
+        </tr>
         {% endfor %}
-    </table>
+    </tbody>
+</table>
 {% endif %}
+{% endblock %}
+
+{% block extracss %}
+<link href="{{ STATIC_URL }}datatables/media/css/jquery.dataTables.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}datatables/extras/TableTools/media/css/TableTools.css" rel="stylesheet">
+{% endblock %}
+
+{% block extrajs %}
+<script src="{{ STATIC_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="{{ STATIC_URL }}datatables/extras/TableTools/media/js/TableTools.min.js"></script>
+<script type="text/javascript">
+$(document).ready( function () {
+	$('#example').dataTable( {
+		"sDom": 'T<"clear">lrtip',
+        "oTableTools": {
+			"sSwfPath": "{{ STATIC_URL }}datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf",
+		    "aButtons": [ "csv", "xls", "pdf", "print" ]
+		},
+		"aaSorting": [ [2,'desc'], [3,'desc']]
+	} );
+} );
+</script>
 {% endblock %}

@@ -1,15 +1,15 @@
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView
 from django.shortcuts import HttpResponseRedirect
 
 from braces.views import LoginRequiredMixin
 
 from .models import Glucose
-from .forms import GlucoseCreateForm
+from .forms import GlucoseCreateForm, GlucoseUpdateForm
 
 
 class GlucoseCreateView(LoginRequiredMixin, CreateView):
     model = Glucose
-    success_url = '/'
+    success_url = '/glucoses/list/'
     template_name = 'glucoses/glucose_create.html'
     form_class = GlucoseCreateForm
 
@@ -23,6 +23,7 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
+
 class GlucoseListView(LoginRequiredMixin, ListView):
     model = Glucose
     context_object_name = 'glucose_list'
@@ -34,7 +35,10 @@ class GlucoseListView(LoginRequiredMixin, ListView):
         """
         return Glucose.objects.filter(user=self.request.user)
 
-class GlucoseDetailView(LoginRequiredMixin, DetailView):
+
+class GlucoseUpdateView(LoginRequiredMixin, UpdateView):
     model = Glucose
     context_object_name = 'glucose'
-    template_name = 'glucoses/glucose_detail.html'
+    success_url = '/glucoses/list/'
+    template_name = 'glucoses/glucose_update.html'
+    form_class = GlucoseUpdateForm

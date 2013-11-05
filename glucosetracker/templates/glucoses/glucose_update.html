@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block heading %}Edit Glucose{% endblock %}
+
+{% block breadcrumbs %}
+    <li><a href="/">Home</a></li>
+    <li><a href="{% url 'glucose_list' %}">Glucose Data</a></li>
+    <li class="active">Edit Glucose</li>
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+   {% crispy form %}
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(function() {
+    $('#id_value').focus()
+});
+</script>
+{% endblock %}

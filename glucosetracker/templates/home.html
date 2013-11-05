@@ -4,8 +4,11 @@
 
 {% block heading %}Home{% endblock %}
 
+{% block breadcrumbs %}
+    <li class="active">Home</li>
+{% endblock %}
+
 {% block content %}
-    <em>GlucoseTracker</em> home page.
     <ul>
         <li><a href="{% url 'glucose_list' %}">Glucose Data</a></li>
         <li><a href="{% url 'glucose_create' %}">Add Glucose</a></li>
