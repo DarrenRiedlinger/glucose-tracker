@@ -47,6 +47,10 @@ class GlucoseUpdateView(LoginRequiredMixin, UpdateView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
 
+        # If the record's user doesn't much the currently logged-in user,
+        # deny viewing/updating of the object by showing the 403.html
+        # forbidden page. This can occur when the user changes the id in
+        # the URL to a record that the user doesn't own.
         if self.object.user != request.user:
             raise PermissionDenied
         else:
