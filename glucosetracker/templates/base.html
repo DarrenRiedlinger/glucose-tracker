@@ -14,7 +14,6 @@
         {% compress css %}
         <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-        <link href="{{ STATIC_URL }}datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
         {% block extracss %}{% endblock %}
         {% endcompress %}
 
@@ -60,26 +59,26 @@
           </div><!-- /.container -->
         </nav>
 
+        {% block rootcontainer %}
         <div class="container">
           <div class="row">
-        {% block breadcrumbs %}{% endblock %}
+            {% block breadcrumbs %}{% endblock %}
             <div class="col-lg-12">
                 <div class="page-header">
-                    <h3>{% block heading %}{% endblock %}</h3>
+                    {% block heading %}{% endblock %}
                 </div>
                 {% block content %}{% endblock %}
             </div>
           </div>
-
         </div><!-- /.container -->
+        {% endblock %}
+
 
         <!-- JavaScript -->
         <!-- Placed at the end of the document so the pages load faster -->
         {% compress js %}
         <script src="{{ STATIC_URL }}jquery/jquery.min.js"></script>
         <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
-        <script src="{{ STATIC_URL }}momentjs/moment.min.js"></script>
-        <script src="{{ STATIC_URL }}datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
         {% block extrajs %}{% endblock %}
         {% endcompress %}
     </body>

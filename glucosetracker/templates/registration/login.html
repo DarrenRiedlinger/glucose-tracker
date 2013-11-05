@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block extracss %}
+<link href="{{ STATIC_URL }}bootstrap/css/signin.css" rel="stylesheet">
+{% endblock %}
+
+{% block rootcontainer %}
+<div class="container">
+  <form class="form-signin">
+    <h2 class="form-signin-heading">Please Log In</h2>
+    <input type="text" class="form-control" placeholder="Email address" required autofocus>
+    <input type="password" class="form-control" placeholder="Password" required>
+    <label class="checkbox">
+      <input type="checkbox" value="remember-me"> Remember me
+    </label>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+  </form>
+</div> <!-- /container -->
+{% endblock %}

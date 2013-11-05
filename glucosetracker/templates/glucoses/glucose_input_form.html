@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block extracss %}
+<link href="{{ STATIC_URL }}datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+{% endblock %}
+
 {% block heading %}{% endblock %}
 
 {% block breadcrumbs %}{% endblock %}
@@ -11,6 +15,9 @@
 {% endblock %}
 
 {% block extrajs %}
+<script src="{{ STATIC_URL }}momentjs/moment.min.js"></script>
+<script src="{{ STATIC_URL }}datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
 <script type="text/javascript">
 $(function() {
     $('#id_value').focus()
