@@ -1,5 +1,6 @@
 from django.views.generic import CreateView, ListView, UpdateView
 from django.shortcuts import HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
 
 from braces.views import LoginRequiredMixin
 
@@ -42,3 +43,11 @@ class GlucoseUpdateView(LoginRequiredMixin, UpdateView):
     success_url = '/glucoses/list/'
     template_name = 'glucoses/glucose_update.html'
     form_class = GlucoseUpdateForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if self.object.user != request.user:
+            raise PermissionDenied
+        else:
+            return super(GlucoseUpdateView, self).get(request, *args, **kwargs)
