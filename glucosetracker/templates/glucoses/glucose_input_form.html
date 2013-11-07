@@ -6,8 +6,6 @@
 
 {% block heading %}{% endblock %}
 
-{% block breadcrumbs %}{% endblock %}
-
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -23,25 +21,6 @@ $(function() {
     $('#id_value').focus()
 });
 
-var currentdate = new Date();
-var date_now = (currentdate.getMonth()+1)  + "/"
-                + currentdate.getDate() + "/"
-                + currentdate.getFullYear() + " @ "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes();
-
-$(function () {
-    $('#id_record_date').datetimepicker({
-        defaultDate: date_now,
-        pickTime: false
-    });
-});
-
-$(function () {
-    $('#id_record_time').datetimepicker({
-        defaultDate: date_now,
-        pickDate: false
-    });
-});
+{% block extrajsfunction %}{% endblock %}
 </script>
 {% endblock %}

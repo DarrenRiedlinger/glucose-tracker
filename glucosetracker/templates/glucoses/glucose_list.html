@@ -2,13 +2,6 @@
 
 {% block heading %}<h3>Glucose Data</h3>{% endblock %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><a href="/">Home</a></li>
-        <li class="active">Glucose Data</li>
-    </ol>
-{% endblock %}
-
 {% block content %}
 <div class="well btn-toolbar" role="toolbar">
     <div class="btn-group">
@@ -17,14 +10,18 @@
         </a>
     </div>
     <div class="btn-group">
+        <a href="{% url 'glucose_list' %}">
+        <button type="button" class="btn btn-success">Show Filters</button>
+        </a>
+    </div>
+    <div class="btn-group">
         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Reports <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
         <li><a href="#">Charts</a></li>
-        <li><a href="#">Filtered Data</a></li>
         <li class="divider"></li>
-        <li><a href="#">E-mail a Report</a></li>
+        <li><a href="#">E-mail Report</a></li>
         </ul>
     </div>
 </div>
@@ -34,7 +31,7 @@
     <table id="glucose_table">
         <thead>
             <tr>
-                <th>Value</th>
+                <th><center>Value</center></th>
                 <th>Category</th>
                 <th>Date</th>
                 <th>Time</th>
@@ -44,7 +41,7 @@
         <tbody>
             {% for glucose in glucose_list %}
             <tr>
-                <td><a href="{% url 'glucose_update' glucose.id %}">{{ glucose.value }}</a></td>
+                <td><center><b><a href="{% url 'glucose_update' glucose.id %}">{{ glucose.value }}</a></b></center></td>
                 <td>{{ glucose.category }}</td>
                 <td>{{ glucose.record_date }}</td>
                 <td>{{ glucose.record_time }}</td>

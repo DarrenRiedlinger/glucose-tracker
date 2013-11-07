@@ -18,9 +18,11 @@
         {% endcompress %}
 
         <!-- Add custom CSS here -->
-        <style>
-        body {margin-top: 60px;}
-        </style>
+        {% block customcss %}
+            <style>
+                body {margin-top: 40px;}
+            </style>
+        {% endblock %}
     </head>
 
     <body>
@@ -45,14 +47,22 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         {{ user }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                      <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                      <li class="divider"></li>
                       <li><a href="#">Account Settings</a></li>
                       <li><a href="#">Change Password</a></li>
                       <li class="divider"></li>
                       <li><a href="#">Help</a></li>
                       <li class="divider"></li>
-                      <li><a href="#">Log Out</a></li>
+                      <li><a href="{% url 'logout' %}">Log Out</a></li>
                     </ul>
                     </li>
+                  {% else %}
+                    <form class="navbar-form navbar-right">
+                    <button type="button" class="btn btn-success"
+                        onclick="location.href=&quot;{% url 'login' %}&quot;;">
+                        Log In</button>
+                    </form>
                   {% endif %}
               </ul>
             </div><!-- /.navbar-collapse -->
@@ -72,7 +82,6 @@
           </div>
         </div><!-- /.container -->
         {% endblock %}
-
 
         <!-- JavaScript -->
         <!-- Placed at the end of the document so the pages load faster -->

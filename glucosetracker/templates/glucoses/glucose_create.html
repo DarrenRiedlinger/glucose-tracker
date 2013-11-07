@@ -2,10 +2,25 @@
 
 {% block heading %}<h3>Add Glucose</h3>{% endblock %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><a href="/">Home</a></li>
-        <li><a href="{% url 'glucose_list' %}">Glucose Data</a></li>
-        <li class="active">Add Glucose</li>
-    </ol>
+{% block extrajsfunction %}
+var currentdate = new Date();
+var date_now = (currentdate.getMonth()+1)  + "/"
+                + currentdate.getDate() + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes();
+
+$(function () {
+    $('#id_record_date').datetimepicker({
+        defaultDate: date_now,
+        pickTime: false
+    });
+});
+
+$(function () {
+    $('#id_record_time').datetimepicker({
+        defaultDate: date_now,
+        pickDate: false
+    });
+});
 {% endblock %}

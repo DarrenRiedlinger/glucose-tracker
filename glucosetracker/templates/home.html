@@ -1,18 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %}GlucoseTracker{% endblock %}
-
-{% block heading %}<h3>Home</h3>{% endblock %}
-
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li class="active">Home</li>
-    </ol>
+{% block extracss %}
+<link href="{{ STATIC_URL }}bootstrap/css/jumbotron.css" rel="stylesheet">
 {% endblock %}
 
-{% block content %}
-    <ul>
-        <li><a href="{% url 'glucose_list' %}">Glucose Data</a></li>
-        <li><a href="{% url 'glucose_create' %}">Add Glucose</a></li>
-    </ul>
+{% block rootcontainer %}
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1><b>Welcome!</b></h1>
+        <p>
+            <i>GlucoseTracker</i> is a <b>free</b>, <b>simple</b> and <b>easy to use</b>
+            web application for keeping track of your blood glucose levels and help you
+            manage your diabetes better.
+            <br><br>
+            The app is currently still under development, but feel free to enter your
+            email address below to get notified when it becomes available!
+        </p>
+        <p>
+            <form class="form-horizontal" role="form">
+                <div class="form-group col-xs-4">
+                  <input class="form-control input-lg" type="text"
+                     placeholder="Enter your email address">
+                </div>&nbsp;
+                <button type="submit" class="btn btn-primary btn-lg">Subscribe</button>
+            </form>
+        </p>
+      </div>
+    </div>
 {% endblock %}

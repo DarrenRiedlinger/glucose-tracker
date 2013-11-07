@@ -2,10 +2,17 @@
 
 {% block heading %}<h3>Edit Glucose</h3>{% endblock %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><a href="/">Home</a></li>
-        <li><a href="{% url 'glucose_list' %}">Glucose Data</a></li>
-        <li class="active">Edit Glucose</li>
-    </ol>
+{% block extrajsfunction %}
+$(function () {
+    $('#id_record_date').datetimepicker({
+        pickTime: false
+    });
+});
+
+{# Currently not working properly with existing time value, shows 'Invalid date' #}
+<!--$(function () {-->
+    <!--$('#id_record_time').datetimepicker({-->
+        <!--pickDate: false-->
+    <!--});-->
+<!--});-->
 {% endblock %}

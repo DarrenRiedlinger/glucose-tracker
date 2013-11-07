@@ -6,14 +6,15 @@
 
 {% block rootcontainer %}
 <div class="container">
-  <form class="form-signin">
+  <form class="form-signin" name="loginform" action="/login/" method="post">
+    {% csrf_token %}
+    {% if next %}
+      <input type="hidden" name="next" value="{{ next }}" />
+    {% endif %}
     <h2 class="form-signin-heading">Please Log In</h2>
-    <input type="text" class="form-control" placeholder="Email address" required autofocus>
-    <input type="password" class="form-control" placeholder="Password" required>
-    <label class="checkbox">
-      <input type="checkbox" value="remember-me"> Remember me
-    </label>
+    <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
   </form>
-</div> <!-- /container -->
+</div>
 {% endblock %}

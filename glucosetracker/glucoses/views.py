@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.shortcuts import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 
@@ -6,7 +6,6 @@ from braces.views import LoginRequiredMixin
 
 from .models import Glucose
 from .forms import GlucoseCreateForm, GlucoseUpdateForm
-
 
 class GlucoseCreateView(LoginRequiredMixin, CreateView):
     model = Glucose
@@ -23,6 +22,23 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
         self.object.save()
 
         return HttpResponseRedirect(self.get_success_url())
+
+
+class GlucoseDeleteView(LoginRequiredMixin, DeleteView):
+    model = Glucose
+    success_url = '/glucoses/list/'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        # If the record's user doesn't match the currently logged-in user,
+        # deny viewing/updating of the object by showing the 403.html
+        # forbidden page. This can occur when the user changes the id in
+        # the URL field to a record that the user doesn't own.
+        if self.object.user != request.user:
+            raise PermissionDenied
+        else:
+            return super(GlucoseDeleteView, self).get(request, *args, **kwargs)
 
 
 class GlucoseListView(LoginRequiredMixin, ListView):

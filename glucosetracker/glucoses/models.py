@@ -9,7 +9,7 @@ class Glucose(TimeStampedModel):
         ordering = ['-record_date', '-record_time']
 
     user = models.ForeignKey(User)
-    value = models.IntegerField()
+    value = models.IntegerField() # in mg/dL
     category = models.ForeignKey('Category')
     record_date = models.DateField('Date')
     record_time = models.TimeField('Time')
