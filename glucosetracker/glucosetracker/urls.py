@@ -22,6 +22,6 @@ urlpatterns = patterns('',
     # Redirect to 'glucose_list' for now, update later.
     url(r'^dashboard/$', view=GlucoseListView.as_view(), name='dashboard'),
 
-    url(r'^login/$', view='core.views.login_user', name='login'),
+    url(r'^login/$', view='core.views.login_view', name='login'),
     url(regex=r'^logout/$', view=logout, kwargs={'next_page': '/login/'}, name='logout'),
 )
