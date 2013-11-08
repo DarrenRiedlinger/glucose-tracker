@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import TemplateView
 
+
 def login_view(request):
     # Force logout.
     logout(request)
