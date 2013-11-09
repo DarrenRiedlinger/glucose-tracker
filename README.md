@@ -12,6 +12,13 @@ This project is currently still in early development.  The goal is to implement 
 * <b>A1C estimation.</b>  Estimate A1C based on data from the last 3 months.
 * <b>Mobile friendly.</b>  You should be able to use the app wherever you are and should still be easy to use and readable.
 
+Installation/Running the App
+============================
+
+1. Change the settings/local.py file to match your environment (I'll create a demo.py file later that uses SQLite so you won't have to set up your own database).
+2. Install the required libraries listed in the requirements file with pip: pip install -r requirements.txt
+3. Run the local web server: python manage.py runserver --settings=settings.local
+
 Live Demo
 ---------
 
