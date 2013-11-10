@@ -7,6 +7,7 @@ from braces.views import LoginRequiredMixin
 from .models import Glucose
 from .forms import GlucoseCreateForm, GlucoseUpdateForm
 
+
 class GlucoseCreateView(LoginRequiredMixin, CreateView):
     model = Glucose
     success_url = '/glucoses/list/'

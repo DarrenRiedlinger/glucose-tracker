@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'south',
     'compressor',
     'crispy_forms',
+    'gunicorn',
 
     # Local apps
     'core',

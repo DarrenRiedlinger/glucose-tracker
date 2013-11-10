@@ -1,6 +1,8 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
+from core.utils import get_client_ip
+
 from .forms import SubscriberForm
 from .models import Subscriber
 
@@ -21,17 +23,11 @@ def subscribe_view(request):
             subscriber.source_ip = get_client_ip(request)
             subscriber.save()
 
+            # Send the email confirmation.
+            subscriber.send_confirmation()
+
             return render_to_response('home.html', {'success': True},
                                       context_instance=RequestContext(request))
 
     return render_to_response('home.html', {'error': True},
                               context_instance=RequestContext(request))
-
-
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
