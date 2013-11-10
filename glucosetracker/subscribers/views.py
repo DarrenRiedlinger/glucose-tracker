@@ -1,4 +1,5 @@
 from django.template import RequestContext
+from django.conf import settings
 from django.shortcuts import render_to_response
 
 from core.utils import get_client_ip
@@ -24,7 +25,8 @@ def subscribe_view(request):
             subscriber.save()
 
             # Send the email confirmation.
-            subscriber.send_confirmation()
+            if settings.SEND_SUBSCRIBERS_EMAIL_CONFIRMATION:
+                subscriber.send_confirmation()
 
             return render_to_response('home.html', {'success': True},
                                       context_instance=RequestContext(request))

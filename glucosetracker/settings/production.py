@@ -6,7 +6,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'akr2icmg1n8%z^3fe3c+)5d0(t^cy-2_25rrl35a7@!scna^1#'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_HOST_USER=os.environ['EMAIL_HOST_USER']
