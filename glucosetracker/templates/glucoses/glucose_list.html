@@ -1,27 +1,31 @@
 {% extends 'base.html' %}
 
-{% block heading %}<h3>Glucose Data</h3>{% endblock %}
+{% block heading %}<h3>
+    <span class="glyphicon glyphicon-list"></span> Glucose Data</h3>{% endblock %}
 
 {% block content %}
 <div class="well btn-toolbar" role="toolbar">
     <div class="btn-group">
         <a href="{% url 'glucose_create'%}">
-        <button type="button" class="btn btn-primary">New Glucose</button>
+        <button type="button" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span> New Glucose</button>
         </a>
     </div>
     <div class="btn-group">
         <a href="{% url 'glucose_list' %}">
-        <button type="button" class="btn btn-success">Show Filters</button>
+        <button type="button" class="btn btn-success">
+            <span class="glyphicon glyphicon-filter"></span> Filter Data</button>
         </a>
     </div>
     <div class="btn-group">
         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        Reports <span class="caret"></span>
+        <span class="glyphicon glyphicon-stats"></span> Reports
+        <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
         <li><a href="#">Charts</a></li>
         <li class="divider"></li>
-        <li><a href="#">E-mail Report</a></li>
+        <li><a href="{% url 'glucose_email_report' %}">E-mail Report</a></li>
         </ul>
     </div>
 </div>

@@ -36,7 +36,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="/">GlucoseTracker</a>
+              <a class="navbar-brand" href="/">
+                  <span class="glyphicon glyphicon-tint"></span> GlucoseTracker</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -45,7 +46,7 @@
                   {% if user.is_authenticated %}
                     <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{ user }} <b class="caret"></b></a>
+                        <span class="glyphicon glyphicon-user"></span>&nbsp; {{ user }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                       <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                       <li class="divider"></li>

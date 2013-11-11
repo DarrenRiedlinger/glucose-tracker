@@ -7,6 +7,34 @@ from crispy_forms.layout import Button, Submit
 from .models import Glucose
 
 
+class GlucoseEmailReportForm(forms.Form):
+    report_format = forms.ChoiceField(
+        label='Format',
+        choices=(
+        ('csv', 'CSV'),
+    ))
+
+    start_date = forms.DateField(label='From')
+    end_date = forms.DateField(label='To')
+    subject = forms.CharField(required=False)
+    email_to = forms.EmailField(label='Send To')
+    message = forms.CharField(widget=forms.Textarea(attrs={'cols':50}),
+                              required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(GlucoseEmailReportForm, self).__init__()
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_class = 'form-horizontal col-xs-6'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.add_input(Submit('submit', 'Send'))
+        self.helper.add_input(Button(
+            'preview', 'Preview', onclick='location.href="%s";' % \
+                                        reverse('glucose_list')))
+
+
 class GlucoseCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):

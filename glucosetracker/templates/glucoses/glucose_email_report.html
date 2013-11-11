@@ -1,0 +1,18 @@
+{% extends 'glucoses/glucose_input_form.html' %}
+
+{% block heading %}<h3>
+    <span class="glyphicon glyphicon-envelope"></span> Email Report</h3>{% endblock %}
+
+{% block extrajsfunction %}
+$(function () {
+    $('#id_start_date').datetimepicker({
+        pickTime: false
+    });
+});
+
+$(function () {
+    $('#id_end_date').datetimepicker({
+        pickTime: false
+    });
+});
+{% endblock %}
