@@ -7,7 +7,10 @@ TEMPLATE_DEBUG = DEBUG
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['www.glucosetracker.net']
+ALLOWED_HOSTS = [
+    'www.glucosetracker.net',
+    '50.56.114.15',
+]
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
