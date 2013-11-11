@@ -5,6 +5,10 @@ from .base import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# Hosts/domain names that are valid for this site; required if DEBUG is False
+# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = []
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'akr2icmg1n8%z^3fe3c+)5d0(t^cy-2_25rrl35a7@!scna^1#'
 

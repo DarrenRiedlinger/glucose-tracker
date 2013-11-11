@@ -5,6 +5,10 @@ from .base import *
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+# Hosts/domain names that are valid for this site; required if DEBUG is False
+# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = ['www.glucosetracker.net']
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
@@ -40,13 +44,4 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS += ('debug_toolbar', )
 INTERNAL_IPS = ('127.0.0.1',)
-MIDDLEWARE_CLASSES += \
-    ('debug_toolbar.middleware.DebugToolbarMiddleware', )
-
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS':False,
-    'SHOW_TEMPLATE_CONTEXT':True,
-    'HIDE_DJANGO_SQL':False,
-}
