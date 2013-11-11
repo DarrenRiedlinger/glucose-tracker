@@ -10,6 +10,8 @@ TEMPLATE_DEBUG = DEBUG
 ALLOWED_HOSTS = [
     'www.glucosetracker.net',
     '50.56.114.15',
+    'localhost',
+    '127.0.0.1',
 ]
 
 # Make this unique, and don't share it with anybody.
