@@ -2,7 +2,7 @@ import os
 
 from .base import *
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # Make this unique, and don't share it with anybody.
