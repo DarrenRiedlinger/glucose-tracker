@@ -1,5 +1,5 @@
 from django.views.generic import CreateView, ListView, UpdateView, \
-    DeleteView, TemplateView
+    DeleteView, FormView
 from django.shortcuts import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
@@ -11,8 +11,7 @@ from .models import Glucose
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseEmailReportForm
 
 
-class GlucoseEmailReportView(LoginRequiredMixin, TemplateView):
-    model = Glucose
+class GlucoseEmailReportView(LoginRequiredMixin, FormView):
     success_url = '/glucoses/list/'
     template_name = 'glucoses/glucose_email_report.html'
     form_class = GlucoseEmailReportForm

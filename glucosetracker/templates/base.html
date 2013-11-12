@@ -46,7 +46,8 @@
                   {% if user.is_authenticated %}
                     <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-user"></span>&nbsp; {{ user }} <b class="caret"></b></a>
+                        <span class="glyphicon glyphicon-user"></span>&nbsp;
+                        {{ user }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                       <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                       <li class="divider"></li>

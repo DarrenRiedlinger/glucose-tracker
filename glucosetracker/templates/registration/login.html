@@ -12,8 +12,11 @@
       <input type="hidden" name="next" value="{{ next }}" />
     {% endif %}
     <h2 class="form-signin-heading">Please Log In</h2>
-    <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+      <p class="text-success">GlucoseTracker is still in development, this page will be SSL-enabled when it launches.</p>
+    <input type="text" id="username" name="username" class="form-control"
+           placeholder="Username" required autofocus>
+    <input type="password" id="password" name="password" class="form-control"
+           placeholder="Password" required>
     {% if login_failed %}
       <p class="text-danger">Sorry, that login was invalid.  Please try again.</p>
     {% endif %}

@@ -1,9 +1,24 @@
-{% extends 'glucoses/glucose_input_form.html' %}
+{% extends 'base.html' %}
+
+{% block extracss %}
+<link href="{{ STATIC_URL }}datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+{% endblock %}
 
 {% block heading %}<h3>
-    <span class="glyphicon glyphicon-envelope"></span> Email Report</h3>{% endblock %}
+    <span class="glyphicon glyphicon-envelope"></span> Email Report</h3>
+{% endblock %}
 
-{% block extrajsfunction %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+   {% crispy form form.helper %}
+{% endblock %}
+
+{% block extrajs %}
+<script src="{{ STATIC_URL }}momentjs/moment.min.js"></script>
+<script src="{{ STATIC_URL }}datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+<script type="text/javascript">
 $(function () {
     $('#id_start_date').datetimepicker({
         pickTime: false
@@ -15,4 +30,5 @@ $(function () {
         pickTime: false
     });
 });
+</script>
 {% endblock %}

@@ -11,9 +11,8 @@ class GlucoseEmailReportForm(forms.Form):
     report_format = forms.ChoiceField(
         label='Format',
         choices=(
-        ('csv', 'CSV'),
-    ))
-
+            ('csv', 'CSV'),
+        ))
     start_date = forms.DateField(label='From')
     end_date = forms.DateField(label='To')
     subject = forms.CharField(required=False)
@@ -22,7 +21,7 @@ class GlucoseEmailReportForm(forms.Form):
                               required=False)
 
     def __init__(self, *args, **kwargs):
-        super(GlucoseEmailReportForm, self).__init__()
+        super(GlucoseEmailReportForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -31,7 +30,7 @@ class GlucoseEmailReportForm(forms.Form):
         self.helper.field_class = 'col-lg-8'
         self.helper.add_input(Submit('submit', 'Send'))
         self.helper.add_input(Button(
-            'preview', 'Preview', onclick='location.href="%s";' % \
+            'cancel', 'Cancel', onclick='location.href="%s";' % \
                                         reverse('glucose_list')))
 
 
