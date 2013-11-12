@@ -1,0 +1,44 @@
+[
+{
+    "pk": 1, 
+    "model": "glucoses.category", 
+    "fields": {
+        "name": "Breakfast"
+    }
+},
+{
+    "pk": 2, 
+    "model": "glucoses.category", 
+    "fields": {
+        "name": "Lunch"
+    }
+},
+{
+    "pk": 3, 
+    "model": "glucoses.category", 
+    "fields": {
+        "name": "Dinner"
+    }
+},
+{
+    "pk": 4, 
+    "model": "glucoses.category", 
+    "fields": {
+        "name": "Snack"
+    }
+},
+{
+    "pk": 5, 
+    "model": "glucoses.category", 
+    "fields": {
+        "name": "Bedtime"
+    }
+},
+{
+    "pk": 6, 
+    "model": "glucoses.category", 
+    "fields": {
+        "name": "No Category"
+    }
+}
+]
