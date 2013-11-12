@@ -31,33 +31,17 @@
 </div>
 
 <div class="well">
-    {% if glucose_list %}
     <table id="glucose_table">
         <thead>
             <tr>
-                <th><center>Value</center></th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Notes</th>
+                <th width="10%"><center>Value</center></th>
+                <th width="20%">Category</th>
+                <th width="15%">Date</th>
+                <th width="15%">Time</th>
+                <th width="40%">Notes</th>
             </tr>
         </thead>
-        <tbody>
-            {% for glucose in glucose_list %}
-            <tr>
-                <td><center><b><a href="{% url 'glucose_update' glucose.id %}">{{ glucose.value }}</a></b></center></td>
-                <td>{{ glucose.category }}</td>
-                <td>{{ glucose.record_date }}</td>
-                <td>{{ glucose.record_time }}</td>
-                <td>{{ glucose.notes }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
     </table>
-    {% else %}
-        <p><em>No data to display. Please use the button above to add a new
-        entry.</em></p>
-    {% endif %}
     <br>
 </div>
 {% endblock %}
@@ -71,15 +55,18 @@
 <script src="{{ STATIC_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="{{ STATIC_URL }}datatables/extras/TableTools/media/js/TableTools.min.js"></script>
 <script type="text/javascript">
-$(document).ready( function () {
-	$('#glucose_table').dataTable( {
-		"sDom": 'T<"clear">lrtip',
+$(document).ready(function() {
+    $('#glucose_table').dataTable( {
+        "sDom": 'T<"clear">lrtip',
         "oTableTools": {
-			"sSwfPath": "{{ STATIC_URL }}datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf",
+            "sSwfPath": "{{ STATIC_URL }}datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf",
 		    "aButtons": [ "csv", "pdf", "print" ]
-		},
-		"aaSorting": [ [2,'desc'], [3,'desc']]
-	} );
+        },
+        "bProcessing": true,
+        "bServerSide": true,
+        "sAjaxSource": "{% url 'glucose_list_json' %}",
+        "aaSorting": [ [2,'desc'], [3,'desc']]
+    } );
 } );
 </script>
 {% endblock %}

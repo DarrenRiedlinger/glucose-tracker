@@ -4,7 +4,18 @@ from django.contrib.auth.models import User
 from core.models import TimeStampedModel
 
 
+class GlucoseManager(models.Manager):
+
+    def by_user(self, user, **kwargs):
+        """
+        Filter objects by the 'user' field.
+        """
+        return self.filter(user=user)
+
+
 class Glucose(TimeStampedModel):
+    objects = GlucoseManager()
+
     user = models.ForeignKey(User)
     value = models.IntegerField() # in mg/dL
     category = models.ForeignKey('Category')
