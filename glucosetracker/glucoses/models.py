@@ -17,7 +17,7 @@ class Glucose(TimeStampedModel):
     objects = GlucoseManager()
 
     user = models.ForeignKey(User)
-    value = models.IntegerField() # in mg/dL
+    value = models.PositiveIntegerField() # in mg/dL
     category = models.ForeignKey('Category')
     record_date = models.DateField('Date')
     record_time = models.TimeField('Time')

@@ -59,8 +59,21 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
     max_display_length = 500
 
     def render_column(self, row, column):
+        low = 60
+        high = 180
+        target = range(70, 121)
+
         if column == 'value':
-            return """<center><b><a href="%s">%s</a></b></center>""" % \
+            if row.value < low or row.value > high:
+                return """<center><b><a href="%s"><font color="red">%s
+                </font></a></b></center>""" % (
+                    reverse('glucose_update', args=(row.id,)), row.value)
+            elif row.value in target:
+                return """<center><b><a href="%s"><font color="green">%s
+                </font></a></b></center>""" % (
+                    reverse('glucose_update', args=(row.id,)), row.value)
+            else:
+                return """<center><b><a href="%s">%s</a></b></center>""" % \
                    (reverse('glucose_update', args=(row.id,)), row.value)
         elif column == 'category':
             return '%s' % row.category.name
