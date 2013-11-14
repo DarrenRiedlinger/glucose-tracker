@@ -8,7 +8,7 @@ TEMPLATE_DEBUG = DEBUG
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
-    'www.glucosetracker.net',
+    '.glucosetracker.net',
     '50.56.114.15',
     'localhost',
     '127.0.0.1',
@@ -17,11 +17,11 @@ ALLOWED_HOSTS = [
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER=os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD=os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 ADMINS = (
     ('Local Admin', 'admin@glucosetracker.net'),
