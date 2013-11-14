@@ -59,12 +59,12 @@
                       <li><a href="{% url 'logout' %}">Log Out</a></li>
                     </ul>
                     </li>
-                  <!--{% else %}-->
-                    <!--<form class="navbar-form navbar-right">-->
-                    <!--<button type="button" class="btn btn-success"-->
-                        <!--onclick="location.href=&quot;{% url 'login' %}&quot;;">-->
-                        <!--Log In</button>-->
-                    <!--</form>-->
+                  {% else %}
+                    <form class="navbar-form navbar-right">
+                    <button type="button" class="btn btn-success"
+                        onclick="location.href=&quot;{% url 'login' %}&quot;;">
+                        Log In</button>
+                    </form>
                   {% endif %}
               </ul>
             </div><!-- /.navbar-collapse -->
