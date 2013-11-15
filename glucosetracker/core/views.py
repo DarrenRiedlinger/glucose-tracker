@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response, HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import TemplateView
+from django.core.urlresolvers import reverse
 
 
 def login_view(request):
@@ -30,3 +31,10 @@ def login_view(request):
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
+
+    # Remove method below when we're ready to go to production.
+    def get(self, request, *args, **kwargs):
+        """
+        Redirect to 'dashboard.'
+        """
+        return HttpResponseRedirect(reverse('dashboard'))
