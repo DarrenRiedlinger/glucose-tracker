@@ -26,7 +26,7 @@ Live Demo
 
 To show the progress of the app, a live demo is available at: http://demo.glucosetracker.net
 
-The plan is to have the master branch be automatically deployed here every night to refresh the data and test the code using Jenkins CI.
+The plan is to have Jenkins CI automatically deploy the app here nightly from the master branch to test the code and re-populate the tables with fresh data.
 
 3rd-Party Apps/Libraries/Plugins
 --------------------------------
