@@ -24,9 +24,9 @@ Installation/Running the App
 Live Demo
 ---------
 
-I'm still working on deployment, but the main website will be located at: http://www.glucosetracker.net
+To show the progress of the app, a live demo is available at: http://demo.glucosetracker.net
 
-The demo/dev website (automated nightly builds) will be set to: http://dev.glucosetracker.net
+The plan is to have the master branch be automatically deployed here every night to refresh the data and test the code using Jenkins CI.
 
 3rd-Party Apps/Libraries/Plugins
 --------------------------------
