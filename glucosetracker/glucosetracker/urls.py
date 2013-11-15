@@ -31,6 +31,6 @@ urlpatterns = patterns('',
 import settings.heroku
 urlpatterns += patterns('',
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': settings.STATIC_ROOT,
+        'document_root': settings.heroku.STATIC_ROOT,
     }),
 )
