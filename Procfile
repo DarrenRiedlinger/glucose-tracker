@@ -1,1 +1,1 @@
-web: gunicorn glucosetracker.wsgi
+web: gunicorn glucosetracker.heroku_wsgi
