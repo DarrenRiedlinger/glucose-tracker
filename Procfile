@@ -1,1 +1,1 @@
-web: python glucosetracker/manage.py collectstatic --noinput; bin/gunicorn_django --bind=0.0.0.0:$PORT glucosetracker/settings/heroku.py
+web: python glucosetracker/manage.py run_gunicorn --settings=settings.heroku -b 0.0.0.0:$PORT

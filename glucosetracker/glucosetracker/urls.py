@@ -26,3 +26,11 @@ urlpatterns = patterns('',
     url(r'^login/$', view='core.views.login_view', name='login'),
     url(r'^logout/$', view=logout, kwargs={'next_page': '/login/'}, name='logout'),
 )
+
+# For serving static files on Heroku
+import settings.heroku
+urlpatterns += patterns('',
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': settings.STATIC_ROOT,
+    }),
+)
