@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from django.core.management.base import BaseCommand
+from django.db.models.base import ObjectDoesNotExist
 from django.contrib.auth.models import User
 
 from ...tests.factories import GlucoseFactory
@@ -14,7 +15,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         assert len(args) == 1, 'You must specify a username.'
 
-        user = User.objects.get(username=args[0])
+        try:
+            user = User.objects.get(username=args[0])
+        except ObjectDoesNotExist:
+            user = User.objects.create(username=args[0])
+            user.set_password('demo')
+            user.save()
+
         end_date = date.today()
         start_date = end_date - timedelta(days=30)
 
