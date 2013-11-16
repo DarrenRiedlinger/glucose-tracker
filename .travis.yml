@@ -1,5 +1,4 @@
 language: python
-before_deploy: "heroku pg:reset DATABASE --confirm glucosetracker-demo"
 deploy:
   provider: heroku
   buildpack: python
