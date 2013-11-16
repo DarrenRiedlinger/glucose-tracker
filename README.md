@@ -1,6 +1,9 @@
 Glucose Tracker
 ===============
 
+.. image:: https://travis-ci.org/jcalazan/glucosetracker.png
+    :target: https://travis-ci.org/jcalazan/glucose-tracker
+
 A simple web application for keeping tracking of blood glucose levels.  Written in Python using the Django framework.
 
 This project is currently still in early development.  The goal is to implement the following features:
@@ -26,7 +29,7 @@ Live Demo
 
 To show the progress of the app, a live demo is available at: http://demo.glucosetracker.net
 
-The plan is to have Jenkins CI automatically deploy the app here nightly from the master branch to test the code and re-populate the tables with fresh data.
+This project uses Travis CI to auto-deploy the latest code from the master to the demo site on git push.
 
 3rd-Party Apps/Libraries/Plugins
 --------------------------------
