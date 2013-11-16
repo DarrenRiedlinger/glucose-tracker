@@ -1,7 +1,7 @@
 Glucose Tracker
 ===============
 
-.. image:: https://travis-ci.org/jcalazan/glucosetracker.png
+.. image:: https://travis-ci.org/jcalazan/glucose-tracker.png
     :target: https://travis-ci.org/jcalazan/glucose-tracker
 
 A simple web application for keeping tracking of blood glucose levels.  Written in Python using the Django framework.
