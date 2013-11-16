@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from django.db.models.base import ObjectDoesNotExist
 from django.contrib.auth.models import User
 
+from ...models import Glucose
 from ...tests.factories import GlucoseFactory
 
 
@@ -20,6 +21,9 @@ class Command(BaseCommand):
             user = User.objects.create(username=args[0])
             user.set_password('demo')
             user.save()
+
+        # Delete existing data.
+        Glucose.objects.filter(user=user).delete()
 
         end_date = date.today()
         start_date = end_date - timedelta(days=90)
