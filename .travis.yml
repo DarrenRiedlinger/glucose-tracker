@@ -1,6 +1,7 @@
 before_deploy: "heroku pg:reset DATABASE --confirm glucosetracker-demo"
 deploy:
   provider: heroku
+  buildpack: python
   api_key:
     secure: SI2kYJVYc//odhEwyfGl9d1645w7b92TsKYQ1FFE8nS7lzxMd1iiXAlD049RFU4UoeyPqXtYAVvUtLvKNoU2RhuF5WMxQKl1vQst7PqjTe1KIh7wG8uYDfxn4q1/Pi/wBi0ElX/B1IkNUktoz+jwksu3pf6ELIYNqyWPP8T6sLE=
   app: glucosetracker-demo
