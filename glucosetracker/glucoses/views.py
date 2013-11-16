@@ -1,6 +1,6 @@
 from django.views.generic import CreateView, ListView, UpdateView, \
     DeleteView, FormView
-from django.shortcuts import HttpResponseRedirect
+from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 
@@ -8,13 +8,42 @@ from braces.views import LoginRequiredMixin
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from .models import Glucose
+from .reports import GlucoseCsvReport
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseEmailReportForm
 
 
 class GlucoseEmailReportView(LoginRequiredMixin, FormView):
-    success_url = '/glucoses/list/'
+    success_url = '.'
     template_name = 'glucoses/glucose_email_report.html'
     form_class = GlucoseEmailReportForm
+
+    def get_initial(self):
+        return {'recipient': self.request.user.email,
+                'message': 'Glucose data for %s.' % self.request.user.username}
+
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.SUCCESS, 'Email sent!')
+        return super(GlucoseEmailReportView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.WARNING,
+                             'Email not sent. Please try again.')
+        return super(GlucoseEmailReportView, self).form_invalid(form)
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        if form.is_valid():
+            report = GlucoseCsvReport(form.cleaned_data['start_date'],
+                                      form.cleaned_data['end_date'],
+                                      request.user)
+            report.email(form.cleaned_data['recipient'],
+                         form.cleaned_data['subject'])
+
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class GlucoseCreateView(LoginRequiredMixin, CreateView):
@@ -27,11 +56,8 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
         """
         Set the value of the 'user' field to the currently logged-in user.
         """
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
-
-        return HttpResponseRedirect(self.get_success_url())
+        form.instance.user = self.request.user
+        return super(GlucoseCreateView, self).form_valid(form)
 
 
 class GlucoseDeleteView(LoginRequiredMixin, DeleteView):

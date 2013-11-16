@@ -1,10 +1,17 @@
+from datetime import date, time, timedelta
+
 from django import forms
 from django.core.urlresolvers import reverse
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Button, Submit
+from crispy_forms.helper import FormHelper, Layout
+from crispy_forms.layout import Button, ButtonHolder, Submit, MultiField, \
+    Fieldset, Div, HTML
+from crispy_forms.bootstrap import FormActions
 
 from .models import Glucose
+
+
+DATE_FORMAT = '%m/%d/%Y'
 
 
 class GlucoseEmailReportForm(forms.Form):
@@ -12,11 +19,13 @@ class GlucoseEmailReportForm(forms.Form):
         label='Format',
         choices=(
             ('csv', 'CSV'),
-        ))
+            #('html', 'HTML'),
+        )
+    )
     start_date = forms.DateField(label='From')
     end_date = forms.DateField(label='To')
     subject = forms.CharField(required=False)
-    email_to = forms.EmailField(label='Send To')
+    recipient = forms.EmailField(label='Send To')
     message = forms.CharField(widget=forms.Textarea(attrs={'cols':50}),
                               required=False)
 
@@ -25,13 +34,50 @@ class GlucoseEmailReportForm(forms.Form):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-6'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-8'
-        self.helper.add_input(Submit('submit', 'Send'))
-        self.helper.add_input(Button(
-            'cancel', 'Cancel', onclick='location.href="%s";' % \
-                                        reverse('glucose_list')))
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-9'
+
+        self. helper.layout = Layout(
+            MultiField(
+                None,
+                HTML("""
+                {% if messages %}
+                {% for message in messages %}
+                <p {% if message.tags %} class="text-{{ message.tags }}"\
+                {% endif %}>{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+                """),
+                Div(
+                    'report_format',
+                    'start_date',
+                    'end_date',
+                    css_class='well pull-left',
+                ),
+                Div(
+                    'subject',
+                    'recipient',
+                    'message',
+                    FormActions(
+                        Submit('submit', 'Send'),
+                        Button('cancel', 'Cancel',
+                               onclick='location.href="%s";' \
+                               % reverse('dashboard')),
+                        css_class='pull-right'
+                    ),
+                    css_class='container pull-left',
+                ),
+            ),
+        )
+
+        # Initial values.
+        now = date.today()
+        last_90_days = now - timedelta(days=90)
+        self.fields['start_date'].initial = last_90_days.strftime(DATE_FORMAT)
+        self.fields['end_date'].initial = now.strftime(DATE_FORMAT)
+
+        self.fields['subject'].initial = '[GlucoseTracker] Glucose Data Report'
 
 
 class GlucoseCreateForm(forms.ModelForm):

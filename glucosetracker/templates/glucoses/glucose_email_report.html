@@ -11,7 +11,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-   {% crispy form form.helper %}
+   {% crispy form %}
 {% endblock %}
 
 {% block extrajs %}
@@ -19,6 +19,10 @@
 <script src="{{ STATIC_URL }}datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
+$(function() {
+    $('#id_recipient').focus()
+});
+
 $(function () {
     $('#id_start_date').datetimepicker({
         pickTime: false

@@ -5,7 +5,6 @@ from django.db.models.base import ObjectDoesNotExist
 from django.contrib.auth.models import User
 
 from ...tests.factories import GlucoseFactory
-from ...models import Glucose
 
 
 class Command(BaseCommand):
