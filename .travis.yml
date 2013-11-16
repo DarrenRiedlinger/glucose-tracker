@@ -1,4 +1,5 @@
 language: python
+before_deploy: "heroku pg:reset DATABASE --confirm glucosetracker-demo"
 deploy:
   provider: heroku
   buildpack: python
@@ -8,4 +9,9 @@ deploy:
   app: glucosetracker-demo
   on:
     repo: jcalazan/glucose-tracker
+  run:
+    - "python glucosetracker/manage.py syncdb --noinput --settings=settings.heroku"
+    - "python glucosetracker/manage.py migrate --all --settings=settings.heroku"
+    - "python glucosetracker/manage.py load_random_glucose_data jsmith --settings=settings.heroku"
+    - restart
 script: "pwd"
