@@ -38,10 +38,6 @@
             </form>
         </p>
 
-        <p><br>
-            If you'd like to see how the application looks so far, then
-            <a href="http://demo.glucosetracker.net/">click here for a live demo</a>.
-        </p>
       </div>
     </div>
 {% endblock %}
