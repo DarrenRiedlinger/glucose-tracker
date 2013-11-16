@@ -6,5 +6,6 @@ from ..models import Glucose
 class GlucoseTest(TestCase):
 
     def test_make_objects(self):
-        glucose = factories.GlucoseFactory.create()
-        self.assertTrue(isinstance(glucose, Glucose))
+        for _ in xrange(10):
+            glucose = factories.GlucoseFactory.create()
+            self.assertTrue(isinstance(glucose, Glucose))

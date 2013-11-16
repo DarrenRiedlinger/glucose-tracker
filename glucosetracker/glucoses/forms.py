@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Button, ButtonHolder, Submit, MultiField, \
-    Fieldset, Div, HTML
+    Fieldset, Div, HTML, Field
 from crispy_forms.bootstrap import FormActions
 
 from .models import Glucose
@@ -57,7 +57,7 @@ class GlucoseEmailReportForm(forms.Form):
                 ),
                 Div(
                     'subject',
-                    'recipient',
+                    Field('recipient', placeholder='Email address'),
                     'message',
                     FormActions(
                         Submit('submit', 'Send'),

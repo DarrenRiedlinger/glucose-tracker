@@ -1,9 +1,17 @@
 from datetime import datetime, date, timedelta
 
+from django.contrib.auth.models import User
+
 from factory import DjangoModelFactory
 from factory.fuzzy import FuzzyInteger, FuzzyChoice, FuzzyNaiveDateTime
 
 from ..models import Glucose, Category
+
+
+class UserFactory(DjangoModelFactory):
+    FACTORY_FOR = User
+
+    username = 'jsmith'
 
 
 class GlucoseFactory(DjangoModelFactory):

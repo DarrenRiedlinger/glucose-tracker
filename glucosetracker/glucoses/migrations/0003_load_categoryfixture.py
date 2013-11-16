@@ -4,11 +4,16 @@ from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 
+from django.conf import settings
+
+
 class Migration(DataMigration):
 
     def forwards(self, orm):
         from django.core.management import call_command
-        call_command("loaddata", "fixtures/initial_glucoses_category_data.json")
+        call_command("loaddata",
+                     "%s/fixtures/initial_glucoses_category_data.json" % \
+                     settings.PROJECT_ROOT)
 
     def backwards(self, orm):
         "Write your backwards methods here."
