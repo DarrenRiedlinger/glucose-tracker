@@ -8,3 +8,4 @@ deploy:
   app: glucosetracker-demo
   on:
     repo: jcalazan/glucose-tracker
+script: "heroku run pwd"
