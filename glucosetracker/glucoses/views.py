@@ -39,7 +39,8 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
                                       form.cleaned_data['end_date'],
                                       request.user)
             report.email(form.cleaned_data['recipient'],
-                         form.cleaned_data['subject'])
+                         form.cleaned_data['subject'],
+                         form.cleaned_data['message'])
 
             return self.form_valid(form)
         else:
