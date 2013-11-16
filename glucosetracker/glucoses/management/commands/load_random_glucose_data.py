@@ -22,7 +22,7 @@ class Command(BaseCommand):
             user.save()
 
         end_date = date.today()
-        start_date = end_date - timedelta(days=60)
+        start_date = end_date - timedelta(days=30)
 
         for i in GlucoseFactory.get_date_list(start_date, end_date):
             for _ in xrange(4):
