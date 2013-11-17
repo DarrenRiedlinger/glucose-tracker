@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from .views import GlucoseCreateView, GlucoseListView, GlucoseUpdateView, \
+from .views import list_view, GlucoseCreateView, GlucoseUpdateView, \
     GlucoseDeleteView, GlucoseEmailReportView, GlucoseListJson
 
 
@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     ),
     url(
         regex=r'^list/',
-        view=GlucoseListView.as_view(),
+        view=list_view,
         name='glucose_list',
     ),
     url(

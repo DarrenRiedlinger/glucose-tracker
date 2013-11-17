@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block heading %}<h3>
     <span class="glyphicon glyphicon-list"></span> Glucose Data</h3>{% endblock %}
 
@@ -28,6 +30,7 @@
         <li><a href="{% url 'glucose_email_report' %}">E-mail Report</a></li>
         </ul>
     </div>
+    <div class="pull-right">{% crispy form %}</div>
 </div>
 
 <div class="well">
@@ -55,6 +58,17 @@
 <script src="{{ STATIC_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="{{ STATIC_URL }}datatables/extras/TableTools/media/js/TableTools.min.js"></script>
 <script type="text/javascript">
+$(function() {
+    $('#id_value').focus()
+});
+
+var currentdate = new Date();
+var date_now = (currentdate.getMonth()+1)  + "/" + currentdate.getDate() + "/"
+                + currentdate.getFullYear();
+var time_now = currentdate.getHours() + ":" + currentdate.getMinutes();
+document.getElementById('id_record_date').value=date_now;
+document.getElementById('id_record_time').value=time_now;
+
 $(document).ready(function() {
     $('#glucose_table').dataTable( {
         "sDom": 'T<"clear">lrtip',

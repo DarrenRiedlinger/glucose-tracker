@@ -6,12 +6,39 @@ from django.core.urlresolvers import reverse
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Button, ButtonHolder, Submit, MultiField, \
     Fieldset, Div, HTML, Field
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.bootstrap import FormActions, StrictButton, InlineField
 
 from .models import Glucose
 
 
 DATE_FORMAT = '%m/%d/%Y'
+
+
+class GlucoseQuickAddForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(GlucoseQuickAddForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_action = reverse('glucose_create')
+        self.helper.form_class = 'form-inline'
+        self.helper.form_show_labels = False
+
+        # Remove the blank option from the select widget.
+        self.fields['category'].empty_label = None
+
+        self.helper.layout = Layout(
+            InlineField('value'),
+            'category',
+            Field('record_date', type='hidden'),
+            Field('record_time', type='hidden'),
+            StrictButton('Quick Add', css_class='btn-primary',
+                         type='submit', action='submit'))
+
+    class Meta:
+        model = Glucose
+        exclude = ('user', 'notes')
 
 
 class GlucoseEmailReportForm(forms.Form):
@@ -45,18 +72,14 @@ class GlucoseEmailReportForm(forms.Form):
                 {% if messages %}
                 {% for message in messages %}
                 <p {% if message.tags %} class="text-{{ message.tags }}"\
-                {% endif %}>{{ message }}</p>
-                {% endfor %}
-                {% endif %}
+                {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
                 """),
-                Div(
-                    'report_format',
+                Div('report_format',
                     'start_date',
                     'end_date',
                     css_class='well pull-left',
                 ),
-                Div(
-                    'subject',
+                Div('subject',
                     Field('recipient', placeholder='Email address'),
                     'message',
                     FormActions(

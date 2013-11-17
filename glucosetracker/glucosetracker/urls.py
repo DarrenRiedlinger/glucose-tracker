@@ -11,7 +11,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from core.views import HomePageView
-from glucoses.views import GlucoseListView
+from glucoses.views import list_view
 
 
 urlpatterns = patterns('',
@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # Redirect to 'glucose_list' for now, update later.
-    url(r'^dashboard/$', view=GlucoseListView.as_view(), name='dashboard'),
+    url(r'^dashboard/$', view=list_view, name='dashboard'),
 
     url(r'^subscribe/$', view='subscribers.views.subscribe_view', name='subscribe'),
     url(r'^login/$', view='core.views.login_view', name='login'),

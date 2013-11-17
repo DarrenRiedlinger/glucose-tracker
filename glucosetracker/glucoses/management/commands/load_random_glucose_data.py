@@ -27,7 +27,6 @@ class Command(BaseCommand):
 
         end_date = date.today()
         start_date = end_date - timedelta(days=90)
-
         for i in GlucoseFactory.get_date_list(start_date, end_date):
             for _ in xrange(4):
                 GlucoseFactory(user=user, record_date=i)

@@ -3,14 +3,28 @@ from django.views.generic import CreateView, ListView, UpdateView, \
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 from braces.views import LoginRequiredMixin
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from .models import Glucose
 from .reports import GlucoseCsvReport
-from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseEmailReportForm
+from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
+    GlucoseEmailReportForm
 
+
+@login_required
+def list_view(request):
+    form = GlucoseQuickAddForm()
+
+    return render_to_response(
+        'glucoses/glucose_list.html',
+        {'form': form},
+        context_instance=RequestContext(request),
+    )
 
 class GlucoseEmailReportView(LoginRequiredMixin, FormView):
     success_url = '.'
@@ -118,15 +132,16 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
         return Glucose.objects.by_user(self.request.user)
 
 
-class GlucoseListView(LoginRequiredMixin, ListView):
-    model = Glucose
-    template_name = 'glucoses/glucose_list.html'
 
-    def get_queryset(self):
-        """
-        Filter records to show only entries from the currently logged-in user.
-        """
-        return Glucose.objects.by_user(self.request.user)
+#class GlucoseListView(LoginRequiredMixin, ListView):
+#    model = Glucose
+#    template_name = 'glucoses/glucose_list.html'
+#
+#    def get_queryset(self):
+#        """
+#        Filter records to show only entries from the currently logged-in user.
+#        """
+#        return Glucose.objects.by_user(self.request.user)
 
 
 class GlucoseUpdateView(LoginRequiredMixin, UpdateView):
