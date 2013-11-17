@@ -1,6 +1,6 @@
 import sys
+import random
 from datetime import date, timedelta
-from random import choice
 
 from django.core.management.base import BaseCommand
 from django.db.models.base import ObjectDoesNotExist
@@ -35,7 +35,7 @@ class Command(BaseCommand):
             for _ in range(4):
                 GlucoseFactory(
                     user=user,
-                    category=choice(Category.objects.all()),
+                    category=random.choice(Category.objects.all()),
                     record_date=i
                 )
 

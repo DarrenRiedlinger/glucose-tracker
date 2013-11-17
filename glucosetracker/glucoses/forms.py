@@ -94,7 +94,7 @@ class GlucoseEmailReportForm(forms.Form):
                                % reverse('dashboard')),
                         css_class='pull-right'
                     ),
-                    css_class='container pull-left',
+                    css_class='pull-left',
                 ),
             ),
         )
