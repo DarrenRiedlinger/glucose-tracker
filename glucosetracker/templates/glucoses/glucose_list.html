@@ -14,18 +14,13 @@
         </a>
     </div>
     <div class="btn-group">
-        <a href="{% url 'glucose_list' %}">
-        <button type="button" class="btn btn-success">
-            <span class="glyphicon glyphicon-filter"></span> Filter Data</button>
-        </a>
-    </div>
-    <div class="btn-group">
         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         <span class="glyphicon glyphicon-stats"></span> Reports
         <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Charts</a></li>
+        <li><a href="#">Filter Data</a></li>
+        <li><a href="#">Charts and Graphs</a></li>
         <li class="divider"></li>
         <li><a href="{% url 'glucose_email_report' %}">E-mail Report</a></li>
         </ul>

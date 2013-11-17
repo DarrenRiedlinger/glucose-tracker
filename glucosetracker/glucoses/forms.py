@@ -34,12 +34,13 @@ class GlucoseQuickAddForm(forms.ModelForm):
         self.fields['category'].empty_label = None
 
         self.helper.layout = Layout(
-            InlineField('value'),
-            'category',
+            InlineField('value', css_class='col-xs-3'),
+            InlineField('category'),
             Field('record_date', type='hidden'),
             Field('record_time', type='hidden'),
             StrictButton('Quick Add', css_class='btn-primary',
-                         type='submit', action='submit'))
+                         type='submit', action='submit')
+        )
 
     class Meta:
         model = Glucose
