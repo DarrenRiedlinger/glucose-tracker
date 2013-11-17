@@ -18,6 +18,13 @@ from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
 
 @login_required
 def list_view(request):
+    """
+    Displays the glucose data table for the currently logged in user. A form
+    for quickly adding glucose values is also included.
+
+    The data is loaded by the GlucoseListJson view and rendered by the
+    Datatables plugin via Javascript.
+    """
     form = GlucoseQuickAddForm()
 
     return render_to_response(
@@ -27,6 +34,9 @@ def list_view(request):
     )
 
 class GlucoseEmailReportView(LoginRequiredMixin, FormView):
+    """
+    Sends out an email containing the glucose data report.
+    """
     success_url = '.'
     template_name = 'glucoses/glucose_email_report.html'
     form_class = GlucoseEmailReportForm

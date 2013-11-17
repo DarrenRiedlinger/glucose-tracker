@@ -15,6 +15,11 @@ DATE_FORMAT = '%m/%d/%Y'
 
 
 class GlucoseQuickAddForm(forms.ModelForm):
+    """
+    A simple form for adding glucose values. Date and time are automatically
+    set to the user's current local date and time using Javascript (see
+    glucose_list.html template).
+    """
 
     def __init__(self, *args, **kwargs):
         super(GlucoseQuickAddForm, self).__init__(*args, **kwargs)
