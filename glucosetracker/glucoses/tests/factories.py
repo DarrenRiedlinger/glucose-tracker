@@ -2,7 +2,7 @@ from datetime import datetime, date, timedelta
 
 from django.contrib.auth.models import User
 
-from factory import DjangoModelFactory
+from factory import DjangoModelFactory, Sequence, SubFactory, LazyAttribute
 from factory.fuzzy import FuzzyInteger, FuzzyChoice, FuzzyNaiveDateTime
 
 from ..models import Glucose, Category
@@ -11,22 +11,24 @@ from ..models import Glucose, Category
 class UserFactory(DjangoModelFactory):
     FACTORY_FOR = User
 
-    username = 'jsmith'
+    username = Sequence(lambda n: 'user{0}'.format(n))
+
+
+class CategoryFactory(DjangoModelFactory):
+    FACTORY_FOR = Category
+
+    name = Sequence(lambda n: 'Category{0}'.format(n))
 
 
 class GlucoseFactory(DjangoModelFactory):
     FACTORY_FOR = Glucose
 
+    user = SubFactory(UserFactory)
     value = FuzzyInteger(50, 240)
-    category = FuzzyChoice(Category.objects.all())
+    category = SubFactory(CategoryFactory)
     record_date = date.today()
     record_time = FuzzyNaiveDateTime(datetime.now() - timedelta(hours=24))
     notes = 'GlucoseTracker.net is the best app ever made.'
-
-    @classmethod
-    def get_date_list(cls, start, end):
-        delta = end - start
-        return [(start + timedelta(days=i)) for i in range(delta.days+1)]
 
 
 
