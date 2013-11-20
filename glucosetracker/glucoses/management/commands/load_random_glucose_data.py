@@ -6,6 +6,8 @@ from django.core.management.base import BaseCommand
 from django.db.models.base import ObjectDoesNotExist
 from django.contrib.auth.models import User
 
+from core.models import UserSettings
+
 from ...models import Glucose, Category
 from ...tests.factories import GlucoseFactory
 
@@ -23,8 +25,14 @@ class Command(BaseCommand):
             user = User.objects.get(username=args[0])
         except ObjectDoesNotExist:
             user = User.objects.create(username=args[0])
+            user.first_name = 'John'
+            user.last_name = 'Smith'
+            user.email - 'test@glucosetracker.net'
             user.set_password('demo')
             user.save()
+
+            # Create an entry for the User Settings
+        UserSettings.objects.create(user=user).save()
 
         # Delete existing data.
         Glucose.objects.filter(user=user).delete()

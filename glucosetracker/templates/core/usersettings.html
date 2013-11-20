@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block heading %}
+    <h3><span class="glyphicon glyphicon-cog"></span> Settings</h3>
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <p {% if message.tags %} class="text-{{ message.tags }}"
+            {% endif %}>{{ message }}</p>{% endfor %}
+    {% endif %}
+   {% crispy form %}
+{% endblock %}

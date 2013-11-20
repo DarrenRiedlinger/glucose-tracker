@@ -1,5 +1,4 @@
-from django.views.generic import CreateView, ListView, UpdateView, \
-    DeleteView, FormView
+from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
@@ -38,8 +37,8 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
     Sends out an email containing the glucose data report.
     """
     success_url = '.'
-    template_name = 'glucoses/glucose_email_report.html'
     form_class = GlucoseEmailReportForm
+    template_name = 'glucoses/glucose_email_report.html'
 
     def get_initial(self):
         return {'recipient': self.request.user.email,
@@ -110,9 +109,11 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
     max_display_length = 500
 
     def render_column(self, row, column):
-        low = 60
-        high = 180
-        target = range(70, 121)
+        user_settings = self.request.user.settings
+        low = user_settings.glucose_low
+        high = user_settings.glucose_high
+        target = range(user_settings.glucose_target_min,
+                       user_settings.glucose_target_max)
 
         if column == 'value':
             if row.value < low or row.value > high:
@@ -140,18 +141,6 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
         Filter records to show only entries from the currently logged-in user.
         """
         return Glucose.objects.by_user(self.request.user)
-
-
-
-#class GlucoseListView(LoginRequiredMixin, ListView):
-#    model = Glucose
-#    template_name = 'glucoses/glucose_list.html'
-#
-#    def get_queryset(self):
-#        """
-#        Filter records to show only entries from the currently logged-in user.
-#        """
-#        return Glucose.objects.by_user(self.request.user)
 
 
 class GlucoseUpdateView(LoginRequiredMixin, UpdateView):

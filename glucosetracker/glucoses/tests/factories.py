@@ -28,7 +28,7 @@ class GlucoseFactory(DjangoModelFactory):
     category = SubFactory(CategoryFactory)
     record_date = date.today()
     record_time = FuzzyNaiveDateTime(datetime.now() - timedelta(hours=24))
-    notes = 'GlucoseTracker.net is the best app ever made.'
+    notes = 'This is a demo of GlucoseTracker.'
 
 
 

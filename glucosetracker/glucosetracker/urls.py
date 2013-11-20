@@ -16,6 +16,7 @@ from glucoses.views import list_view
 
 urlpatterns = patterns('',
     url(r'^$', HomePageView.as_view(), name='home'),
+    url(r'^core/', include('core.urls')),
     url(r'^glucoses/', include('glucoses.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
