@@ -72,6 +72,7 @@ class UserSettingsView(LoginRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+        form.full_clean()
 
         if form.is_valid():
             user = self.request.user
@@ -80,6 +81,7 @@ class UserSettingsView(LoginRequiredMixin, FormView):
             user.email = form.cleaned_data['email']
             user.save()
 
+            user.settings.time_zone = form.cleaned_data['time_zone']
             user.settings.glucose_low = form.cleaned_data['glucose_low']
             user.settings.glucose_high = form.cleaned_data['glucose_high']
             user.settings.glucose_target_min = form.cleaned_data[

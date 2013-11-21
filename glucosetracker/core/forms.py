@@ -5,13 +5,14 @@ from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Button, ButtonHolder, Submit, MultiField, \
     Fieldset, Div, HTML, Field
 from crispy_forms.bootstrap import FormActions, StrictButton, InlineField
+from timezone_field import TimeZoneFormField
 
 
 class UserSettingsForm(forms.Form):
     first_name = forms.CharField(label='First Name',required=False)
     last_name = forms.CharField(label='Last Name', required=False)
-    email = forms.CharField(label='Email', required=False)
-    time_zone = forms.ChoiceField(label='Time Zone', required=False)
+    email = forms.CharField(label='Email')
+    time_zone = TimeZoneFormField(label='Time Zone')
 
     glucose_high = forms.IntegerField(
         label='High', min_value=0, required=False,
