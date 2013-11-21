@@ -3,7 +3,7 @@ from datetime import datetime
 from .models import Category
 
 
-def get_default_category(time_zone):
+def get_initial_category(time_zone):
     now = datetime.now(tz=time_zone)
 
     breakfast_start = now.replace(hour=4, minute=0)

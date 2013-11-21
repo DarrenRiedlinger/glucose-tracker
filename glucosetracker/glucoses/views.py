@@ -1,5 +1,3 @@
-from datetime import datetime, time
-
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -11,7 +9,7 @@ from django.template import RequestContext
 from braces.views import LoginRequiredMixin
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from .utils import get_default_category
+from .utils import get_initial_category
 from .models import Glucose
 from .reports import GlucoseCsvReport
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
@@ -28,7 +26,7 @@ def list_view(request):
     Datatables plugin via Javascript.
     """
     form = GlucoseQuickAddForm()
-    form.fields['category'].initial = get_default_category(
+    form.fields['category'].initial = get_initial_category(
         request.user.settings.time_zone)
 
     return render_to_response(
@@ -83,7 +81,7 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self):
         time_zone = self.request.user.settings.time_zone
-        return {'category': get_default_category(time_zone)}
+        return {'category': get_initial_category(time_zone)}
 
     def form_valid(self, form):
         """
