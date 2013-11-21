@@ -9,6 +9,9 @@ from timezone_field import TimeZoneFormField
 
 
 class UserSettingsForm(forms.Form):
+    """
+    Form to allow users to change profile settings and preferences.
+    """
     first_name = forms.CharField(label='First Name',required=False)
     last_name = forms.CharField(label='Last Name', required=False)
     email = forms.CharField(label='Email')
