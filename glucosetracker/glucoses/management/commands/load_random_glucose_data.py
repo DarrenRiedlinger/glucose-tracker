@@ -27,12 +27,12 @@ class Command(BaseCommand):
             user = User.objects.create(username=args[0])
             user.first_name = 'John'
             user.last_name = 'Smith'
-            user.email - 'test@glucosetracker.net'
+            user.email = 'test@glucosetracker.net'
             user.set_password('demo')
             user.save()
 
             # Create an entry for the User Settings
-        UserSettings.objects.create(user=user).save()
+            UserSettings.objects.create(user=user).save()
 
         # Delete existing data.
         Glucose.objects.filter(user=user).delete()
