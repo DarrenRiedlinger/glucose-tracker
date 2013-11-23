@@ -17,13 +17,13 @@ class UserSettingsForm(forms.Form):
     email = forms.CharField(label='Email')
     time_zone = TimeZoneFormField(label='Time Zone')
 
-    glucose_high = forms.IntegerField(
-        label='High', min_value=0, required=False,
-        help_text="Above this value is a high blood glucose."
-    )
     glucose_low = forms.IntegerField(
         label='Low', min_value=0, required=False,
         help_text="Below this value is a low blood glucose."
+    )
+    glucose_high = forms.IntegerField(
+        label='High', min_value=0, required=False,
+        help_text="Above this value is a high blood glucose."
     )
     glucose_target_min = forms.IntegerField(
         label='Target Min', min_value=0, required=False,
@@ -54,8 +54,8 @@ class UserSettingsForm(forms.Form):
             ),
             Fieldset(
                 'Glucose Levels',
-                Field('glucose_high'),
                 Field('glucose_low'),
+                Field('glucose_high'),
                 Field('glucose_target_min'),
                 Field('glucose_target_max'),
             ),
@@ -66,4 +66,3 @@ class UserSettingsForm(forms.Form):
                        % reverse('dashboard')),
             ),
         )
-

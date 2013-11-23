@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.generic import TemplateView, FormView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
 
 from braces.views import LoginRequiredMixin
 
@@ -89,7 +88,6 @@ class UserSettingsView(LoginRequiredMixin, FormView):
             user.settings.glucose_target_max = form.cleaned_data[
                 'glucose_target_max']
             user.settings.save()
-
 
             return self.form_valid(form)
         else:
