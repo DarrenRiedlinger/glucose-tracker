@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'compressor',
     'crispy_forms',
     'gunicorn',
+    'taggit',
 
     # Local apps
     'core',

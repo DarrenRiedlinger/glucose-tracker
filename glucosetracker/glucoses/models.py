@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from taggit.managers import TaggableManager
+
 from core.models import TimeStampedModel
 
 
@@ -38,6 +40,10 @@ class Glucose(TimeStampedModel):
     record_date = models.DateField('Date')
     record_time = models.TimeField('Time')
     notes = models.TextField('Notes', null=False, blank=True, default='')
+    tags = TaggableManager(
+        blank=True,
+        help_text='A comma-separated list of tags (e.g. exercise, sick).'
+    )
 
     def __unicode__(self):
         return str(self.value)
@@ -55,4 +61,3 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
         ordering = ['id']
-

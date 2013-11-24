@@ -31,7 +31,7 @@ class Command(BaseCommand):
             user.set_password('demo')
             user.save()
 
-            # Create an entry for the User Settings
+            # Create an entry for the User Settings.
             UserSettings.objects.create(user=user).save()
 
         # Delete existing data.
