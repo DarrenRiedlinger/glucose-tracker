@@ -116,9 +116,9 @@ class GlucoseCreateForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-6'
+        self.helper.form_class = 'form-horizontal col-xs-5'
         self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-8'
+        self.helper.field_class = 'col-lg-10'
         self.helper.add_input(Submit('submit', 'Save'))
         self.helper.add_input(Button(
             'cancel', 'Cancel', onclick='location.href="%s";' % \
@@ -136,6 +136,9 @@ class GlucoseCreateForm(forms.ModelForm):
     class Meta:
         model = Glucose
         exclude = ('user',)
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 4}),
+        }
 
 
 class GlucoseUpdateForm(forms.ModelForm):
@@ -150,9 +153,9 @@ class GlucoseUpdateForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-6'
+        self.helper.form_class = 'form-horizontal col-xs-5'
         self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-8'
+        self.helper.field_class = 'col-lg-10'
         self.helper.add_input(Submit('submit', 'Save'))
         self.helper.add_input(Button(
             'cancel', 'Cancel', onclick='location.href="%s";' % \
@@ -175,3 +178,6 @@ class GlucoseUpdateForm(forms.ModelForm):
     class Meta:
         model = Glucose
         exclude = ('user',)
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 4}),
+        }
