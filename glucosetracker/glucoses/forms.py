@@ -116,7 +116,7 @@ class GlucoseCreateForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-5'
+        self.helper.form_class = 'form-horizontal col-xs-7'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-10'
         self.helper.add_input(Submit('submit', 'Save'))
@@ -153,7 +153,7 @@ class GlucoseUpdateForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-5'
+        self.helper.form_class = 'form-horizontal col-xs-7'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-10'
         self.helper.add_input(Submit('submit', 'Save'))

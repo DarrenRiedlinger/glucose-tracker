@@ -20,7 +20,9 @@ def login_view(request):
     login_failed = False
 
     if request.POST:
-        username = request.POST['username']
+        # We're only allowing lowercase in usernames, so convert
+        # what the user entered to lowercase.
+        username = request.POST['username'].lower()
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
