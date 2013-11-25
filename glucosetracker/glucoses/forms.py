@@ -1,4 +1,4 @@
-from datetime import date, time, timedelta
+from datetime import date, timedelta
 
 from django import forms
 from django.core.urlresolvers import reverse
