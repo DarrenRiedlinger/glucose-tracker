@@ -25,9 +25,12 @@ Some point in the future:
 Installation/Running the App
 ----------------------------
 
-1. Change the settings/local.py file to match your environment (I'll create a demo.py file later that uses SQLite so you won't have to set up your own database).
-2. Install the required libraries listed in the requirements file with pip: pip install -r requirements.txt
-3. Run the local web server: python manage.py runserver --settings=settings.local
+1. Install the required libraries listed in the requirements file with pip: pip install -r requirements.txt
+2. If you just want to run a demo of the app, use the <b>settings/localdemo.py</b> file which uses an SQLite database and will be created automatically. Otherwise, for development, please use PostgreSQL and the settings/local.py file.  Set the database settings and environment variables accordingly.
+3. Run the syncdb command: e.g. python manage.py syncdb --settings=settings.localdemo
+4. Run the South migration: e.g. python manage.py migrate --all --settings=settings.localdemo
+5. (Optional) Populate your database with dummy data: e.g. python manage.py load_random_glucose_data jsmith --settings=settings.localdemo (note that 'jsmith' can be changed to any username you like, the password will always be 'demo').
+6. Run the local web server: e.g. python manage.py runserver --settings=settings.localdemo
 
 Live Demo
 ---------
