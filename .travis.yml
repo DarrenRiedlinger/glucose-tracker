@@ -9,7 +9,7 @@ deploy:
   on:
     repo: jcalazan/glucose-tracker
   run:
-    - "coverage run glucosetracker/manage.py test -v 2--settings=settings.heroku"
+    - "coverage run glucosetracker/manage.py test -v 2 --settings=settings.heroku"
     - "python glucosetracker/manage.py syncdb --noinput --settings=settings.heroku"
     - "python glucosetracker/manage.py migrate --all --settings=settings.heroku"
     - "python glucosetracker/manage.py load_random_glucose_data jsmith --settings=settings.heroku"
