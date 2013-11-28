@@ -19,6 +19,26 @@ from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
 
 
 @login_required
+def filter_view(request):
+    """
+    Displays the glucose data table for the currently logged in user with
+    filter options.
+
+    The data is loaded by the GlucoseListJson view and rendered by the
+    Datatables plugin via Javascript.
+    """
+    #form = GlucoseQuickAddForm()
+    #form.fields['category'].initial = get_initial_category(
+    #    request.user.settings.time_zone)
+
+    return render_to_response(
+        'glucoses/glucose_filter.html',
+        #{'form': form},
+        context_instance=RequestContext(request),
+    )
+
+
+@login_required
 def list_view(request):
     """
     Displays the glucose data table for the currently logged in user. A form

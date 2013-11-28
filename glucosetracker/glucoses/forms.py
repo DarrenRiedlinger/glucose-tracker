@@ -34,7 +34,8 @@ class GlucoseQuickAddForm(forms.ModelForm):
         self.fields['category'].empty_label = None
 
         self.helper.layout = Layout(
-            InlineField('value', css_class='col-xs-3'),
+            InlineField('value', css_class='col-xs-3', required=True,
+                        autofocus=True),
             InlineField('category'),
             Field('record_date', type='hidden'),
             Field('record_time', type='hidden'),
@@ -81,12 +82,13 @@ class GlucoseEmailReportForm(forms.Form):
                 {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
                 """),
                 Div('report_format',
-                    'start_date',
-                    'end_date',
+                    Field('start_date', required=True),
+                    Field('end_date', required=True),
                     css_class='well pull-left',
                 ),
                 Div('subject',
-                    Field('recipient', placeholder='Email address'),
+                    Field('recipient', placeholder='Email address',
+                          required=True, autofocus=True),
                     'message',
                     FormActions(
                         Submit('submit', 'Send'),
@@ -109,10 +111,10 @@ class GlucoseEmailReportForm(forms.Form):
         self.fields['subject'].initial = '[GlucoseTracker] Glucose Data Report'
 
 
-class GlucoseCreateForm(forms.ModelForm):
+class GlucoseInputForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(GlucoseCreateForm, self).__init__(*args, **kwargs)
+        super(GlucoseInputForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -124,20 +126,24 @@ class GlucoseCreateForm(forms.ModelForm):
             'cancel', 'Cancel', onclick='location.href="%s";' % \
                                         reverse('glucose_list')))
 
+
         # Remove the blank option from the select widget.
         self.fields['category'].empty_label = None
-        self.fields['category'].required = False
-
-        # Make record date and time not required. If these fields are empty
-        # the current date and time will be used.
-        self.fields['record_date'].required = False
-        self.fields['record_time'].required = False
 
         # Specify which time formats are valid for this field. This setting is
         # necessary when using the bootstrap-datetimepicker widget as it
         # doesn't allow inputting of seconds.
         valid_time_formats = ['%H:%M', '%I:%M%p', '%I:%M %p']
         self.fields['record_time'].input_formats = valid_time_formats
+
+        self. helper.layout = Layout(
+            Field('value', required=True, autofocus=True),
+            'category',
+            'record_date',
+            'record_time',
+            'notes',
+            'tags',
+        )
 
     class Meta:
         model = Glucose
@@ -147,7 +153,20 @@ class GlucoseCreateForm(forms.ModelForm):
         }
 
 
-class GlucoseUpdateForm(forms.ModelForm):
+class GlucoseCreateForm(GlucoseInputForm):
+
+    def __init__(self, *args, **kwargs):
+        super(GlucoseCreateForm, self).__init__(*args, **kwargs)
+
+        self.fields['category'].required = False
+
+        # Make record date and time not required. If these fields are empty
+        # the current date and time will be used.
+        self.fields['record_date'].required = False
+        self.fields['record_time'].required = False
+
+
+class GlucoseUpdateForm(GlucoseInputForm):
 
     def __init__(self, *args, **kwargs):
         super(GlucoseUpdateForm, self).__init__(*args, **kwargs)
@@ -157,33 +176,7 @@ class GlucoseUpdateForm(forms.ModelForm):
         self.fields['record_date'].widget.format = '%m/%d/%y'
         self.fields['record_time'].widget.format = '%I:%M %p'
 
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-7'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-10'
-        self.helper.add_input(Submit('submit', 'Save'))
-        self.helper.add_input(Button(
-            'cancel', 'Cancel', onclick='location.href="%s";' % \
-                                        reverse('glucose_list')))
-
         delete_url = reverse('glucose_delete', args=(self.instance.id,))
         self.helper.add_input(Button('delete', 'Delete',
                                      onclick='location.href="%s";' % delete_url,
                                      css_class='btn-danger pull-right'))
-
-        # Remove the blank option from the select widget.
-        self.fields['category'].empty_label = None
-
-        # Specify which time formats are valid for this field. This setting is
-        # necessary when using the bootstrap-datetimepicker widget as it
-        # doesn't allow inputting of seconds.
-        valid_time_formats = ['%H:%M', '%I:%M%p', '%I:%M %p']
-        self.fields['record_time'].input_formats = valid_time_formats
-
-    class Meta:
-        model = Glucose
-        exclude = ('user',)
-        widgets = {
-            'notes': forms.Textarea(attrs={'rows': 4}),
-        }
