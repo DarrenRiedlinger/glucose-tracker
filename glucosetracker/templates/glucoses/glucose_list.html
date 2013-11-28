@@ -58,13 +58,6 @@ $(function() {
     $('#id_value').focus()
 });
 
-var currentdate = new Date();
-var date_now = (currentdate.getMonth()+1)  + "/" + currentdate.getDate() + "/"
-                + currentdate.getFullYear();
-var time_now = currentdate.getHours() + ":" + currentdate.getMinutes();
-document.getElementById('id_record_date').value=date_now;
-document.getElementById('id_record_time').value=time_now;
-
 $(document).ready(function() {
     $('#glucose_table').dataTable( {
         "sDom": 'T<"clear">lrtip',

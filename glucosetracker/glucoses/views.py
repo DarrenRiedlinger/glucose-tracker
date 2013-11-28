@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -31,9 +33,10 @@ def list_view(request):
 
     return render_to_response(
         'glucoses/glucose_list.html',
-        {'form': form, 'source': 'quick_add_form'},
+        {'form': form},
         context_instance=RequestContext(request),
     )
+
 
 class GlucoseEmailReportView(LoginRequiredMixin, FormView):
     """
@@ -84,10 +87,20 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
         return {'category': get_initial_category(time_zone)}
 
     def form_valid(self, form):
-        """
-        Set the value of the 'user' field to the currently logged-in user.
-        """
+        # Set the value of the 'user' field to the currently logged-in user.
         form.instance.user = self.request.user
+
+        # Set the values of the record date and time to the current date and
+        # time factoring in the user's timezone setting if they're not
+        # specified.
+        if not form.instance.record_date:
+            form.instance.record_date = datetime.now(
+                tz=self.request.user.settings.time_zone).date()
+
+        if not form.instance.record_time:
+            form.instance.record_time = datetime.now(
+                tz=self.request.user.settings.time_zone).time()
+
         return super(GlucoseCreateView, self).form_valid(form)
 
 

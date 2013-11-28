@@ -126,6 +126,12 @@ class GlucoseCreateForm(forms.ModelForm):
 
         # Remove the blank option from the select widget.
         self.fields['category'].empty_label = None
+        self.fields['category'].required = False
+
+        # Make record date and time not required. If these fields are empty
+        # the current date and time will be used.
+        self.fields['record_date'].required = False
+        self.fields['record_time'].required = False
 
         # Specify which time formats are valid for this field. This setting is
         # necessary when using the bootstrap-datetimepicker widget as it
