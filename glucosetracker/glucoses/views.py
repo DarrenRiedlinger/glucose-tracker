@@ -15,7 +15,7 @@ from .utils import get_initial_category
 from .models import Glucose
 from .reports import GlucoseCsvReport
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
-    GlucoseEmailReportForm
+    GlucoseEmailReportForm, GlucoseFilterForm
 
 
 @login_required
@@ -27,13 +27,11 @@ def filter_view(request):
     The data is loaded by the GlucoseListJson view and rendered by the
     Datatables plugin via Javascript.
     """
-    #form = GlucoseQuickAddForm()
-    #form.fields['category'].initial = get_initial_category(
-    #    request.user.settings.time_zone)
+    form = GlucoseFilterForm()
 
     return render_to_response(
         'glucoses/glucose_filter.html',
-        #{'form': form},
+        {'form': form},
         context_instance=RequestContext(request),
     )
 

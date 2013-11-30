@@ -4,20 +4,43 @@
     <h3><span class="glyphicon glyphicon-filter"></span> Filter Data</h3>
 {% endblock %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
-<div class="well">
-    <table id="glucose_table">
-        <thead>
-            <tr>
-                <th width="10%"><center>Value</center></th>
-                <th width="20%">Category</th>
-                <th width="15%">Date</th>
-                <th width="15%">Time</th>
-                <th width="40%">Notes</th>
-            </tr>
-        </thead>
-    </table>
-    <br>
+<div class="container">
+    <div class="row col-md-4" style="padding-left:25px">
+        <div id="accordion" class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody">
+                        Options<span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseBody" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    {% crispy form %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-8" style="padding-left:25px">
+        <div class="well">
+            <table id="glucose_table">
+                <thead>
+                    <tr>
+                        <th width="10%"><center>Value</center></th>
+                        <th width="20%">Category</th>
+                        <th width="15%">Date</th>
+                        <th width="15%">Time</th>
+                        <th width="40%">Notes</th>
+                    </tr>
+                </thead>
+            </table>
+            <br>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
@@ -37,11 +60,22 @@ $(document).ready(function() {
             "sSwfPath": "{{ STATIC_URL }}datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf",
 		    "aButtons": [ "csv", "pdf", "print" ]
         },
+        "aLengthMenu": [
+            [10, 25, 50, 100, 200, 300],
+            [10, 25, 50, 100, 200, 300],
+        ],
+        "iDisplayLength": 25,
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "{% url 'glucose_list_json' %}",
         "aaSorting": [ [2,'desc'], [3,'desc']]
     } );
+
+    $('.collapse').on('shown.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+    }).on('hidden.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-chevron-up").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
+    });
 } );
 </script>
 {% endblock %}

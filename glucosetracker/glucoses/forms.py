@@ -4,14 +4,64 @@ from django import forms
 from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper, Layout
-from crispy_forms.layout import Button, ButtonHolder, Submit, MultiField, \
-    Fieldset, Div, HTML, Field
+from crispy_forms.layout import Button, Submit, MultiField, Fieldset, Div, \
+    HTML, Field
 from crispy_forms.bootstrap import FormActions, StrictButton, InlineField
 
-from .models import Glucose
+from .models import Glucose, Category
 
 
 DATE_FORMAT = '%m/%d/%Y'
+
+
+class GlucoseFilterForm(forms.Form):
+    quick_date_select = forms.ChoiceField(
+        label='Quick Date Select',
+        choices=(
+            ('last7days', 'Last 7 Days'),
+            ('last30days', 'Last 30 Days'),
+            ('last60days', 'Last 60 Days'),
+            ('last90days', 'Last 90 Days'),
+        ),
+        required=False,
+    )
+    start_date = forms.DateField(label='Date Range', required=False)
+    end_date = forms.DateField(label='', required=False)
+
+    start_value = forms.IntegerField(label='Value Range', required=False,
+                                     min_value=0)
+    end_value = forms.IntegerField(label='', required=False, min_value=0)
+
+    category = forms.ModelChoiceField(queryset=Category.objects.all(),
+                                      required=False)
+
+    notes = forms.CharField(label='Notes Contains', required=False,
+                            widget=forms.Textarea(attrs={'rows': 2}))
+
+    tags = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(GlucoseFilterForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+
+        self. helper.layout = Layout(
+            'quick_date_select',
+            Field('start_date', placeholder='From'),
+            Field('end_date', placeholder='To'),
+            Field('start_value', placeholder='From'),
+            Field('end_value', placeholder='To'),
+            'category',
+            'notes',
+            Field('tags', placeholder='e.g. exercise, sick, medication'),
+            FormActions(
+                Submit('submit', 'Filter'),
+                Button('cancel', 'Cancel', onclick='location.href="%s";' \
+                       % reverse('dashboard')),
+                css_class='pull-right'
+            ),
+        )
 
 
 class GlucoseQuickAddForm(forms.ModelForm):
