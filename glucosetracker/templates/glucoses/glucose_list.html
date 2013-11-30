@@ -7,31 +7,29 @@
 {% endblock %}
 
 {% block content %}
-<div class="well container">
-    <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group">
-            <a href="{% url 'glucose_create'%}">
-            <button type="button" class="btn btn-primary">
-                <span class="glyphicon glyphicon-plus"></span> New Glucose</button>
-            </a>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-            <span class="glyphicon glyphicon-stats"></span> Reports
-            <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-            <li><a href="{% url 'glucose_filter' %}">Filter Data</a></li>
-            <li><a href="#">Charts and Graphs</a></li>
-            <li class="divider"></li>
-            <li><a href="{% url 'glucose_email_report' %}">E-mail Report</a></li>
-            </ul>
-        </div>
-        <div class="pull-right">{% crispy form %}</div>
+<div class="well btn-toolbar" role="toolbar">
+    <div class="btn-group">
+        <a href="{% url 'glucose_create'%}">
+        <button type="button" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span> New Glucose</button>
+        </a>
     </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-stats"></span> Reports
+        <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'glucose_filter' %}">Filter Data</a></li>
+        <li><a href="#">Charts and Graphs</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'glucose_email_report' %}">E-mail Report</a></li>
+        </ul>
+    </div>
+    <div class="pull-right">{% crispy form %}</div>
 </div>
 
-<div class="well container">
+<div class="well">
     <table id="glucose_table">
         <thead>
             <tr>
@@ -43,8 +41,8 @@
             </tr>
         </thead>
     </table>
-    <br>
 </div>
+<br>
 {% endblock %}
 
 {% block extracss %}
