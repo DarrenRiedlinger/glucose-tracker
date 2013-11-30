@@ -134,7 +134,7 @@ class GlucoseEmailReportForm(forms.Form):
                 Div('report_format',
                     Field('start_date', required=True),
                     Field('end_date', required=True),
-                    css_class='well pull-left',
+                    css_class='well row col-md-4',
                 ),
                 Div('subject',
                     Field('recipient', placeholder='Email address',
@@ -147,7 +147,7 @@ class GlucoseEmailReportForm(forms.Form):
                                % reverse('dashboard')),
                         css_class='pull-right'
                     ),
-                    css_class='pull-left',
+                    css_class='row col-md-7',
                 ),
             ),
         )
