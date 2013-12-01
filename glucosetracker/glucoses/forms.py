@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 
 from django import forms
 from django.core.urlresolvers import reverse
@@ -18,15 +18,17 @@ class GlucoseFilterForm(forms.Form):
     quick_date_select = forms.ChoiceField(
         label='Quick Date Select',
         choices=(
-            ('last7days', 'Last 7 Days'),
-            ('last30days', 'Last 30 Days'),
-            ('last60days', 'Last 60 Days'),
-            ('last90days', 'Last 90 Days'),
+            (7, 'Last 7 Days'),
+            (30, 'Last 30 Days'),
+            (60, 'Last 60 Days'),
+            (90, 'Last 90 Days'),
         ),
         required=False,
     )
-    start_date = forms.DateField(label='Date Range', required=False)
-    end_date = forms.DateField(label='', required=False)
+    start_date = forms.DateField(label='Date Range', required=False,
+                                 input_formats=[DATE_FORMAT])
+    end_date = forms.DateField(label='', required=False,
+                               input_formats=[DATE_FORMAT])
 
     start_value = forms.IntegerField(label='Value Range', required=False,
                                      min_value=0)
@@ -44,15 +46,16 @@ class GlucoseFilterForm(forms.Form):
         super(GlucoseFilterForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_method = 'post'
+        self.helper.form_method = 'POST'
+        self.helper.form_action = '.'
 
         self. helper.layout = Layout(
             'quick_date_select',
-            Field('start_date', placeholder='From'),
-            Field('end_date', placeholder='To'),
+            Field('start_date', placeholder='From (mm/dd/yyyy)'),
+            Field('end_date', placeholder='To (mm/dd/yyyy)'),
+            'category',
             Field('start_value', placeholder='From'),
             Field('end_value', placeholder='To'),
-            'category',
             'notes',
             Field('tags', placeholder='e.g. exercise, sick, medication'),
             FormActions(
@@ -119,8 +122,8 @@ class GlucoseEmailReportForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-3'
-        self.helper.field_class = 'col-lg-9'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-9'
 
         self. helper.layout = Layout(
             MultiField(
@@ -168,9 +171,9 @@ class GlucoseInputForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-7'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-10'
+        self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-5'
+        self.helper.label_class = 'col-xs-2 col-md-2 col-lg-2'
+        self.helper.field_class = 'col-xs-10 col-md-10 col-lg-10'
         self.helper.add_input(Submit('submit', 'Save'))
         self.helper.add_input(Button(
             'cancel', 'Cancel', onclick='location.href="%s";' % \

@@ -7,7 +7,6 @@ from django.contrib import messages
 
 from braces.views import LoginRequiredMixin
 
-from .models import UserSettings
 from .forms import UserSettingsForm
 
 

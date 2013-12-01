@@ -1,25 +1,34 @@
-{% extends 'glucoses/glucose_input_form.html' %}
+{% extends 'base.html' %}
 
-{% block heading %}<h3>
-    <span class="glyphicon glyphicon-plus"></span> Add Glucose</h3>{% endblock %}
+{% block heading %}
+    <h3><span class="glyphicon glyphicon-plus"></span> Add Glucose</h3>
+{% endblock %}
 
-{% block extrajsfunction %}
-var currentdate = new Date();
-var date_now = (currentdate.getMonth()+1)  + "/"
-                + currentdate.getDate() + "/"
-                + currentdate.getFullYear() + " @ "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes();
+{% load crispy_forms_tags %}
+
+{% block content %}
+   {% crispy form %}
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+var currentDate = new Date();
+var now = (currentDate.getMonth()+1)  + "/"
+    + currentDate.getDate() + "/"
+    + currentDate.getFullYear() + " @ "
+    + currentDate.getHours() + ":"
+    + currentDate.getMinutes();
 
 $(function () {
     $('#id_record_date').datetimepicker({
-        defaultDate: date_now,
+        defaultDate: now,
         pickTime: false
     });
 
     $('#id_record_time').datetimepicker({
-        defaultDate: date_now,
+        defaultDate: now,
         pickDate: false
     });
 });
+</script>
 {% endblock %}

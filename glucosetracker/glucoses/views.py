@@ -1,11 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, HttpResponse
 from django.template import RequestContext
 
 from braces.views import LoginRequiredMixin
@@ -18,6 +18,9 @@ from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
     GlucoseEmailReportForm, GlucoseFilterForm
 
 
+DATE_FORMAT = '%m/%d/%Y'
+
+
 @login_required
 def filter_view(request):
     """
@@ -28,10 +31,28 @@ def filter_view(request):
     Datatables plugin via Javascript.
     """
     form = GlucoseFilterForm()
+    form.fields['start_date'].initial = (datetime.now(
+        tz=request.user.settings.time_zone) - timedelta(days=7))\
+        .date().strftime(DATE_FORMAT)
+    form.fields['end_date'].initial = datetime.now(
+        tz=request.user.settings.time_zone).date().strftime(DATE_FORMAT)
+
+    data = reverse('glucose_list_json')
+
+    if request.method == 'POST':
+        params = request.POST
+
+        # Keep the form values after submission.
+        form = GlucoseFilterForm(params)
+
+        # Create the URL query string and strip the last '&' at the end.
+        data = ('%s?%s' % (reverse('glucose_list_json'), ''.join(
+            ['%s=%s&' % (k, v) for k, v in params.iteritems()])))\
+            .rstrip('&')
 
     return render_to_response(
         'glucoses/glucose_filter.html',
-        {'form': form},
+        {'form': form, 'data': data},
         context_instance=RequestContext(request),
     )
 
@@ -151,7 +172,7 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
         low = user_settings.glucose_low
         high = user_settings.glucose_high
         target = range(user_settings.glucose_target_min,
-                       user_settings.glucose_target_max)
+                       user_settings.glucose_target_max+1)
 
         if column == 'value':
             if row.value < low or row.value > high:
@@ -179,6 +200,41 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
         Filter records to show only entries from the currently logged-in user.
         """
         return Glucose.objects.by_user(self.request.user)
+
+    def filter_queryset(self, qs):
+        params = self.request.GET
+
+        start_date = params.get('start_date', '')
+        if start_date:
+            qs = qs.filter(record_date__gte=datetime.strptime(
+                start_date, DATE_FORMAT))
+            
+        end_date = params.get('end_date', '')
+        if end_date:
+            qs = qs.filter(record_date__lte=datetime.strptime(
+                end_date, DATE_FORMAT))
+
+        start_value = params.get('start_value', '')
+        if start_value:
+            qs = qs.filter(value__gte=start_value)
+            
+        end_value = params.get('end_value', '')
+        if end_value:
+            qs = qs.filter(value__lte=end_value)
+
+        category = params.get('category', '')
+        if category:
+            qs = qs.filter(category=category)
+
+        notes = params.get('notes', '')
+        if notes:
+            qs = qs.filter(notes__contains=notes)
+
+        tags = params.get('tags', '')
+        if tags:
+            qs = qs.filter(tags__name__in=tags.split(','))
+
+        return qs
 
 
 class GlucoseUpdateView(LoginRequiredMixin, UpdateView):

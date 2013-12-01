@@ -1,9 +1,17 @@
-{% extends 'glucoses/glucose_input_form.html' %}
+{% extends 'base.html' %}
 
-{% block heading %}<h3>
-    <span class="glyphicon glyphicon-pencil"></span> Edit Glucose</h3>{% endblock %}
+{% block heading %}
+    <h3><span class="glyphicon glyphicon-pencil"></span> Edit Glucose</h3>
+{% endblock %}
 
-{% block extrajsfunction %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+   {% crispy form %}
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
 $(function () {
     $('#id_record_date').datetimepicker({
         pickTime: false
@@ -14,4 +22,5 @@ $(function () {
         <!--pickDate: false-->
     <!--});-->
 });
+</script>
 {% endblock %}

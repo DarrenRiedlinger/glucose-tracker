@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="row col-md-4" style="padding-left:25px">
+    <div class="row col-md-4" style="padding-left:32px">
         <div id="accordion" class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="row col-md-8" style="padding-left:25px">
+    <div class="row col-md-8" style="padding-left:32px">
         <div class="well">
             <table id="glucose_table">
                 <thead>
@@ -54,11 +54,11 @@
 <script src="{{ STATIC_URL }}datatables/extras/TableTools/media/js/TableTools.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#glucose_table').dataTable( {
+    var oTable = $('#glucose_table').dataTable( {
         "sDom": 'T<"clear">lrtip',
         "oTableTools": {
             "sSwfPath": "{{ STATIC_URL }}datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf",
-		    "aButtons": [ "csv", "pdf", "print" ]
+            "aButtons": [ "csv", "pdf", "print" ]
         },
         "aLengthMenu": [
             [10, 25, 50, 100, 200, 300],
@@ -67,15 +67,40 @@ $(document).ready(function() {
         "iDisplayLength": 25,
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "{% url 'glucose_list_json' %}",
+        "sAjaxSource": "{{ data }}",
         "aaSorting": [ [2,'desc'], [3,'desc']]
-    } );
-
-    $('.collapse').on('shown.bs.collapse', function(){
-        $(this).parent().find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
-    }).on('hidden.bs.collapse', function(){
-        $(this).parent().find(".glyphicon-chevron-up").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
     });
-} );
+
+    // For changing the icon in the Options panel
+    $('.collapse').on('shown.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-chevron-down")
+            .removeClass("glyphicon-chevron-down")
+            .addClass("glyphicon-chevron-up");
+    }).on('hidden.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-chevron-up")
+            .removeClass("glyphicon-chevron-up")
+            .addClass("glyphicon-chevron-down");
+    });
+
+    $('#id_start_date').datetimepicker({
+        pickTime: false
+    });
+
+    $('#id_end_date').datetimepicker({
+        pickTime: false
+    });
+
+    // Change start_date value when select field value changes.
+    $('#id_quick_date_select').change(function(){
+        var currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() -
+            $('#id_quick_date_select').val());
+        var dateString = (currentDate.getMonth()+1) + "/"
+            + currentDate.getDate() + "/"
+            + currentDate.getFullYear();
+
+        $('#id_start_date').val(dateString);
+    });
+});
 </script>
 {% endblock %}

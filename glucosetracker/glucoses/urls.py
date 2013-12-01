@@ -22,7 +22,7 @@ urlpatterns = patterns('',
         name='glucose_filter',
     ),
     url(
-        regex=r'^list_json/',
+        regex=r'^list_json/$',
         view=GlucoseListJson.as_view(),
         name='glucose_list_json',
     ),
