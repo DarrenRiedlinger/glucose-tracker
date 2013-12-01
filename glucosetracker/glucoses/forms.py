@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Button, Submit, MultiField, Fieldset, Div, \
-    HTML, Field
+    HTML, Field, Reset
 from crispy_forms.bootstrap import FormActions, StrictButton, InlineField
 
 from .models import Glucose, Category
@@ -60,9 +60,9 @@ class GlucoseFilterForm(forms.Form):
             Field('tags', placeholder='e.g. exercise, sick, medication'),
             FormActions(
                 Submit('submit', 'Filter'),
+                Reset('reset', 'Reset'),
                 Button('cancel', 'Cancel', onclick='location.href="%s";' \
-                       % reverse('dashboard')),
-                css_class='pull-right'
+                       % reverse('dashboard'), css_class='pull-right'),
             ),
         )
 
