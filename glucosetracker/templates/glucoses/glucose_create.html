@@ -12,22 +12,9 @@
 
 {% block extrajs %}
 <script type="text/javascript">
-var currentDate = new Date();
-var now = (currentDate.getMonth()+1)  + "/"
-    + currentDate.getDate() + "/"
-    + currentDate.getFullYear() + " @ "
-    + currentDate.getHours() + ":"
-    + currentDate.getMinutes();
-
 $(function () {
     $('#id_record_date').datetimepicker({
-        defaultDate: now,
         pickTime: false
-    });
-
-    $('#id_record_time').datetimepicker({
-        defaultDate: now,
-        pickDate: false
     });
 });
 </script>

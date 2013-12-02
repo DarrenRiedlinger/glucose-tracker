@@ -12,6 +12,7 @@ from .models import Glucose, Category
 
 
 DATE_FORMAT = '%m/%d/%Y'
+TIME_FORMAT = '%I:%M %p'
 
 
 class GlucoseFilterForm(forms.Form):
@@ -226,8 +227,8 @@ class GlucoseUpdateForm(GlucoseInputForm):
 
         # Set date and time formats to those supported by the
         # bootstrap-datetimepicker widget.
-        self.fields['record_date'].widget.format = '%m/%d/%y'
-        self.fields['record_time'].widget.format = '%I:%M %p'
+        self.fields['record_date'].widget.format = DATE_FORMAT
+        self.fields['record_time'].widget.format = TIME_FORMAT
 
         delete_url = reverse('glucose_delete', args=(self.instance.id,))
         self.helper.add_input(Button('delete', 'Delete',

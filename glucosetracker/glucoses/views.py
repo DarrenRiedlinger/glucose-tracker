@@ -19,7 +19,7 @@ from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
 
 
 DATE_FORMAT = '%m/%d/%Y'
-
+TIME_FORMAT = '%I:%M %p'
 
 @login_required
 def filter_view(request):
@@ -123,7 +123,14 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self):
         time_zone = self.request.user.settings.time_zone
-        return {'category': get_initial_category(time_zone)}
+        record_date = datetime.now(tz=time_zone).date().strftime(DATE_FORMAT)
+        record_time = datetime.now(tz=time_zone).time().strftime(TIME_FORMAT)
+
+        return {
+            'category': get_initial_category(time_zone),
+            'record_date': record_date,
+            'record_time': record_time,
+        }
 
     def form_valid(self, form):
         # Set the value of the 'user' field to the currently logged-in user.
