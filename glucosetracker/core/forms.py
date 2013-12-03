@@ -39,9 +39,9 @@ class UserSettingsForm(forms.Form):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-5'
-        self.helper.label_class = 'col-lg-3'
-        self.helper.field_class = 'col-lg-9'
+        self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-5'
+        self.helper.label_class = 'col-xs-3 col-md-3 col-lg-3'
+        self.helper.field_class = 'col-xs-9 col-md-9 col-lg-9'
         self.helper.help_text_inline = False
 
         self. helper.layout = Layout(
@@ -53,7 +53,7 @@ class UserSettingsForm(forms.Form):
                 Field('time_zone'),
             ),
             Fieldset(
-                'Glucose Levels',
+                'Glucose Levels (mg/dL)',
                 Field('glucose_low'),
                 Field('glucose_high'),
                 Field('glucose_target_min'),

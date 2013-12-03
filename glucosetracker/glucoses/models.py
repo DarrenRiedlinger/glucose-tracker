@@ -40,10 +40,7 @@ class Glucose(TimeStampedModel):
     record_date = models.DateField('Date')
     record_time = models.TimeField('Time')
     notes = models.TextField('Notes', null=False, blank=True, default='')
-    tags = TaggableManager(
-        blank=True,
-        help_text='A comma-separated list of tags (e.g. exercise, sick).'
-    )
+    tags = TaggableManager(blank=True, help_text=None)
 
     def __unicode__(self):
         return str(self.value)

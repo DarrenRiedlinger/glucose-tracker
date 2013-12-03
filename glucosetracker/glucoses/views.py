@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
-from django.views.generic import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import CreateView, UpdateView, DeleteView, \
+    FormView, TemplateView
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
@@ -20,6 +21,7 @@ from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
 
 DATE_FORMAT = '%m/%d/%Y'
 TIME_FORMAT = '%I:%M %p'
+
 
 @login_required
 def filter_view(request):
@@ -75,6 +77,10 @@ def list_view(request):
         {'form': form},
         context_instance=RequestContext(request),
     )
+
+
+class GlucoseChartsView(LoginRequiredMixin, TemplateView):
+    template_name = 'glucoses/glucose_charts.html'
 
 
 class GlucoseEmailReportView(LoginRequiredMixin, FormView):

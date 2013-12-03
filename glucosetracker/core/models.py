@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 from timezone_field import TimeZoneField
 
+
 class TimeStampedModel(models.Model):
     """
     Abstract base class that provides self-updating 'created' and 'modified'

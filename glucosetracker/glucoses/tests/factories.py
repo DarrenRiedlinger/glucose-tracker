@@ -32,4 +32,3 @@ class GlucoseFactory(DjangoModelFactory):
 
 
 
-

@@ -80,7 +80,7 @@ class GlucoseQuickAddForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('glucose_create')
+        self.helper.form_action = 'glucose_create'
         self.helper.form_class = 'form-inline'
         self.helper.form_show_labels = False
 
@@ -88,8 +88,8 @@ class GlucoseQuickAddForm(forms.ModelForm):
         self.fields['category'].empty_label = None
 
         self.helper.layout = Layout(
-            InlineField('value', css_class='col-xs-3', required=True,
-                        autofocus=True),
+            InlineField('value',
+                        css_class='col-xs-3', required=True, autofocus=True),
             InlineField('category'),
             Field('record_date', type='hidden'),
             Field('record_time', type='hidden'),
@@ -191,12 +191,13 @@ class GlucoseInputForm(forms.ModelForm):
         self.fields['record_time'].input_formats = valid_time_formats
 
         self. helper.layout = Layout(
-            Field('value', required=True, autofocus=True),
+            Field('value', placeholder='Value in mg/dL', required=True,
+                  autofocus=True),
             'category',
             'record_date',
             'record_time',
             'notes',
-            'tags',
+            Field('tags', placeholder='e.g. exercise, sick, medication'),
         )
 
     class Meta:
