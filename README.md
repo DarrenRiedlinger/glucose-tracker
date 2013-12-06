@@ -45,8 +45,10 @@ This project uses Travis CI to auto-deploy the latest code from the master branc
 GlucoseTracker uses the following:
 
 * Twitter Bootstrap 3 (http://getbootstrap.com)
-* Datatables (http://datatables.net)
 * South (http://south.aeracode.org)
-* Django-Crispy-Forms (http://django-crispy-forms.readthedocs.org/en/latest)
-* Django-Braces (http://django-braces.readthedocs.org/en/v1.2.2/)
-* Bootstrap-DateTimePicker (http://eonasdan.github.io/bootstrap-datetimepicker/)
+* Django Crispy Forms (http://django-crispy-forms.readthedocs.org/en/latest)
+* Django Braces (http://django-braces.readthedocs.org/en/v1.2.2/)
+* Django Compressor (http://django-compressor.readthedocs.org/en/latest/)
+* Bootstrap DateTimePicker (http://eonasdan.github.io/bootstrap-datetimepicker/)
+* Datatables (http://datatables.net)
+* Highcharts (http://www.highcharts.com/)
