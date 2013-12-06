@@ -14,6 +14,26 @@ class GlucoseManager(models.Manager):
         """
         return self.select_related().filter(user=user)
 
+    def avg_by_category(self, start_date, end_date, user=None, **kwargs):
+        """
+        Group objects by category and take the average of the values.
+        """
+        data = self.by_date(start_date, end_date, user)
+
+        return data.values('category__name')\
+            .annotate(avg_value= models.Avg('value'))\
+            .order_by('category')
+
+    def avg_by_day(self, start_date, end_date, user=None, **kwargs):
+        """
+        Group objects by record date and take the average of the values.
+        """
+        data = self.by_date(start_date, end_date, user)
+
+        return data.values('record_date')\
+            .annotate(avg_value= models.Avg('value'))\
+            .order_by('record_date')
+
     def by_date(self, start_date, end_date, user=None, **kwargs):
         """
         Filter objects by date range.

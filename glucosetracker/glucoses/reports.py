@@ -1,10 +1,43 @@
+import math
 import csv
 import cStringIO
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.core.mail import EmailMessage
 
 from .models import Glucose
+
+
+class ChartData(object):
+
+    @classmethod
+    def get_avg_by_category(cls, user, days):
+        now = datetime.now(tz=user.settings.time_zone).date()
+        
+        glucose_averages = Glucose.objects.avg_by_category(
+            (now - timedelta(days=days)), now, user)
+
+        data = {'categories': [], 'values': []}
+        for avg in glucose_averages:
+            data['categories'].append(avg['category__name'])
+            data['values'].append(math.ceil(avg['avg_value']*100)/100)
+
+        return data
+
+    @classmethod
+    def get_avg_by_day(cls, user, days):
+        now = datetime.now(tz=user.settings.time_zone).date()
+
+        glucose_averages = Glucose.objects.avg_by_day(
+            (now - timedelta(days=days)), now, user)
+
+        data = {'dates': [], 'values': []}
+        for avg in glucose_averages:
+            data['dates'].append(avg['record_date'].strftime('%m/%d'))
+            data['values'].append(math.ceil(avg['avg_value']*100)/100)
+
+        return data
 
 
 class GlucoseCsvReport(object):

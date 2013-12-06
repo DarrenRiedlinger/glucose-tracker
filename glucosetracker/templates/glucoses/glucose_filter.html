@@ -10,18 +10,18 @@
 <div class="container">
     <div class="row col-md-4" style="padding-left:32px">
         <div id="accordion" class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody">
-                        Options<span class="glyphicon glyphicon-chevron-up pull-right"></span>
-                    </a>
-                </h4>
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody">
+                    Options<span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseBody" class="panel-collapse collapse in">
+            <div class="panel-body">
+                {% crispy form %}
             </div>
-            <div id="collapseBody" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    {% crispy form %}
-                </div>
-            </div>
+        </div>
         </div>
     </div>
 

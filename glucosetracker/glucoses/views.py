@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 
 from django.views.generic import CreateView, UpdateView, DeleteView, \
@@ -14,7 +15,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from .utils import get_initial_category
 from .models import Glucose
-from .reports import GlucoseCsvReport
+from .reports import GlucoseCsvReport, ChartData
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
     GlucoseEmailReportForm, GlucoseFilterForm
 
@@ -77,6 +78,28 @@ def list_view(request):
         {'form': form},
         context_instance=RequestContext(request),
     )
+
+
+@login_required
+def chart_data_json(request):
+    data = {}
+    params = request.GET
+
+    days = params.get('days', 7)
+
+    name = params.get('name', '')
+    if name == 'avg_by_category':
+        avg_by_category = ChartData.get_avg_by_category(
+            user=request.user, days=int(days))
+        data = avg_by_category
+    elif name == 'avg_by_day':
+        avg_by_day = ChartData.get_avg_by_day(
+            user=request.user, days=int(days))
+        data = avg_by_day
+
+    data = json.dumps(data)
+
+    return HttpResponse(data, content_type='application/json')
 
 
 class GlucoseChartsView(LoginRequiredMixin, TemplateView):

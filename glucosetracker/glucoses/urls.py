@@ -3,21 +3,16 @@ from django.conf.urls import patterns, url
 from .views import (
     list_view,
     filter_view,
+    chart_data_json,
+    GlucoseChartsView,
     GlucoseCreateView,
     GlucoseUpdateView,
     GlucoseDeleteView,
     GlucoseEmailReportView,
     GlucoseListJson,
-    GlucoseChartsView,
 )
 
-
 urlpatterns = patterns('',
-    url(
-        regex=r'^add/',
-        view=GlucoseCreateView.as_view(),
-        name='glucose_create',
-    ),
     url(
         regex=r'^list/',
         view=list_view,
@@ -29,9 +24,19 @@ urlpatterns = patterns('',
         name='glucose_filter',
     ),
     url(
+        regex=r'^add/',
+        view=GlucoseCreateView.as_view(),
+        name='glucose_create',
+    ),
+    url(
         regex=r'^list_json/$',
         view=GlucoseListJson.as_view(),
         name='glucose_list_json',
+    ),
+    url(
+        regex=r'^chart_data_json/$',
+        view=chart_data_json,
+        name='chart_data_json',
     ),
     url(
         regex=r'^charts/$',

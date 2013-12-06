@@ -1,17 +1,11 @@
 from datetime import datetime, date, timedelta
 
-from django.contrib.auth.models import User
+from factory import DjangoModelFactory, Sequence, SubFactory
+from factory.fuzzy import FuzzyInteger, FuzzyNaiveDateTime
 
-from factory import DjangoModelFactory, Sequence, SubFactory, LazyAttribute
-from factory.fuzzy import FuzzyInteger, FuzzyChoice, FuzzyNaiveDateTime
+from core.tests.factories import UserFactory
 
 from ..models import Glucose, Category
-
-
-class UserFactory(DjangoModelFactory):
-    FACTORY_FOR = User
-
-    username = Sequence(lambda n: 'user{0}'.format(n))
 
 
 class CategoryFactory(DjangoModelFactory):

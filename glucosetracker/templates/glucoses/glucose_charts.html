@@ -5,9 +5,171 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="row col-md-6" style="padding-left:32px">
+        <div id="accordion1" class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody1">
+                    Average Glucose by Category<span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseBody1" class="panel-collapse collapse in">
+            <div class="row">
+                <div class="col-sm-4">
+                    <select id="avgByCategorySelect" class="form-control input-sm">
+                        <option value=7>Last 7 Days</option>
+                        <option value=30>Last 30 Days</option>
+                        <option value=90>Last 90 Days</option>
+                    </select>
+                </div>
+            </div>
+            <div id="avgByCategoryPanel" class="panel-body"></div>
+        </div>
+        </div>
+    </div>
 
+    <div class="row col-md-6" style="padding-left:32px">
+        <div id="accordion2" class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody2">
+                <span class="glyphicon glyphicon-chevron-up pull-right"></span>Average Glucose by Day
+                </a>
+            </h4>
+        </div>
+        <div id="collapseBody2" class="panel-collapse collapse in">
+            <div class="row">
+                <div class="col-sm-4">
+                    <select id="avgByDaySelect" class="form-control input-sm">
+                        <option value=7>Last 7 Days</option>
+                        <option value=30>Last 30 Days</option>
+                    </select>
+                </div>
+            </div>
+            <div id="avgByDayPanel" class="panel-body"></div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row col-md-6" style="padding-left:32px">
+        <div id="accordion3" class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody3">
+                    Glucose Levels Breakdown<span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseBody3" class="panel-collapse collapse in">
+            <div class="panel-body">
+                body here
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="row col-md-6" style="padding-left:32px">
+        <div id="accordion4" class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody4">
+                    Scatterplot<span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseBody4" class="panel-collapse collapse in">
+            <div class="panel-body">
+                body here
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extrajs %}
 <script src="{{ STATIC_URL }}highcharts/js/highcharts.js"></script>
+<script src="{{ STATIC_URL }}highcharts/js/modules/exporting.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    // For changing the icon in the Options panel
+    $('.collapse').on('shown.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-chevron-down")
+            .removeClass("glyphicon-chevron-down")
+            .addClass("glyphicon-chevron-up");
+    }).on('hidden.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-chevron-up")
+            .removeClass("glyphicon-chevron-up")
+            .addClass("glyphicon-chevron-down");
+    });
+
+
+    var jsonUrl = '{% url 'chart_data_json' %}'
+
+    var avgByCategoryOptions = {
+        chart: {
+            renderTo: 'avgByCategoryPanel',
+            type: 'column'
+        },
+        legend: {enabled: false},
+        title: {text: null},
+        xAxis: {},
+        yAxis: {title: {text: null}},
+        series: [{}],
+    };
+
+    function loadAvgByCategory(path){
+        $.getJSON(path,
+            function(data) {
+                avgByCategoryOptions.xAxis.categories = data['categories'];
+                avgByCategoryOptions.series[0].name = 'Avg Glucose (mg/dL)';
+                avgByCategoryOptions.series[0].data = data['values'];
+                var chart = new Highcharts.Chart(avgByCategoryOptions);
+        });
+    }
+
+    $('#avgByCategorySelect').change(function(){
+        var days = $('#avgByCategorySelect').val();
+        var path = jsonUrl + '?name=avg_by_category&days=' + days;
+        loadAvgByCategory(path);
+    });
+    
+    
+     var avgByDayOptions = {
+        chart: {
+            renderTo: 'avgByDayPanel',
+            type: 'area',
+        },
+        legend: {enabled: false},
+        title: {text: null},
+        xAxis: {labels: {rotation: -45}},
+        yAxis: {title: {text: null}},
+        series: [{}],
+    };
+
+    function loadAvgByDay(path){
+        $.getJSON(path,
+            function(data) {
+                avgByDayOptions.xAxis.categories = data['dates'];
+                avgByDayOptions.series[0].name = 'Avg Glucose (mg/dL)';
+                avgByDayOptions.series[0].data = data['values'];
+                var chart = new Highcharts.Chart(avgByDayOptions);
+        });
+    }
+
+    $('#avgByDaySelect').change(function(){
+        var days = $('#avgByDaySelect').val();
+        var path = jsonUrl + '?name=avg_by_day&days=' + days;
+        loadAvgByDay(path);
+    });
+
+
+    loadAvgByCategory(jsonUrl  + '?name=avg_by_category');
+    loadAvgByDay(jsonUrl + '?name=avg_by_day');
+});
+</script>
 {% endblock %}
