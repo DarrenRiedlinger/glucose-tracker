@@ -37,7 +37,7 @@ Live Demo
 
 To show the progress of the app, a live demo is available at: http://demo.glucosetracker.net
 
-This project uses Travis CI to auto-deploy the latest code from the master branch to the demo site on git push.
+This project uses Travis CI to auto-deploy the latest code from the master branch to the demo site hosted on Heroku on git push.
 
 3rd-Party Apps/Libraries/Plugins
 --------------------------------
