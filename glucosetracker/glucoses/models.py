@@ -14,6 +14,36 @@ class GlucoseManager(models.Manager):
         """
         return self.select_related().filter(user=user)
 
+    def levels_breakdown(self, start_date, end_date, user):
+        """
+        Filter objects by glucose level and count the records for each level.
+
+        The range for the different levels are specified in the user's
+        settings.
+        """
+        user_settings = user.settings
+        low = user_settings.glucose_low
+        high = user_settings.glucose_high
+        target_min = user_settings.glucose_target_min
+        target_max = user_settings.glucose_target_max
+
+        data = self.by_date(start_date, end_date, user)
+        all_count = data.count()
+        low_count = data.filter(value__lte=low).count()
+        high_count = data.filter(value__gte=high).count()
+        target_count = data.filter(
+            value__gte=target_min, value__lte=target_max).count()
+
+        result = {
+            'Low': low_count,
+            'High': high_count,
+            'Within Target': target_count,
+            'Other': all_count - (low_count + high_count + target_count)
+        }
+
+        return result
+
+
     def avg_by_category(self, start_date, end_date, user=None, **kwargs):
         """
         Group objects by category and take the average of the values.

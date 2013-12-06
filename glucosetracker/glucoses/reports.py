@@ -12,6 +12,26 @@ from .models import Glucose
 class ChartData(object):
 
     @classmethod
+    def get_levels_breakdown(cls, user, days):
+        now = datetime.now(tz=user.settings.time_zone).date()
+
+        glucose_levels = Glucose.objects.levels_breakdown(
+            (now - timedelta(days=days)), now, user)
+
+        chart_colors = {
+            'Low': 'orange',
+            'High': 'red',
+            'Within Target': 'green',
+            'Other': 'blue'
+        }
+
+        data = []
+        for k, v in glucose_levels.iteritems():
+            data.append({'name': k, 'y': v, 'color': chart_colors[k]})
+
+        return {'data': data}
+
+    @classmethod
     def get_avg_by_category(cls, user, days):
         now = datetime.now(tz=user.settings.time_zone).date()
         

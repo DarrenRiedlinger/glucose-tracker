@@ -85,7 +85,7 @@ def chart_data_json(request):
     data = {}
     params = request.GET
 
-    days = params.get('days', 7)
+    days = params.get('days', 0)
 
     name = params.get('name', '')
     if name == 'avg_by_category':
@@ -96,6 +96,10 @@ def chart_data_json(request):
         avg_by_day = ChartData.get_avg_by_day(
             user=request.user, days=int(days))
         data = avg_by_day
+    elif name == 'levels_breakdown':
+        levels_breakdown = ChartData.get_levels_breakdown(
+            user=request.user, days=int(days))
+        data = levels_breakdown
 
     data = json.dumps(data)
 

@@ -65,9 +65,16 @@
             </h4>
         </div>
         <div id="collapseBody3" class="panel-collapse collapse in">
-            <div class="panel-body">
-                body here
+            <div class="row">
+                <div class="col-sm-4">
+                    <select id="levelsBreakdownSelect" class="form-control input-sm">
+                        <option value=7>Last 7 Days</option>
+                        <option value=30>Last 30 Days</option>
+                        <option value=90>Last 90 Days</option>
+                    </select>
+                </div>
             </div>
+            <div id="levelsBreakdownPanel" class="panel-body"></div>
         </div>
         </div>
     </div>
@@ -168,8 +175,48 @@ $(document).ready(function() {
     });
 
 
-    loadAvgByCategory(jsonUrl  + '?name=avg_by_category');
-    loadAvgByDay(jsonUrl + '?name=avg_by_day');
+    var levelsBreakdownOptions = {
+        chart: {
+            renderTo: 'levelsBreakdownPanel',
+        },
+        legend: {enabled: false},
+        title: {text: null},
+        series: [{type: 'pie', name: 'Glucose Count'}],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+    };
+    
+    function loadLevelsBreakdown(path){
+        $.getJSON(path,
+            function(data) {
+                levelsBreakdownOptions.series[0].data = data['data'];
+                var chart = new Highcharts.Chart(levelsBreakdownOptions);
+        });
+    }
+    
+    $('#levelsBreakdownSelect').change(function(){
+        var days = $('#levelsBreakdownSelect').val();
+        var path = jsonUrl + '?name=levels_breakdown&days=' + days;
+        loadLevelsBreakdown(path);
+    });
+    
+
+    loadAvgByCategory(jsonUrl  + '?name=avg_by_category&days='
+        + $('#avgByCategorySelect').val());
+    loadAvgByDay(jsonUrl + '?name=avg_by_day&days='
+        + $('#avgByDaySelect').val());
+    loadLevelsBreakdown(jsonUrl + '?name=levels_breakdown&days='
+        + $('#levelsBreakdownSelect').val());
 });
 </script>
 {% endblock %}
