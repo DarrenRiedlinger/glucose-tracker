@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
 {% block heading %}
-    <h3><span class="glyphicon glyphicon-stats"></span> Charts & Graphs</h3>
+<h3>
+    <span class="glyphicon glyphicon-stats"></span> Charts & Graphs
+    <small>
+        <a href="{% url 'glucose_filter' %}">Filter Data</a>
+        | <a href="{% url 'glucose_email_report' %}">Email Report</a>
+    </small>
+</h3>
 {% endblock %}
 
 {% block content %}

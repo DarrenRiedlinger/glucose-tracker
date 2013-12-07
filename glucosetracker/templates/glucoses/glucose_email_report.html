@@ -4,8 +4,14 @@
 <link href="{{ STATIC_URL }}datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 {% endblock %}
 
-{% block heading %}<h3>
-    <span class="glyphicon glyphicon-envelope"></span> Email Report</h3>
+{% block heading %}
+<h3>
+    <span class="glyphicon glyphicon-envelope"></span> Email Report
+    <small>
+        <a href="{% url 'glucose_filter' %}">Filter Data</a>
+        | <a href="{% url 'glucose_charts' %}">Charts & Graphs</a>
+    </small>
+</h3>
 {% endblock %}
 
 {% load crispy_forms_tags %}
