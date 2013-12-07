@@ -86,7 +86,6 @@ def chart_data_json(request):
     params = request.GET
 
     days = params.get('days', 0)
-
     name = params.get('name', '')
     if name == 'avg_by_category':
         avg_by_category = ChartData.get_avg_by_category(
@@ -96,14 +95,16 @@ def chart_data_json(request):
         avg_by_day = ChartData.get_avg_by_day(
             user=request.user, days=int(days))
         data = avg_by_day
-    elif name == 'levels_breakdown':
-        levels_breakdown = ChartData.get_levels_breakdown(
+    elif name == 'level_breakdown':
+        level_breakdown = ChartData.get_level_breakdown(
             user=request.user, days=int(days))
-        data = levels_breakdown
+        data = level_breakdown
+    elif name == 'count_by_category':
+        count_by_category = ChartData.get_count_by_category(
+            user=request.user, days=int(days))
+        data = count_by_category
 
-    data = json.dumps(data)
-
-    return HttpResponse(data, content_type='application/json')
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 class GlucoseChartsView(LoginRequiredMixin, TemplateView):

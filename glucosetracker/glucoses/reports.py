@@ -12,10 +12,21 @@ from .models import Glucose
 class ChartData(object):
 
     @classmethod
-    def get_levels_breakdown(cls, user, days):
+    def get_count_by_category(cls, user, days):
         now = datetime.now(tz=user.settings.time_zone).date()
 
-        glucose_levels = Glucose.objects.levels_breakdown(
+        category_count = Glucose.objects.by_category(
+            (now - timedelta(days=days)), now, user)
+
+        data = [[c['category__name'], c['count']] for c in category_count]
+
+        return {'data': data}
+
+    @classmethod
+    def get_level_breakdown(cls, user, days):
+        now = datetime.now(tz=user.settings.time_zone).date()
+
+        glucose_level = Glucose.objects.level_breakdown(
             (now - timedelta(days=days)), now, user)
 
         chart_colors = {
@@ -26,7 +37,7 @@ class ChartData(object):
         }
 
         data = []
-        for k, v in glucose_levels.iteritems():
+        for k, v in glucose_level.iteritems():
             data.append({'name': k, 'y': v, 'color': chart_colors[k]})
 
         return {'data': data}
