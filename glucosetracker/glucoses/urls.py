@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 from .views import (
     list_view,
     filter_view,
+    quick_add,
     chart_data_json,
     GlucoseChartsView,
     GlucoseCreateView,
@@ -22,6 +23,11 @@ urlpatterns = patterns('',
         regex=r'^filter/',
         view=filter_view,
         name='glucose_filter',
+    ),
+    url(
+        regex=r'^quick_add/',
+        view=quick_add,
+        name='glucose_quick_add',
     ),
     url(
         regex=r'^add/',

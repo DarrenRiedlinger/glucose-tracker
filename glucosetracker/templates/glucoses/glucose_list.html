@@ -53,9 +53,10 @@
 {% block extrajs %}
 <script src="{{ STATIC_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="{{ STATIC_URL }}datatables/extras/TableTools/media/js/TableTools.min.js"></script>
+<script src="{{ STATIC_URL }}scripts/scripts.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#glucose_table').dataTable( {
+    var oTable = $('#glucose_table').dataTable( {
         "sDom": 'T<"clear">lrtip',
         "oTableTools": {
             "sSwfPath": "{{ STATIC_URL }}datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf",
@@ -66,6 +67,35 @@ $(document).ready(function() {
         "sAjaxSource": "{% url 'glucose_list_json' %}",
         "aaSorting": [ [2,'desc'], [3,'desc']]
     } );
+
+    // Add the glucose value and refresh the table data
+    var frm = $('#quick_add_form');
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: "{% url 'glucose_quick_add' %}",
+            data: frm.serialize(),
+            success: function (data) {
+                var message = jQuery.parseJSON(data);
+                if (message['success']) {
+                    // Reload the table data. This function is located in
+                    // scripts/scripts.js.
+                    oTable.fnReloadAjax();
+                    document.getElementById('quick_add_form').reset();
+                }
+                else {
+                    alert(message['error_message']);
+                    $('#id_value').focus().select();
+                }
+            },
+            error: function(data) {
+                alert('Sorry, something went wrong. Please try again.');
+            }
+        });
+        return false;
+    });
+
 } );
+
 </script>
 {% endblock %}

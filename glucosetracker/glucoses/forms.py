@@ -26,17 +26,17 @@ class GlucoseFilterForm(forms.Form):
         ),
         required=False,
     )
-    start_date = forms.DateField(label='Date Range', required=False,
-                                 input_formats=[DATE_FORMAT])
-    end_date = forms.DateField(label='', required=False,
-                               input_formats=[DATE_FORMAT])
+    start_date = forms.DateField(
+        label='Date Range', required=False, input_formats=[DATE_FORMAT])
+    end_date = forms.DateField(
+        label='', required=False, input_formats=[DATE_FORMAT])
 
-    start_value = forms.IntegerField(label='Value Range', required=False,
-                                     min_value=0)
+    start_value = forms.IntegerField(
+        label='Value Range', required=False, min_value=0)
     end_value = forms.IntegerField(label='', required=False, min_value=0)
 
-    category = forms.ModelChoiceField(queryset=Category.objects.all(),
-                                      required=False)
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(), required=False)
 
     notes = forms.CharField(label='Notes Contains', required=False,
                             widget=forms.Textarea(attrs={'rows': 2}))
@@ -47,7 +47,7 @@ class GlucoseFilterForm(forms.Form):
         super(GlucoseFilterForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_method = 'POST'
+        self.helper.form_method = 'post'
         self.helper.form_action = '.'
 
         self. helper.layout = Layout(
@@ -80,7 +80,7 @@ class GlucoseQuickAddForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_action = 'glucose_create'
+        self.helper.form_id = 'quick_add_form'
         self.helper.form_class = 'form-inline'
         self.helper.form_show_labels = False
 

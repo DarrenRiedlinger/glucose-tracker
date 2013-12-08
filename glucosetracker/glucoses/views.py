@@ -7,7 +7,8 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, HttpResponse
+from django.shortcuts import render_to_response, HttpResponse, \
+    HttpResponseRedirect
 from django.template import RequestContext
 
 from braces.views import LoginRequiredMixin
@@ -105,6 +106,32 @@ def chart_data_json(request):
         data = count_by_category
 
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@login_required
+def quick_add(request):
+    if request.method == 'POST' and request.is_ajax:
+        form = GlucoseCreateForm(request.POST)
+        if form.is_valid():
+            user = request.user
+
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.record_date = datetime.now(tz=user.settings.time_zone).date()
+            obj.record_time = datetime.now(tz=user.settings.time_zone).time()
+            obj.save()
+
+            message = {'success': True}
+
+            return HttpResponse(json.dumps(message))
+        else:
+            errors = form.errors
+            message = {'success': False,
+                       'error_message': 'Please enter whole numbers only.'}
+
+            return HttpResponse(json.dumps(message))
+
+    raise PermissionDenied
 
 
 class GlucoseChartsView(LoginRequiredMixin, TemplateView):
