@@ -37,7 +37,9 @@ class ChartData(object):
         }
 
         data = []
-        for k, v in glucose_level.iteritems():
+        keyorder = ['Low', 'High', 'Within Target', 'Other']
+        for k, v in sorted(glucose_level.items(),
+                           key=lambda i: keyorder.index(i[0])):
             data.append({'name': k, 'y': v, 'color': chart_colors[k]})
 
         return {'data': data}

@@ -126,7 +126,7 @@ def quick_add(request):
         else:
             message = {
                 'success': False,
-                'error': 'Please enter whole numbers only from 0 to 5000.'
+                'error': 'Please enter whole numbers only from 0 to 3000.'
             }
 
             return HttpResponse(json.dumps(message))

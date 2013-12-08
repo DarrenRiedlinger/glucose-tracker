@@ -200,7 +200,6 @@ $(document).ready(function() {
         chart: {
             renderTo: 'levelBreakdownPanel',
         },
-        legend: {enabled: false},
         title: {text: null},
         series: [{type: 'pie', name: 'Glucose Count'}],
         plotOptions: {
@@ -212,7 +211,8 @@ $(document).ready(function() {
                     color: '#000000',
                     connectorColor: '#000000',
                     format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                }
+                },
+                showInLegend: true
             }
         },
     };
@@ -237,7 +237,6 @@ $(document).ready(function() {
         chart: {
             renderTo: 'countByCategoryPanel',
         },
-        legend: {enabled: false},
         title: {text: null},
         series: [{type: 'pie', name: 'Glucose Count'}],
         plotOptions: {
@@ -249,7 +248,8 @@ $(document).ready(function() {
                     color: '#000000',
                     connectorColor: '#000000',
                     format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                }
+                },
+                showInLegend: true
             }
         },
     };
@@ -257,6 +257,7 @@ $(document).ready(function() {
     function loadCountByCategory(path){
         $.getJSON(path,
             function(data) {
+                countByCategoryOptions.series[0].innerSize = '50%';
                 countByCategoryOptions.series[0].data = data['data'];
                 var chart = new Highcharts.Chart(countByCategoryOptions);
         });
