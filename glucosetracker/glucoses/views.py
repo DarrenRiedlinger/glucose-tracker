@@ -7,8 +7,7 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, HttpResponse, \
-    HttpResponseRedirect
+from django.shortcuts import render_to_response, HttpResponse
 from django.template import RequestContext
 
 from braces.views import LoginRequiredMixin
@@ -125,9 +124,10 @@ def quick_add(request):
 
             return HttpResponse(json.dumps(message))
         else:
-            errors = form.errors
-            message = {'success': False,
-                       'error_message': 'Please enter whole numbers only.'}
+            message = {
+                'success': False,
+                'error': 'Please enter whole numbers only from 0 to 5000.'
+            }
 
             return HttpResponse(json.dumps(message))
 
