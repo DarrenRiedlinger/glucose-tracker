@@ -257,7 +257,7 @@ $(document).ready(function() {
     function loadCountByCategory(path){
         $.getJSON(path,
             function(data) {
-                countByCategoryOptions.series[0].innerSize = '50%';
+                countByCategoryOptions.series[0].innerSize = '40%';
                 countByCategoryOptions.series[0].data = data['data'];
                 var chart = new Highcharts.Chart(countByCategoryOptions);
         });
