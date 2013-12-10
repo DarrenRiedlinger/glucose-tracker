@@ -15,6 +15,11 @@ class GlucoseAdmin(admin.ModelAdmin):
         'modified',
     ]
 
+    list_filter = [
+        'user',
+        'category',
+    ]
+
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = [

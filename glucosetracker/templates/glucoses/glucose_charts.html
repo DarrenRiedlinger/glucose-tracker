@@ -12,107 +12,115 @@
 
 {% block content %}
 <div class="container">
-    <div class="row col-md-6" style="padding-left:32px">
-        <div id="accordion3" class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody3">
-                    Glucose Level Breakdown
-                    <span class="glyphicon glyphicon-chevron-up pull-right"></span>
-                </a>
-            </h4>
-        </div>
-        <div id="collapseBody3" class="panel-collapse collapse in">
-            <div class="row">
-                <div class="col-sm-4">
-                    <select id="levelBreakdownSelect" class="form-control input-sm">
-                        <option value=7>Last 7 Days</option>
-                        <option value=30>Last 30 Days</option>
-                        <option value=90>Last 90 Days</option>
-                    </select>
-                </div>
+    <div class="row">
+        <div class ="col-md-6">
+            <div id="accordion3" class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody3">
+                        Glucose Level Breakdown
+                        <span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                    </a>
+                </h4>
             </div>
-            <div id="levelBreakdownPanel" class="panel-body"></div>
+            <div id="collapseBody3" class="panel-collapse collapse in">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select id="levelBreakdownSelect" class="form-control input-sm">
+                            <option value=7>Last 7 Days</option>
+                            <option value=14>Last 14 Days</option>
+                            <option value=30>Last 30 Days</option>
+                            <option value=90>Last 90 Days</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="levelBreakdownPanel" class="panel-body"></div>
+            </div>
+            </div>
         </div>
-        </div>
-    </div>
 
-    <div class="row col-md-6" style="padding-left:32px">
-        <div id="accordion4" class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody4">
-                    Category Breakdown
-                    <span class="glyphicon glyphicon-chevron-up pull-right"></span>
-                </a>
-            </h4>
-        </div>
-        <div id="collapseBody4" class="panel-collapse collapse in">
-            <div class="row">
-                <div class="col-sm-4">
-                    <select id="countByCategorySelect" class="form-control input-sm">
-                        <option value=7>Last 7 Days</option>
-                        <option value=30>Last 30 Days</option>
-                        <option value=90>Last 90 Days</option>
-                    </select>
+        <div class ="col-md-6">
+            <div id="accordion4" class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody4">
+                        Category Breakdown
+                        <span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseBody4" class="panel-collapse collapse in">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select id="countByCategorySelect" class="form-control input-sm">
+                            <option value=7>Last 7 Days</option>
+                            <option value=14>Last 14 Days</option>
+                            <option value=30>Last 30 Days</option>
+                            <option value=90>Last 90 Days</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="countByCategoryPanel" class="panel-body">
                 </div>
             </div>
-            <div id="countByCategoryPanel" class="panel-body">
             </div>
         </div>
-        </div>
-    </div>
+    </div> <!-- end row -->
 </div>
 
 <div class="container">
-    <div class="row col-md-6" style="padding-left: 32px">
-        <div id="accordion2" class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody2">
-                    Average Glucose by Day
-                    </span><span class="glyphicon glyphicon-chevron-up pull-right"></span>
-                </a>
-            </h4>
-        </div>
-        <div id="collapseBody2" class="panel-collapse collapse in">
-            <div class="row">
-                <div class="col-sm-4">
-                    <select id="avgByDaySelect" class="form-control input-sm">
-                        <option value=7>Last 7 Days</option>
-                        <option value=30>Last 30 Days</option>
-                    </select>
-                </div>
+    <div class="row">
+        <div class ="col-md-6">
+            <div id="accordion2" class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody2">
+                        Average Glucose by Day
+                        </span><span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                    </a>
+                </h4>
             </div>
-            <div id="avgByDayPanel" class="panel-body"></div>
+            <div id="collapseBody2" class="panel-collapse collapse in">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select id="avgByDaySelect" class="form-control input-sm">
+                            <option value=7>Last 7 Days</option>
+                            <option value=14>Last 14 Days</option>
+                            <option value=30>Last 30 Days</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="avgByDayPanel" class="panel-body"></div>
+            </div>
+            </div>
         </div>
-        </div>
-    </div>
 
-    <div class="row col-md-6" style="padding-left:32px">
-        <div id="accordion1" class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody1">
-                    Average Glucose by Category
-                    <span class="glyphicon glyphicon-chevron-up pull-right"></span>
-                </a>
-            </h4>
-        </div>
-        <div id="collapseBody1" class="panel-collapse collapse in">
-            <div class="row">
-                <div class="col-sm-4">
-                    <select id="avgByCategorySelect" class="form-control input-sm">
-                        <option value=7>Last 7 Days</option>
-                        <option value=30>Last 30 Days</option>
-                        <option value=90>Last 90 Days</option>
-                    </select>
-                </div>
+        <div class ="col-md-6">
+            <div id="accordion1" class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseBody1">
+                        Average Glucose by Category
+                        <span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                    </a>
+                </h4>
             </div>
-            <div id="avgByCategoryPanel" class="panel-body"></div>
+            <div id="collapseBody1" class="panel-collapse collapse in">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select id="avgByCategorySelect" class="form-control input-sm">
+                            <option value=7>Last 7 Days</option>
+                            <option value=14>Last 14 Days</option>
+                            <option value=30>Last 30 Days</option>
+                            <option value=90>Last 90 Days</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="avgByCategoryPanel" class="panel-body"></div>
+            </div>
+            </div>
         </div>
-        </div>
-    </div>
+    </div> <!-- end row -->
 </div>
 {% endblock %}
 
@@ -151,9 +159,9 @@ $(document).ready(function() {
     function loadAvgByCategory(path){
         $.getJSON(path,
             function(data) {
-                avgByCategoryOptions.xAxis.categories = data['categories'];
+                avgByCategoryOptions.xAxis.categories = data['chart_data']['categories'];
                 avgByCategoryOptions.series[0].name = 'Avg Glucose (mg/dL)';
-                avgByCategoryOptions.series[0].data = data['values'];
+                avgByCategoryOptions.series[0].data = data['chart_data']['values'];
                 var chart = new Highcharts.Chart(avgByCategoryOptions);
         });
     }
@@ -181,9 +189,9 @@ $(document).ready(function() {
     function loadAvgByDay(path){
         $.getJSON(path,
             function(data) {
-                avgByDayOptions.xAxis.categories = data['dates'];
+                avgByDayOptions.xAxis.categories = data['chart_data']['dates'];
                 avgByDayOptions.series[0].name = 'Avg Glucose (mg/dL)';
-                avgByDayOptions.series[0].data = data['values'];
+                avgByDayOptions.series[0].data = data['chart_data']['values'];
                 var chart = new Highcharts.Chart(avgByDayOptions);
         });
     }
@@ -220,7 +228,7 @@ $(document).ready(function() {
     function loadLevelBreakdown(path){
         $.getJSON(path,
             function(data) {
-                levelBreakdownOptions.series[0].data = data['data'];
+                levelBreakdownOptions.series[0].data = data['chart_data'];
                 var chart = new Highcharts.Chart(levelBreakdownOptions);
         });
     }
@@ -258,7 +266,7 @@ $(document).ready(function() {
         $.getJSON(path,
             function(data) {
                 countByCategoryOptions.series[0].innerSize = '40%';
-                countByCategoryOptions.series[0].data = data['data'];
+                countByCategoryOptions.series[0].data = data['chart_data'];
                 var chart = new Highcharts.Chart(countByCategoryOptions);
         });
     }

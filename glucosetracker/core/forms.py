@@ -18,19 +18,19 @@ class UserSettingsForm(forms.Form):
     time_zone = TimeZoneFormField(label='Time Zone')
 
     glucose_low = forms.IntegerField(
-        label='Low', min_value=0, required=False,
+        label='Low', min_value=0, max_value=3000,
         help_text="Below this value is a low blood glucose."
     )
     glucose_high = forms.IntegerField(
-        label='High', min_value=0, required=False,
+        label='High', min_value=0, max_value=3000,
         help_text="Above this value is a high blood glucose."
     )
     glucose_target_min = forms.IntegerField(
-        label='Target Min', min_value=0, required=False,
+        label='Target Min', min_value=0, max_value=3000,
         help_text="Your target range's minimum value."
     )
     glucose_target_max = forms.IntegerField(
-        label='Target Max', min_value=0, required=False,
+        label='Target Max', min_value=0, max_value=3000,
         help_text="Your target range's maximum value."
     )
 

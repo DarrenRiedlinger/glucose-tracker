@@ -31,7 +31,7 @@ class GlucoseManager(models.Manager):
 
         return resultset.order_by('-record_date', '-record_time')
 
-    def level_breakdown(self, start_date, end_date, user):
+    def level_breakdown(self, start_date, end_date, user, **kwargs):
         """
         Filter objects by glucose level and count the records for each level.
 
@@ -60,7 +60,7 @@ class GlucoseManager(models.Manager):
 
         return result
 
-    def by_category(self, start_date, end_date, user=None):
+    def by_category(self, start_date, end_date, user=None, **kwargs):
         """
         Group objects by category and take the count.
         """

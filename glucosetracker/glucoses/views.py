@@ -15,7 +15,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from .utils import get_initial_category
 from .models import Glucose
-from .reports import GlucoseCsvReport, ChartData
+from .reports import GlucoseCsvReport, ChartData, UserStats
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
     GlucoseEmailReportForm, GlucoseFilterForm
 
@@ -73,9 +73,11 @@ def list_view(request):
     form.fields['category'].initial = get_initial_category(
         request.user.settings.time_zone)
 
+    stats = UserStats(request.user).user_stats
+
     return render_to_response(
         'glucoses/glucose_list.html',
-        {'form': form},
+        {'form': form, 'stats': stats},
         context_instance=RequestContext(request),
     )
 
@@ -90,19 +92,28 @@ def chart_data_json(request):
     if name == 'avg_by_category':
         avg_by_category = ChartData.get_avg_by_category(
             user=request.user, days=int(days))
-        data = avg_by_category
+        chart_data = avg_by_category
     elif name == 'avg_by_day':
         avg_by_day = ChartData.get_avg_by_day(
             user=request.user, days=int(days))
-        data = avg_by_day
+        chart_data = avg_by_day
     elif name == 'level_breakdown':
         level_breakdown = ChartData.get_level_breakdown(
             user=request.user, days=int(days))
-        data = level_breakdown
+        chart_data = level_breakdown
     elif name == 'count_by_category':
         count_by_category = ChartData.get_count_by_category(
             user=request.user, days=int(days))
-        data = count_by_category
+        chart_data = count_by_category
+
+    data['chart_data'] = chart_data
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@login_required
+def stats_json(request):
+    data = {'stats': UserStats(request.user).user_stats}
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
@@ -239,20 +250,20 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
         user_settings = self.request.user.settings
         low = user_settings.glucose_low
         high = user_settings.glucose_high
-        target = range(user_settings.glucose_target_min,
-                       user_settings.glucose_target_max+1)
+        target_min = user_settings.glucose_target_min
+        target_max = user_settings.glucose_target_max
 
         if column == 'value':
             if row.value < low or row.value > high:
-                return """<center><b><a href="%s"><font color="red">%s
-                </font></a></b></center>""" % (
+                return """<center><a href="%s"><font color="red">%s
+                </font></a></center>""" % (
                     reverse('glucose_update', args=(row.id,)), row.value)
-            elif row.value in target:
-                return """<center><b><a href="%s"><font color="green">%s
-                </font></a></b></center>""" % (
+            elif row.value >= target_min and row.value <= target_max:
+                return """<center><a href="%s"><font color="green">%s
+                </font></a></center>""" % (
                     reverse('glucose_update', args=(row.id,)), row.value)
             else:
-                return """<center><b><a href="%s">%s</a></b></center>""" % \
+                return """<center><a href="%s">%s</a></center>""" % \
                    (reverse('glucose_update', args=(row.id,)), row.value)
         elif column == 'category':
             return '%s' % row.category.name

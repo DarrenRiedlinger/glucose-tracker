@@ -3,11 +3,100 @@ import csv
 import cStringIO
 from datetime import datetime, timedelta
 
+from django.db.models import Avg
 from django.conf import settings
 from django.core.mail import EmailMessage
 
 from .models import Glucose
 
+
+class UserStats(object):
+
+    def __init__(self, user):
+        self.user = user
+        self.data = Glucose.objects.by_user(self.user)
+
+    @property
+    def user_settings(self):
+        user_settings = self.user.settings
+        low = user_settings.glucose_low
+        high = user_settings.glucose_high
+        target_min = user_settings.glucose_target_min
+        target_max = user_settings.glucose_target_max
+
+        return {
+            'low': low,
+            'high': high,
+            'target_min': target_min,
+            'target_max': target_max
+        }
+
+    @property
+    def user_stats(self):
+        latest_entry_value = self.data.latest('id').value \
+            if self.data else None
+        latest_entry = {
+            'css_class': self.get_css_class(latest_entry_value),
+            'value': '%s mg/dL' % latest_entry_value \
+                if latest_entry_value is not None else 'None',
+        }
+
+        num_records = self.data.count()
+
+        stats = {
+            'latest_entry': latest_entry,
+            'num_records': num_records,
+            'averages': self.averages,
+        }
+
+        return stats
+
+    @property
+    def averages(self):
+        now = datetime.now(tz=self.user.settings.time_zone).date()
+
+        today = self.avg_by_date(now, now)
+        last7days = self.avg_by_date(now -timedelta(days=7), now)
+
+
+        return {
+            'today': self.round_value(today['value__avg'])
+        }
+
+    def by_date(self, start, end):
+        return self.data.filter(record_date__gte=start, record_date__lte=end)
+
+    def avg_by_date(self, start, end):
+        return self.by_date(start, end).aggregate(Avg('value'))
+
+    def get_css_class(self, value):
+        css_class = 'text-default'
+
+        # Only change the css_class if a value exists.
+        if value:
+            if value < self.user_settings['low'] \
+                or value > self.user_settings['high']:
+                css_class = 'text-danger'
+            elif value >= self.user_settings['target_min'] \
+                and value <= self.user_settings['target_max']:
+                css_class = 'text-success'
+            else:
+                css_class = 'text-primary'
+
+        return css_class
+
+    def round_value(self, value):
+        """
+        Round the given value.
+
+        If the value is 0 or None, then simply return 0.
+        """
+        if value:
+            value = math.ceil(value*100)/100
+        else:
+            value = 0
+
+        return value
 
 class ChartData(object):
 
@@ -20,7 +109,7 @@ class ChartData(object):
 
         data = [[c['category__name'], c['count']] for c in category_count]
 
-        return {'data': data}
+        return data
 
     @classmethod
     def get_level_breakdown(cls, user, days):
@@ -42,7 +131,7 @@ class ChartData(object):
                            key=lambda i: keyorder.index(i[0])):
             data.append({'name': k, 'y': v, 'color': chart_colors[k]})
 
-        return {'data': data}
+        return data
 
     @classmethod
     def get_avg_by_category(cls, user, days):

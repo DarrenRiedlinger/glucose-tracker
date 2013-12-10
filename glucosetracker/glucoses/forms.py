@@ -79,8 +79,9 @@ class GlucoseQuickAddForm(forms.ModelForm):
         super(GlucoseQuickAddForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_method = 'post'
         self.helper.form_id = 'quick_add_form'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'glucose_create'
         self.helper.form_class = 'form-inline'
         self.helper.form_show_labels = False
 
@@ -88,13 +89,12 @@ class GlucoseQuickAddForm(forms.ModelForm):
         self.fields['category'].empty_label = None
 
         self.helper.layout = Layout(
-            InlineField('value',
-                        css_class='col-xs-3', required=True, autofocus=True),
+            InlineField('value', required=True, autofocus=True),
             InlineField('category'),
             Field('record_date', type='hidden'),
             Field('record_time', type='hidden'),
             StrictButton('Quick Add', css_class='btn-primary',
-                         type='submit', action='submit')
+                         type='submit', action='submit'),
         )
 
     class Meta:
