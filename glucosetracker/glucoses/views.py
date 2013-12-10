@@ -73,11 +73,9 @@ def list_view(request):
     form.fields['category'].initial = get_initial_category(
         request.user.settings.time_zone)
 
-    stats = UserStats(request.user).user_stats
-
     return render_to_response(
         'glucoses/glucose_list.html',
-        {'form': form, 'stats': stats},
+        {'form': form},
         context_instance=RequestContext(request),
     )
 
@@ -137,7 +135,7 @@ def quick_add(request):
         else:
             message = {
                 'success': False,
-                'error': 'Please enter whole numbers only from 0 to 3000.'
+                'error': 'Please enter whole numbers only from 1 to 3000.'
             }
 
             return HttpResponse(json.dumps(message))

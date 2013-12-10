@@ -68,26 +68,28 @@
                         </div>
                         <table class="table table-condensed">
                             <tr>
-                                <td><b>Highs</b></td>
-                                <td>23 (27%)</td>
-                                <td><b>Highest</b></td>
-                                <td align="right">500 mg/dL</td>
+                                <td><b>Lows</b></td>
+                                <td id="id_lows"></td>
+                                <td><b>Lowest</b></td>
+                                <td id="id_lowest" align="right"></td>
                             </tr>
                             <tr>
-                                <td><b>Lows</b></td>
-                                <td>15 (2.52%)</td>
-                                <td><b>Lowest</b></td>
-                                <td align="right">95 mg/dL</td>
+                                <td><b>Highs</b></td>
+                                <td id="id_highs"></td>
+                                <td><b>Highest</b></td>
+                                <td id="id_highest" align="right"></td>
                             </tr>
                             <tr>
                                 <td><b>Within Target</b></td>
-                                <td>15 (2%)</td>
+                                <td id="id_within_target"></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td><b>Other</b></td>
-                                <td>40 (94.50%)</td>
+                                <td id="id_other"></td>
                                 <td><b>Average</b></td>
-                                <td align="right">105 mg/dL</td>
+                                <td id="id_average" align="right"></td>
                             </tr>
                         </table>
                     </div>
@@ -150,6 +152,30 @@ $(document).ready(function() {
                     
                 document.getElementById('id_num_records').innerHTML =
                     data['stats']['num_records'];
+
+                document.getElementById('id_lowest').innerHTML =
+                    data['stats']['breakdown']['lowest']['value'];
+                document.getElementById('id_lowest').className =
+                    data['stats']['breakdown']['lowest']['css_class'];
+                    
+                document.getElementById('id_highest').innerHTML =
+                    data['stats']['breakdown']['highest']['value'];
+                document.getElementById('id_highest').className =
+                    data['stats']['breakdown']['highest']['css_class'];
+                    
+                document.getElementById('id_average').innerHTML =
+                    data['stats']['breakdown']['average']['value'];
+                document.getElementById('id_average').className =
+                    data['stats']['breakdown']['average']['css_class'];
+
+                document.getElementById('id_highs').innerHTML =
+                    data['stats']['breakdown']['highs'];
+                document.getElementById('id_lows').innerHTML =
+                    data['stats']['breakdown']['lows'];
+                document.getElementById('id_within_target').innerHTML =
+                    data['stats']['breakdown']['within_target'];
+                document.getElementById('id_other').innerHTML =
+                    data['stats']['breakdown']['other'];
             }
         )};
 

@@ -3,7 +3,7 @@ import csv
 import cStringIO
 from datetime import datetime, timedelta
 
-from django.db.models import Avg
+from django.db.models import Avg, Min, Max
 from django.conf import settings
 from django.core.mail import EmailMessage
 
@@ -46,28 +46,63 @@ class UserStats(object):
         stats = {
             'latest_entry': latest_entry,
             'num_records': num_records,
-            'averages': self.averages,
+            'breakdown': self.get_breakdown(),
         }
 
         return stats
 
-    @property
-    def averages(self):
+    def get_breakdown(self, days=14):
         now = datetime.now(tz=self.user.settings.time_zone).date()
+        subset = self.by_date(now - timedelta(days=days), now)
 
-        today = self.avg_by_date(now, now)
-        last7days = self.avg_by_date(now -timedelta(days=7), now)
-
+        total = subset.count()
+        lowest = subset.aggregate(Min('value'))['value__min']
+        highest = subset.aggregate(Max('value'))['value__max']
+        average = self.round_value(subset.aggregate(Avg('value'))['value__avg'])
+        
+        highs = subset.filter(value__gte=self.user_settings['high']).count()
+        lows = subset.filter(value__lte=self.user_settings['low']).count()
+        within_target = subset.filter(
+            value__gte=self.user_settings['target_min'],
+            value__lte=self.user_settings['target_max']
+        ).count()
+        other = total - (highs + lows + within_target)
 
         return {
-            'today': self.round_value(today['value__avg'])
+            'total': total,
+            'lowest': {
+                'value': '%s mg/dL' % lowest if lowest else 'None',
+                'css_class': self.get_css_class(lowest),
+            },
+            'highest': {
+                'value': '%s mg/dL' % highest if highest else 'None',
+                'css_class': self.get_css_class(highest),
+            },  
+            'average': {
+                'value': average,
+                'css_class': self.get_css_class(average)
+            },
+            'highs': '%s (%s%%)' % (highs, self.percent(highs, total)),
+            'lows': '%s (%s%%)' % (lows, self.percent(lows, total)),
+            'within_target': '%s (%s%%)' % (within_target,
+                                            self.percent(within_target, total)),
+            'other': '%s (%s%%)' % (other, self.percent(other, total)),
+
         }
+
+    def percent(self, part, whole):
+        """
+        Get the percentage of the given values.
+
+        If the the total/whole is 0 or none, then simply return 0.
+        """
+        if whole:
+            return self.round_value(100 * float(part)/float(whole))
+        else:
+            return 0
 
     def by_date(self, start, end):
         return self.data.filter(record_date__gte=start, record_date__lte=end)
-
-    def avg_by_date(self, start, end):
-        return self.by_date(start, end).aggregate(Avg('value'))
 
     def get_css_class(self, value):
         css_class = 'text-default'
@@ -97,6 +132,7 @@ class UserStats(object):
             value = 0
 
         return value
+
 
 class ChartData(object):
 
