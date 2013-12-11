@@ -22,7 +22,7 @@ class GlucoseFactory(DjangoModelFactory):
     category = SubFactory(CategoryFactory)
     record_date = date.today()
     record_time = FuzzyNaiveDateTime(datetime.now() - timedelta(hours=24))
-    notes = 'This is a demo of GlucoseTracker.'
+    notes = 'Hold SHIFT+Column Name to sort by multiple columns.'
 
 
 

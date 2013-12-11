@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h5 class="panel-title text-center"><b>Latest Reading</b></h5>
@@ -48,13 +48,24 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title text-center"><b>Total Readings</b></h3>
                         </div>
                         <div class="panel-body" style="padding-bottom:21px">
                             <h3 id="id_num_records" class="text-center"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-center"><b>HbA1c Estimate*</b></h3>
+                        </div>
+                        <div class="panel-body" style="padding-bottom:21px">
+                            <h3 id="id_hba1c" class="text-center">7.5</h3>
                         </div>
                     </div>
                 </div>
@@ -235,12 +246,13 @@ $(document).ready(function() {
                     // Reload the table data. This function is located in
                     // scripts/scripts.js.
                     oTable.fnReloadAjax();
-                    document.getElementById('quick_add_form').reset();
-                    $('#id_value').focus();
 
                     // Reload the chart and stats panels
-                    loadChart();
                     loadStats();
+                    loadChart();
+
+                    document.getElementById('quick_add_form').reset();
+                    $('#id_value').focus();
                 }
                 else {
                     alert(message['error']);

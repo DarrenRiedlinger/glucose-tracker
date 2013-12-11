@@ -1,11 +1,11 @@
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
 from django import forms
 from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper, Layout
-from crispy_forms.layout import Button, Submit, MultiField, Fieldset, Div, \
-    HTML, Field, Reset
+from crispy_forms.layout import Button, Submit, MultiField, Div, HTML, \
+    Field, Reset
 from crispy_forms.bootstrap import FormActions, StrictButton, InlineField
 
 from .models import Glucose, Category
@@ -72,7 +72,7 @@ class GlucoseQuickAddForm(forms.ModelForm):
     """
     A simple form for adding glucose values. Date and time are automatically
     set to the user's current local date and time using Javascript (see
-    glucose_list.html template).
+    dashboard.html template).
     """
 
     def __init__(self, *args, **kwargs):
@@ -81,7 +81,6 @@ class GlucoseQuickAddForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'quick_add_form'
         self.helper.form_method = 'post'
-        self.helper.form_action = 'glucose_create'
         self.helper.form_class = 'form-inline'
         self.helper.form_show_labels = False
 
@@ -178,7 +177,7 @@ class GlucoseInputForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Save'))
         self.helper.add_input(Button(
             'cancel', 'Cancel', onclick='location.href="%s";' % \
-                                        reverse('glucose_list')))
+                                        reverse('dashboard')))
 
 
         # Remove the blank option from the select widget.
