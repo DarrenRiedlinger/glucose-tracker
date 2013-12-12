@@ -13,7 +13,7 @@ from django.template import RequestContext
 from braces.views import LoginRequiredMixin
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from .utils import get_initial_category
+from . import utils
 from .models import Glucose
 from .reports import GlucoseCsvReport, ChartData, UserStats
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
@@ -70,7 +70,7 @@ def dashboard(request):
     Datatables plugin via Javascript.
     """
     form = GlucoseQuickAddForm()
-    form.fields['category'].initial = get_initial_category(
+    form.fields['category'].initial = utils.get_initial_category(
         request.user.settings.time_zone)
 
     return render_to_response(
@@ -197,7 +197,7 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
         record_time = datetime.now(tz=time_zone).time().strftime(TIME_FORMAT)
 
         return {
-            'category': get_initial_category(time_zone),
+            'category': utils.get_initial_category(time_zone),
             'record_date': record_date,
             'record_time': record_time,
         }

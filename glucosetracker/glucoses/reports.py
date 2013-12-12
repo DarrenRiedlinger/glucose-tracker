@@ -37,9 +37,9 @@ class UserStats(object):
         latest_entry_value = self.data.latest('id').value \
             if self.data else None
         latest_entry = {
-            'css_class': self.get_css_class(latest_entry_value),
             'value': '%s mg/dL' % latest_entry_value \
-                if latest_entry_value is not None else 'None',
+                if latest_entry_value else 'None',
+            'css_class': self.get_css_class(latest_entry_value),
         }
 
         num_records = self.data.count()
@@ -47,10 +47,45 @@ class UserStats(object):
         stats = {
             'latest_entry': latest_entry,
             'num_records': num_records,
+            'hba1c': self.hba1c,
             'breakdown': self.get_breakdown(),
         }
 
         return stats
+
+    @property
+    def hba1c(self):
+        """
+        The HbA1c is calculated using the average blood glucose from the last
+        90 days.
+
+            Less than 7 = Excellent
+            Between 7 and 8 = Average
+            Greater than 8 = Bad
+        """
+        now = datetime.now(tz=self.user.settings.time_zone).date()
+        subset = self.by_date(now - timedelta(days=90), now)
+        average = core.utils.round_value(
+            subset.aggregate(Avg('value'))['value__avg'])
+        hba1c = core.utils.round_value(core.utils.calc_hba1c(average))
+
+        css_class = 'text-default'
+
+        if hba1c:
+            if hba1c < 7:
+                css_class = 'text-success'
+            elif hba1c > 8:
+                css_class = 'text-danger'
+            else:
+                css_class = 'text-primary'
+
+        value_html = '%s%%<br><small>(%s mg/dL)</small>' % (hba1c, average) \
+            if hba1c else 'None'
+
+        return {
+            'value': value_html,
+            'css_class': css_class
+        }
 
     def get_breakdown(self, days=14):
         now = datetime.now(tz=self.user.settings.time_zone).date()

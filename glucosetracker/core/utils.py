@@ -10,6 +10,20 @@ def get_client_ip(request):
     return ip
 
 
+def calc_hba1c(value):
+    """
+    Calculate the HbA1c from the given average blood glucose value.
+
+    This formula is the same one used by Accu-Chek:
+    https://www.accu-chek.com/us/glucose-monitoring/a1c-calculator.html#
+    """
+    if value:
+        return ((46.7 + value) / 28.7)
+    else:
+        return 0
+
+
+
 def round_value(value):
     """
     Round the given value.
@@ -17,11 +31,9 @@ def round_value(value):
     If the value is 0 or None, then simply return 0.
     """
     if value:
-        value = math.ceil(value*100)/100
+       return math.ceil(value*100)/100
     else:
-        value = 0
-
-    return value
+        return 0
 
 
 def percent(part, whole):

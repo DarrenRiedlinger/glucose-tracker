@@ -70,8 +70,8 @@
                                 <b>HbA1c Estimate*</b>
                             </h3>
                         </div>
-                        <div class="panel-body" style="padding-bottom:21px">
-                            <h3 id="id_hba1c" class="text-center">7.5</h3>
+                        <div class="panel-body" style="padding-bottom:19px">
+                            <h4 id="id_hba1c" class="text-danger"></h4>
                         </div>
                     </div>
                 </div>
@@ -168,6 +168,11 @@ $(document).ready(function() {
                     data['stats']['latest_entry']['value'];
                 document.getElementById('id_latest_entry').className =
                     "text-center " + data['stats']['latest_entry']['css_class'];
+
+                document.getElementById('id_hba1c').innerHTML =
+                    data['stats']['hba1c']['value'];
+                document.getElementById('id_hba1c').className =
+                    "text-center " + data['stats']['hba1c']['css_class'];
                     
                 document.getElementById('id_num_records').innerHTML =
                     data['stats']['num_records'];

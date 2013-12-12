@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from .models import Category, Glucose
+from .models import Category
 
 
 def get_initial_category(time_zone):
