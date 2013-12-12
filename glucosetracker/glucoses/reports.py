@@ -80,7 +80,7 @@ class UserStats(object):
                 css_class = 'text-primary'
 
         value_html = '%s%%<br><small>(%s mg/dL)</small>' % (hba1c, average) \
-            if hba1c else 'None'
+            if hba1c else 'None<br><small>(None)</small>'
 
         return {
             'value': value_html,

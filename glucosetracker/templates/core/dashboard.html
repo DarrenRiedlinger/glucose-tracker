@@ -65,7 +65,8 @@
 
                 <div class="col-md-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div id="id_hba1c_panel" class="panel-heading" data-toggle="tooltip"
+                             title="Based on the average blood glucose from the last 90 days.">
                             <h3 class="panel-title text-center">
                                 <b>HbA1c Estimate*</b>
                             </h3>
@@ -159,6 +160,8 @@
 <script src="{{ STATIC_URL }}scripts/scripts.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    $('#id_hba1c_panel').tooltip();
+
     // Update stats in panels
     var statsUrl = "{% url 'stats_json' %}";
     function loadStats() {
@@ -245,7 +248,6 @@ $(document).ready(function() {
         "sAjaxSource": "{% url 'glucose_list_json' %}",
         "aaSorting": [ [2,'desc'], [3,'desc']]
     } );
-
 
     // Add the glucose value and refresh the table data
     var frm = $('#quick_add_form');
