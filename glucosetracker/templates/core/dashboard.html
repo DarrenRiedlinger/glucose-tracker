@@ -40,7 +40,9 @@
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h5 class="panel-title text-center"><b>Latest Reading</b></h5>
+                            <h5 class="panel-title text-center"
+                                    ><b>Latest Reading</b>
+                            </h5>
                         </div>
                         <div class="panel-body" style="padding-bottom:21px">
                              <h3 id="id_latest_entry"></h3>
@@ -51,7 +53,9 @@
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title text-center"><b>Total Readings</b></h3>
+                            <h3 class="panel-title text-center">
+                                <b>Total Readings</b>
+                            </h3>
                         </div>
                         <div class="panel-body" style="padding-bottom:21px">
                             <h3 id="id_num_records" class="text-center"></h3>
@@ -62,7 +66,9 @@
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title text-center"><b>HbA1c Estimate*</b></h3>
+                            <h3 class="panel-title text-center">
+                                <b>HbA1c Estimate*</b>
+                            </h3>
                         </div>
                         <div class="panel-body" style="padding-bottom:21px">
                             <h3 id="id_hba1c" class="text-center">7.5</h3>
@@ -75,7 +81,9 @@
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title text-center"><b>14-Day Breakdown</b></h3>
+                            <h3 class="panel-title text-center">
+                                <b>14-Day Breakdown</b>
+                            </h3>
                         </div>
                         <table class="table table-condensed">
                             <tr>
@@ -110,7 +118,7 @@
 
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div id="chart_panel" class="panel-body" style="height:314px"></div>
+                <div id="chart_panel" class="panel-body" style="width:100%;height:314px"></div>
             </div>
         </div> <!--end col -->
 
@@ -192,6 +200,7 @@ $(document).ready(function() {
 
     loadStats();
 
+
     // Glucose Average by Day chart
      var avgByDayOptions = {
         chart: {
@@ -266,6 +275,5 @@ $(document).ready(function() {
         return false;
     });
 } );
-
 </script>
 {% endblock %}

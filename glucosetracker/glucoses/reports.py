@@ -1,4 +1,3 @@
-import math
 import csv
 import cStringIO
 from datetime import datetime, timedelta
@@ -6,6 +5,8 @@ from datetime import datetime, timedelta
 from django.db.models import Avg, Min, Max
 from django.conf import settings
 from django.core.mail import EmailMessage
+
+import core
 
 from .models import Glucose
 
@@ -58,7 +59,8 @@ class UserStats(object):
         total = subset.count()
         lowest = subset.aggregate(Min('value'))['value__min']
         highest = subset.aggregate(Max('value'))['value__max']
-        average = self.round_value(subset.aggregate(Avg('value'))['value__avg'])
+        average = core.utils.round_value(
+            subset.aggregate(Avg('value'))['value__avg'])
         
         highs = subset.filter(value__gte=self.user_settings['high']).count()
         lows = subset.filter(value__lte=self.user_settings['low']).count()
@@ -82,24 +84,13 @@ class UserStats(object):
                 'value': average,
                 'css_class': self.get_css_class(average)
             },
-            'highs': '%s (%s%%)' % (highs, self.percent(highs, total)),
-            'lows': '%s (%s%%)' % (lows, self.percent(lows, total)),
-            'within_target': '%s (%s%%)' % (within_target,
-                                            self.percent(within_target, total)),
-            'other': '%s (%s%%)' % (other, self.percent(other, total)),
+            'highs': '%s (%s%%)' % (highs, core.utils.percent(highs, total)),
+            'lows': '%s (%s%%)' % (lows, core.utils.percent(lows, total)),
+            'within_target': '%s (%s%%)' % (
+                within_target, core.utils.percent(within_target, total)),
+            'other': '%s (%s%%)' % (other, core.utils.percent(other, total)),
 
         }
-
-    def percent(self, part, whole):
-        """
-        Get the percentage of the given values.
-
-        If the the total/whole is 0 or none, then simply return 0.
-        """
-        if whole:
-            return self.round_value(100 * float(part)/float(whole))
-        else:
-            return 0
 
     def by_date(self, start, end):
         return self.data.filter(record_date__gte=start, record_date__lte=end)
@@ -119,19 +110,6 @@ class UserStats(object):
                 css_class = 'text-primary'
 
         return css_class
-
-    def round_value(self, value):
-        """
-        Round the given value.
-
-        If the value is 0 or None, then simply return 0.
-        """
-        if value:
-            value = math.ceil(value*100)/100
-        else:
-            value = 0
-
-        return value
 
 
 class ChartData(object):
@@ -179,7 +157,7 @@ class ChartData(object):
         data = {'categories': [], 'values': []}
         for avg in glucose_averages:
             data['categories'].append(avg['category__name'])
-            data['values'].append(math.ceil(avg['avg_value']*100)/100)
+            data['values'].append(core.utils.round_value(avg['avg_value']))
 
         return data
 
@@ -193,7 +171,7 @@ class ChartData(object):
         data = {'dates': [], 'values': []}
         for avg in glucose_averages:
             data['dates'].append(avg['record_date'].strftime('%m/%d'))
-            data['values'].append(math.ceil(avg['avg_value']*100)/100)
+            data['values'].append(core.utils.round_value(avg['avg_value']))
 
         return data
 

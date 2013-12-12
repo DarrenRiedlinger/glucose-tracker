@@ -61,7 +61,7 @@ def filter_view(request):
 
 
 @login_required
-def list_view(request):
+def dashboard(request):
     """
     Displays the glucose data table for the currently logged in user. A form
     for quickly adding glucose values is also included.
@@ -74,7 +74,7 @@ def list_view(request):
         request.user.settings.time_zone)
 
     return render_to_response(
-        'glucoses/glucose_list.html',
+        'core/dashboard.html',
         {'form': form},
         context_instance=RequestContext(request),
     )
@@ -187,7 +187,7 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
 
 class GlucoseCreateView(LoginRequiredMixin, CreateView):
     model = Glucose
-    success_url = '/glucoses/list/'
+    success_url = '/dashboard/'
     template_name = 'glucoses/glucose_create.html'
     form_class = GlucoseCreateForm
 
@@ -222,7 +222,7 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
 
 class GlucoseDeleteView(LoginRequiredMixin, DeleteView):
     model = Glucose
-    success_url = '/glucoses/list/'
+    success_url = '/dashboard/'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -317,7 +317,7 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
 class GlucoseUpdateView(LoginRequiredMixin, UpdateView):
     model = Glucose
     context_object_name = 'glucose'
-    success_url = '/glucoses/list/'
+    success_url = '/dashboard/'
     template_name = 'glucoses/glucose_update.html'
     form_class = GlucoseUpdateForm
 
