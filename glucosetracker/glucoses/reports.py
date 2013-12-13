@@ -116,7 +116,7 @@ class UserStats(object):
                 'css_class': self.get_css_class(highest),
             },  
             'average': {
-                'value': average,
+                'value': '%s mg/dL' % average if average else 'None',
                 'css_class': self.get_css_class(average)
             },
             'highs': '%s (%s%%)' % (highs, core.utils.percent(highs, total)),
