@@ -1,3 +1,4 @@
+import itertools
 from datetime import date, timedelta
 
 from django import forms
@@ -41,14 +42,18 @@ class GlucoseFilterForm(forms.Form):
     notes = forms.CharField(label='Notes Contains', required=False,
                             widget=forms.Textarea(attrs={'rows': 2}))
 
-    tags = forms.CharField(required=False)
-
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(GlucoseFilterForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
+        self.helper.form_id = 'filter_form'
         self.helper.form_method = 'post'
         self.helper.form_action = '.'
+
+        self.fields['tags'] = forms.ChoiceField(
+            choices=self.get_tags(Glucose.objects.filter(user=user)
+                .exclude(tags__name__isnull=True)),
+            required=False)
 
         self. helper.layout = Layout(
             'quick_date_select',
@@ -66,6 +71,21 @@ class GlucoseFilterForm(forms.Form):
                        % reverse('dashboard'), css_class='pull-right'),
             ),
         )
+
+    def get_tags(self, queryset):
+        """
+        Iterate through the queryset and get the unique tag names.
+        """
+        tag_list = list(itertools.chain.from_iterable(
+            [i.tags.names() for i in queryset]))
+
+        empty_label = [('', '---------')]
+        # The tag_list here is converted to a set to create a unique
+        # collection.
+        choices = empty_label + [
+            (tag, tag) for tag in sorted(list(set(tag_list)))]
+
+        return choices
 
 
 class GlucoseQuickAddForm(forms.ModelForm):
@@ -122,8 +142,8 @@ class GlucoseEmailReportForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-3'
-        self.helper.field_class = 'col-md-9'
+        self.helper.label_class = 'col-sm-3 col-md-3'
+        self.helper.field_class = 'col-sm-9 col-md-9'
 
         self. helper.layout = Layout(
             MultiField(
@@ -137,7 +157,7 @@ class GlucoseEmailReportForm(forms.Form):
                 Div('report_format',
                     Field('start_date', required=True),
                     Field('end_date', required=True),
-                    css_class='well row col-md-4',
+                    css_class='well row col-sm-4 col-md-4',
                 ),
                 Div('subject',
                     Field('recipient', placeholder='Email address',
@@ -150,7 +170,7 @@ class GlucoseEmailReportForm(forms.Form):
                                % reverse('dashboard')),
                         css_class='pull-right'
                     ),
-                    css_class='row col-md-7',
+                    css_class='row col-sm-8 col-md-8',
                 ),
             ),
         )

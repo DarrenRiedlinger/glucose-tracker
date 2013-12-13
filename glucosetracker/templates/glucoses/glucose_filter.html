@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-sm-4 col-md-4">
             <div id="accordion" class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-sm-8 col-md-8">
             <div class="well">
                 <table id="glucose_table">
                     <thead>
@@ -62,6 +62,7 @@
 {% block extrajs %}
 <script src="{{ STATIC_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="{{ STATIC_URL }}datatables/extras/TableTools/media/js/TableTools.min.js"></script>
+<script src="{{ STATIC_URL }}scripts/scripts.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     var oTable = $('#glucose_table').dataTable( {
@@ -80,6 +81,26 @@ $(document).ready(function() {
         "sAjaxSource": "{{ data }}",
         "aaSorting": [ [2,'desc'], [3,'desc']]
     });
+
+    // Submit the filter form and refresh the table data
+    var frm = $('#filter_form');
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                // Reload the table data. This function is located in
+                // scripts/scripts.js.
+                oTable.fnReloadAjax(data);
+            },
+            error: function(data) {
+                alert('Sorry, something went wrong. Please try again.');
+            }
+        });
+        return false;
+    });
+
 
     // For changing the icon in the Options panel
     $('.collapse').on('shown.bs.collapse', function(){

@@ -33,7 +33,7 @@ def filter_view(request):
     The data is loaded by the GlucoseListJson view and rendered by the
     Datatables plugin via Javascript.
     """
-    form = GlucoseFilterForm()
+    form = GlucoseFilterForm(request.user)
     form.fields['start_date'].initial = (datetime.now(
         tz=request.user.settings.time_zone) - timedelta(days=7))\
         .date().strftime(DATE_FORMAT)
@@ -42,16 +42,15 @@ def filter_view(request):
 
     data = reverse('glucose_list_json')
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.is_ajax:
         params = request.POST
-
-        # Keep the form values after submission.
-        form = GlucoseFilterForm(params)
 
         # Create the URL query string and strip the last '&' at the end.
         data = ('%s?%s' % (reverse('glucose_list_json'), ''.join(
             ['%s=%s&' % (k, v) for k, v in params.iteritems()])))\
             .rstrip('&')
+
+        return HttpResponse(json.dumps(data), content_type='application/json')
 
     return render_to_response(
         'glucoses/glucose_filter.html',
@@ -309,7 +308,7 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
 
         tags = params.get('tags', '')
         if tags:
-            qs = qs.filter(tags__name__in=tags.split(','))
+            qs = qs.filter(tags__name=tags)
 
         return qs
 

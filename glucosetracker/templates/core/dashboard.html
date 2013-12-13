@@ -9,7 +9,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12 col-md-12">
             <div class="btn-toolbar well" role="toolbar">
                 <div class="btn-group">
                     <a href="{% url 'glucose_create'%}">
@@ -35,13 +35,13 @@
     </div> <!-- end row -->
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-sm-6 col-md-6">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-sm-4 col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h5 class="panel-title text-center"
-                                    ><b>Latest Reading</b>
+                            <h5 class="panel-title text-center">
+                                <b>Latest Reading</b>
                             </h5>
                         </div>
                         <div class="panel-body" style="padding-bottom:21px">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-sm-4 col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title text-center">
@@ -63,7 +63,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-sm-4 col-md-4">
                     <div class="panel panel-default">
                         <div id="id_hba1c_panel" class="panel-heading" data-toggle="tooltip"
                              title="Based on the average blood glucose from the last 90 days.">
@@ -79,7 +79,7 @@
             </div> <!-- end row -->
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-sm-12 col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title text-center">
@@ -117,7 +117,7 @@
             </div> <!-- end row -->
         </div> <!-- end col -->
 
-        <div class="col-md-6">
+        <div class="col-sm-6 col-md-6">
             <div class="panel panel-default">
                 <div id="chart_panel" class="panel-body" style="width:100%;height:314px"></div>
             </div>
@@ -128,7 +128,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12 col-md-12">
             <div class="well">
                 <table id="glucose_table">
                     <thead>
