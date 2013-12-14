@@ -15,6 +15,7 @@ django-taggit==0.10
 django-timezone-field==1.0
 factory-boy==2.2.1
 gunicorn==18.0
+ipython==1.1.0
 newrelic==2.6.0.5
 psycopg2==2.5.1
 pytz==2013.7
