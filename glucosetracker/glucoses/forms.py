@@ -67,8 +67,6 @@ class GlucoseFilterForm(forms.Form):
             FormActions(
                 Submit('submit', 'Filter'),
                 Reset('reset', 'Reset'),
-                Button('cancel', 'Cancel', onclick='location.href="%s";' \
-                       % reverse('dashboard'), css_class='pull-right'),
             ),
         )
 
@@ -165,9 +163,6 @@ class GlucoseEmailReportForm(forms.Form):
                     'message',
                     FormActions(
                         Submit('submit', 'Send'),
-                        Button('cancel', 'Cancel',
-                               onclick='location.href="%s";' \
-                               % reverse('dashboard')),
                         css_class='pull-right'
                     ),
                     css_class='row col-sm-8 col-md-8',
