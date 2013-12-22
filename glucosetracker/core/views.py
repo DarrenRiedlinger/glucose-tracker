@@ -4,10 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.generic import TemplateView, FormView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 from braces.views import LoginRequiredMixin
 
-from .forms import UserSettingsForm
+from .forms import UserSettingsForm, ContactForm
 
 
 def login_view(request):
@@ -47,6 +49,54 @@ class HomePageView(TemplateView):
         return HttpResponseRedirect(reverse('dashboard'))
 
 
+class HelpPageView(FormView):
+    success_url = '.'
+    form_class = ContactForm
+    template_name = 'core/help.html'
+
+    def get_initial(self):
+        return {
+            'email': self.request.user.email
+        }
+
+    def form_valid(self, form):
+        success_message = '''Email sent! We'll try to get back to you as
+            soon as possible.'''
+        messages.add_message(self.request, messages.SUCCESS, success_message)
+
+        return super(HelpPageView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        failure_message = 'Email not sent. Please try again.'
+        messages.add_message(self.request, messages.WARNING, failure_message)
+
+        return super(HelpPageView, self).form_invalid(form)
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        if form.is_valid():
+            info_email = settings.CONTACTS['info_email']
+
+            message = 'Sent By: %s (%s)\n\n%s' % (
+                form.cleaned_data['email'],
+                self.request.user.username,
+                form.cleaned_data['message'])
+
+            email = EmailMessage(
+                from_email=info_email,
+                subject='[Help] %s ' % form.cleaned_data['subject'],
+                body=message,
+                to=[info_email])
+
+            email.send()
+
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
 class UserSettingsView(LoginRequiredMixin, FormView):
     success_url = '.'
     form_class = UserSettingsForm
@@ -56,14 +106,16 @@ class UserSettingsView(LoginRequiredMixin, FormView):
         user = self.request.user
         settings = user.settings
         
-        return {'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email,
-                'time_zone': settings.user.settings.time_zone,
-                'glucose_low': settings.glucose_low,
-                'glucose_high': settings.glucose_high,
-                'glucose_target_min': settings.glucose_target_min,
-                'glucose_target_max': settings.glucose_target_max,}
+        return {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'time_zone': settings.user.settings.time_zone,
+            'glucose_low': settings.glucose_low,
+            'glucose_high': settings.glucose_high,
+            'glucose_target_min': settings.glucose_target_min,
+            'glucose_target_max': settings.glucose_target_max,
+        }
 
     def form_valid(self, form):
         messages.add_message(self.request, messages.SUCCESS, 'Settings saved!')

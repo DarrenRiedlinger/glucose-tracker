@@ -146,12 +146,12 @@ class GlucoseEmailReportForm(forms.Form):
         self. helper.layout = Layout(
             MultiField(
                 None,
-                HTML("""
+                HTML('''
                 {% if messages %}
                 {% for message in messages %}
                 <p {% if message.tags %} class="text-{{ message.tags }}"\
                 {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
-                """),
+                '''),
                 Div('report_format',
                     Field('start_date', required=True),
                     Field('end_date', required=True),

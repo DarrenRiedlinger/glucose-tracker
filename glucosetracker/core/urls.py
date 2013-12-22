@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from .views import UserSettingsView
+from .views import UserSettingsView, HelpPageView
 
 
 urlpatterns = patterns('',
@@ -9,5 +9,9 @@ urlpatterns = patterns('',
         view=UserSettingsView.as_view(),
         name='usersettings',
     ),
-
+    url(
+        regex=r'^help/',
+        view=HelpPageView.as_view(),
+        name='help',
+    ),
 )
