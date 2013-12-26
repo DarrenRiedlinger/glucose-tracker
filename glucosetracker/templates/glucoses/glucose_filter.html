@@ -93,6 +93,9 @@ $(document).ready(function() {
                 // Reload the table data. This function is located in
                 // scripts/scripts.js.
                 oTable.fnReloadAjax(data);
+
+                // Re-enable the submit button.
+                $('#submit-id-submit').prop('disabled', false);
             },
             error: function(data) {
                 alert('Sorry, something went wrong. Please try again.');

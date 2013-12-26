@@ -269,6 +269,9 @@ $(document).ready(function() {
 
                     document.getElementById('quick_add_form').reset();
                     $('#id_value').focus();
+
+                    // Re-enable the submit button.
+                    $('#submit-id-submit').prop('disabled', false);
                 }
                 else {
                     alert(message['error']);

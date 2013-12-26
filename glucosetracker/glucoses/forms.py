@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Button, Submit, MultiField, Div, HTML, \
     Field, Reset
-from crispy_forms.bootstrap import FormActions, StrictButton, InlineField
+from crispy_forms.bootstrap import FormActions, InlineField
 
 from .models import Glucose, Category
 
@@ -110,8 +110,7 @@ class GlucoseQuickAddForm(forms.ModelForm):
             InlineField('category'),
             Field('record_date', type='hidden'),
             Field('record_time', type='hidden'),
-            StrictButton('Quick Add', css_class='btn-primary',
-                         type='submit', action='submit'),
+            Submit('submit', 'Quick Add'),
         )
 
     class Meta:

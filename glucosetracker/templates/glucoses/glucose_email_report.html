@@ -32,12 +32,6 @@ $(function () {
     $('#id_end_date').datetimepicker({
         pickTime: false
     });
-
-    // Disable the submit button of the form after clicking to prevent multiple
-    // submissions.
-    $('form').submit(function(){
-        $(this).find('input[type=submit]').attr('disabled', 'disabled');
-    });
 });
 </script>
 {% endblock %}
