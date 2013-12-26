@@ -124,7 +124,7 @@ class GlucoseEmailReportForm(forms.Form):
         label='Format',
         choices=(
             ('csv', 'CSV'),
-            #('html', 'HTML'),
+            ('pdf', 'PDF'),
         )
     )
     start_date = forms.DateField(label='From')

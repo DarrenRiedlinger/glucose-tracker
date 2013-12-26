@@ -1,6 +1,15 @@
 import csv
 import cStringIO
+from io import BytesIO
 from datetime import datetime, timedelta
+
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, \
+    Table, TableStyle
 
 from django.db.models import Avg, Min, Max
 from django.conf import settings
@@ -9,6 +18,11 @@ from django.core.mail import EmailMessage
 import core
 
 from .models import Glucose
+
+
+DATE_FORMAT = '%m/%d/%Y'
+FILENAME_DATE_FORMAT = '%b%d%Y'
+TIME_FORMAT = '%I:%M %p'
 
 
 class UserStats(object):
@@ -133,13 +147,16 @@ class UserStats(object):
     def get_css_class(self, value):
         css_class = 'text-default'
 
+        low = self.user_settings['low']
+        high = self.user_settings['high']
+        target_min = self.user_settings['target_min']
+        target_max = self.user_settings['target_max']
+
         # Only change the css_class if a value exists.
         if value:
-            if value < self.user_settings['low'] \
-                or value > self.user_settings['high']:
+            if value < low or value > high:
                 css_class = 'text-danger'
-            elif value >= self.user_settings['target_min'] \
-                and value <= self.user_settings['target_max']:
+            elif value >= target_min and value <= target_max:
                 css_class = 'text-success'
             else:
                 css_class = 'text-primary'
@@ -232,8 +249,8 @@ class GlucoseCsvReport(object):
                 writer.writerow([
                     item.value,
                     item.category,
-                    item.record_date.strftime('%m/%d/%Y'),
-                    item.record_time.strftime('%I:%M %p'),
+                    item.record_date.strftime(DATE_FORMAT),
+                    item.record_time.strftime(TIME_FORMAT),
                     item.notes,
                 ])
 
@@ -247,8 +264,149 @@ class GlucoseCsvReport(object):
                              subject=subject, body=message, to=[recipient])
 
         attachment_filename = 'GlucoseData_%sto%s.csv' % \
-                              (self.start_date.strftime('%b%d%Y'),
-                               self.end_date.strftime('%b%d%Y'))
+                              (self.start_date.strftime(FILENAME_DATE_FORMAT),
+                               self.end_date.strftime(FILENAME_DATE_FORMAT))
 
         email.attach(attachment_filename, self.generate(), 'text/csv')
         email.send()
+
+
+class GlucosePdfReport(object):
+
+    def __init__(self, start_date, end_date, user):
+        self.start_date = start_date
+        self.end_date = end_date
+        self.user = user
+
+        self.styles = getSampleStyleSheet()
+        self.styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER))
+        self.styles.add(ParagraphStyle(name='Left', alignment=TA_LEFT))
+        self.styles.add(ParagraphStyle(name='Right', alignment=TA_RIGHT))
+        self.styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+
+        # Width of a letter size paper
+        self.max_width = 8.5 * inch
+        self.left_margin = 0.7 * inch
+        self.right_margin = 0.75 * inch
+        self.top_margin = 0.7 * inch
+        self.bottom_margin = 0.7 * inch
+
+        self.fields = (
+            ('value', 'Value'),
+            ('category', 'Category'),
+            ('date', 'Date'),
+            ('time', 'Time'),
+            ('notes', 'Notes'),
+        )
+
+    def generate(self):
+        qs = Glucose.objects.by_date(
+            self.start_date, self.end_date, self.user)
+        qs = qs.order_by('-record_date', '-record_time')
+
+        data = []
+        for i in qs:
+            value = i.value
+
+            # Bold the text if the value is high or low based on the user's
+            # settings
+            low = self.user.settings.glucose_low
+            high = self.user.settings.glucose_high
+            if value < low or value > high:
+                value = '<b>%s</b>' % value
+
+            data.append({
+                'value': self.to_paragraph(value),
+                'category': i.category,
+                'date': i.record_date.strftime(DATE_FORMAT),
+                'time': i.record_time.strftime(TIME_FORMAT),
+                'notes': self.to_paragraph(i.notes),
+            })
+
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer,
+                                pagesize=letter,
+                                leftMargin=self.left_margin,
+                                rightMargin=self.right_margin,
+                                topMargin=self.top_margin,
+                                bottomMargin=self.bottom_margin)
+
+        styles = getSampleStyleSheet()
+        styleH = styles['Heading1']
+
+        story = []
+
+        story.append(Paragraph('Glucose Data', styleH))
+        story.append(Spacer(1, 0.25 * inch))
+
+        converted_data = self.__convert_data(data)
+        table = Table(converted_data,
+                      self.get_width_from_percent([10, 20, 15, 15, 40]),
+                      hAlign='LEFT')
+        table.setStyle(TableStyle([
+            ('FONT', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+            ('ALIGN',(1, 0),(0,-1), 'LEFT'),
+            ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),
+            ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+        ]))
+
+        story.append(table)
+        doc.build(story)
+
+        pdf = buffer.getvalue()
+        buffer.close()
+
+        return pdf
+
+    def email(self, recipient, subject='', message=''):
+        email = EmailMessage(from_email=settings.CONTACTS['info_email'],
+                             subject=subject, body=message, to=[recipient])
+
+        attachment_filename = 'GlucoseData_%sto%s.pdf' % \
+                              (self.start_date.strftime(FILENAME_DATE_FORMAT),
+                               self.end_date.strftime(FILENAME_DATE_FORMAT))
+
+        email.attach(attachment_filename, self.generate(), 'application/pdf')
+        email.send()
+
+    def get_width_from_percent(self, values=[], max_width=None, indent=0):
+        """
+        Return the width values from the given percent values.
+        """
+        if not max_width:
+            max_width = self.max_width
+
+        width_diff = (max_width) - (indent + self.left_margin +
+                                    self.right_margin)
+        widths = [((width_diff * v) / 100) for v in values]
+
+        return widths
+
+    def to_paragraph(self, data):
+            """
+            Convert the data to a Paragraph object.
+
+            Paragraph objects can be easily formatted using HTML-like tags
+            and automatically wrap inside a table.
+
+            The data is converted to a string first to prevent errors in case
+            it is a 'None' value.
+            """
+            return Paragraph(str(data), self.styles['Left'])
+
+    def __convert_data(self, data):
+        """
+        Convert the list of dictionaries to a list of list to create
+        the PDF table.
+        """
+        # Create 2 separate lists in the same order: one for the
+        # list of keys and the other for the names to display in the
+        # table header.
+        keys, names = zip(*[[k, n] for k, n in self.fields])
+        new_data = [names]
+
+        for d in data:
+            new_data.append([d[k] for k in keys])
+
+        return new_data

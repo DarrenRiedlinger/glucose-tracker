@@ -15,7 +15,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from . import utils
 from .models import Glucose
-from .reports import GlucoseCsvReport, ChartData, UserStats
+from .reports import GlucoseCsvReport, GlucosePdfReport, ChartData, UserStats
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
     GlucoseEmailReportForm, GlucoseFilterForm
 
@@ -166,9 +166,15 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
         form = self.get_form(form_class)
 
         if form.is_valid():
-            report = GlucoseCsvReport(form.cleaned_data['start_date'],
-                                      form.cleaned_data['end_date'],
-                                      request.user)
+            if form.cleaned_data['report_format'] == 'pdf':
+                report = GlucosePdfReport(form.cleaned_data['start_date'],
+                                          form.cleaned_data['end_date'],
+                                          request.user)
+            else:
+                report = GlucoseCsvReport(form.cleaned_data['start_date'],
+                                          form.cleaned_data['end_date'],
+                                          request.user)
+
             report.email(form.cleaned_data['recipient'],
                          form.cleaned_data['subject'],
                          form.cleaned_data['message'])
