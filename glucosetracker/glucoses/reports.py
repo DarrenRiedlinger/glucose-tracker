@@ -345,6 +345,7 @@ class GlucosePdfReport(object):
                       hAlign='LEFT')
         table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('ALIGN',(1, 0),(0,-1), 'LEFT'),
             ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),

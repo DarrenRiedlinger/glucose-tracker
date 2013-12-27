@@ -150,7 +150,7 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
 
     def get_initial(self):
         return {'recipient': self.request.user.email,
-                'message': 'Glucose data for %s.' % self.request.user.username}
+                'message': 'Glucose data for %s.' % self.request.user}
 
     def form_valid(self, form):
         messages.add_message(self.request, messages.SUCCESS, 'Email sent!')
