@@ -8,10 +8,11 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 
 from braces.views import LoginRequiredMixin
+from axes.decorators import watch_login
 
 from .forms import UserSettingsForm, ContactForm
 
-
+@watch_login
 def login_view(request):
     # Force logout.
     logout(request)

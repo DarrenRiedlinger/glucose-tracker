@@ -78,6 +78,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 3rd-party middlewares
+    'axes.middleware.FailedLoginMiddleware',
 )
 
 ROOT_URLCONF = 'glucosetracker.urls'
@@ -104,6 +107,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'gunicorn',
     'taggit',
+    'axes',
 
     # Local apps
     'core',
@@ -113,6 +117,9 @@ INSTALLED_APPS = (
 
 # Django-crispy-forms settings
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Django-axes settings
+AXES_LOGIN_FAILURE_LIMIT = 20
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
