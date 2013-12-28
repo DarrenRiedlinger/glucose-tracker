@@ -41,7 +41,8 @@ class UserSettingsForm(forms.Form):
     """
     Form to allow users to change profile settings and preferences.
     """
-    first_name = forms.CharField(label='First Name',required=False)
+    username = forms.CharField(required=False)
+    first_name = forms.CharField(label='First Name', required=False)
     last_name = forms.CharField(label='Last Name', required=False)
     email = forms.EmailField(label='Email')
     time_zone = TimeZoneFormField(label='Time Zone')
@@ -76,7 +77,8 @@ class UserSettingsForm(forms.Form):
         self. helper.layout = Layout(
             Fieldset(
                 'Profile',
-                Field('first_name', css_class='col-xs-4'),
+                Field('username', readonly=True),
+                Field('first_name'),
                 Field('last_name'),
                 Field('email'),
                 Field('time_zone'),
