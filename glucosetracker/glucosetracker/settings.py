@@ -83,6 +83,7 @@ INSTALLED_APPS = (
     'taggit',
 
     # Local apps
+    'accounts',
     'core',
     'glucoses',
     'subscribers',
