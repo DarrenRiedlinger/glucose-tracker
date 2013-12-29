@@ -60,7 +60,7 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL='/dashboard/'
 
 # List of callables that know how to import templates from various sources.
@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'axes',
 
     # Local apps
+    'accounts',
     'core',
     'glucoses',
     'subscribers',

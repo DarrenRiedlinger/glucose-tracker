@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UserSettings
+from accounts.models import UserSettings
 
 
 class UserSettingsAdmin(admin.ModelAdmin):

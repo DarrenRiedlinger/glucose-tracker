@@ -3,7 +3,7 @@ from datetime import datetime, date, timedelta
 from factory import DjangoModelFactory, Sequence, SubFactory
 from factory.fuzzy import FuzzyInteger, FuzzyNaiveDateTime
 
-from core.tests.factories import UserFactory
+from accounts.tests.factories import UserFactory
 
 from ..models import Glucose, Category
 

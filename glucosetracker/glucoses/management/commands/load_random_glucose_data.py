@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from django.db.models.base import ObjectDoesNotExist
 from django.contrib.auth.models import User
 
-from core.models import UserSettings
+from accounts.models import UserSettings
 
 from ...models import Glucose, Category
 from ...tests.factories import GlucoseFactory

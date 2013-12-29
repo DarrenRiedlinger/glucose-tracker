@@ -1,7 +1,8 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
 
 from . import factories
-from ..models import User, UserSettings
+from ..models import UserSettings
 
 
 class UserTest(TestCase):
