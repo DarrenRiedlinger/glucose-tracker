@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response, HttpResponseRedirect
-from django.views.generic import  FormView
+from django.views.generic import FormView
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
