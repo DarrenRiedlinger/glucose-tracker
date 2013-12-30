@@ -67,3 +67,26 @@ class UserSettingsForm(forms.Form):
                        % reverse('dashboard')),
             ),
         )
+
+#
+# class PasswordChangeForm(forms.Form):
+#     old_password = forms.PasswordInput()
+#     new_password1 = forms.PasswordInput()
+#     new_password2 = forms.PasswordInput()
+#
+#     def __init__(self, *args, **kwargs):
+#         super(PasswordChangeForm, self).__init__(*args, **kwargs)
+#
+#         self.helper = FormHelper()
+#         self.helper.form_method = 'post'
+#         self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-5'
+#
+#         self. helper.layout = Layout(
+#             Fieldset(
+#                 None,
+#                 Field('old_password'),
+#                 Field('new_password1'),
+#                 Field('new_password2'),
+#             ),
+#             FormActions(Submit('submit', 'Change My Password', css_class='pull-right'))
+#         )
