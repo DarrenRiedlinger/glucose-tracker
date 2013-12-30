@@ -14,6 +14,10 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
+# Run management command 'set_default_site' to set these values
+DEFAULT_SITE_NAME = 'GlucoseTracker.net'
+DEFAULT_SITE_DOMAIN = 'glucosetracker.net'
+
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
