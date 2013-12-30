@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
 
+from braces.views import LoginRequiredMixin
+
 from .forms import ContactForm
 
 
@@ -19,7 +21,7 @@ class HomePageView(TemplateView):
         return HttpResponseRedirect(reverse('dashboard'))
 
 
-class HelpPageView(FormView):
+class HelpPageView(LoginRequiredMixin, FormView):
     success_url = '.'
     form_class = ContactForm
     template_name = 'core/help.html'

@@ -8,12 +8,17 @@ from django.contrib.auth.views import (
     password_reset_complete
 )
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import patterns, url
 
-from .views import login_view, UserSettingsView
+from .views import login_view, UserSettingsView, SignUpView
 
 
 urlpatterns = patterns('',
+    url(
+        regex=r'^signup/',
+        view=SignUpView.as_view(),
+        name='signup',
+    ),
     url(
         regex=r'^settings/',
         view=UserSettingsView.as_view(),

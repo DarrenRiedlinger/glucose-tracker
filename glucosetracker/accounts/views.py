@@ -1,13 +1,16 @@
 from django.shortcuts import render_to_response, HttpResponseRedirect
 from django.views.generic import FormView
 from django.template import RequestContext
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 from axes.decorators import watch_login
 from braces.views import LoginRequiredMixin
 
-from .forms import UserSettingsForm
+from .models import UserSettings
+from .forms import UserSettingsForm, SignUpForm
 
 
 @watch_login
@@ -35,6 +38,46 @@ def login_view(request):
     return render_to_response('accounts/login.html',
                               {'login_failed': login_failed},
                               context_instance=RequestContext(request))
+
+
+class SignUpView(FormView):
+    success_url = '/dashboard/'
+    form_class = SignUpForm
+    template_name = 'accounts/signup.html'
+
+    def get_initial(self):
+        # Force logout.
+        logout(self.request)
+
+        return {'time_zone': settings.TIME_ZONE}
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        form.full_clean()
+
+        if form.is_valid():
+            username = form.cleaned_data['username'].lower()
+            password = form.cleaned_data['password']
+
+            user = User.objects.create(username=username)
+            user.email = form.cleaned_data['email']
+            user.set_password(password)
+            user.save()
+
+            # Create an entry for the User Settings.
+            user_settings = UserSettings.objects.create(user=user)
+            user_settings.time_zone = form.cleaned_data['time_zone']
+            user_settings.save()
+
+
+            # Automatically authenticate the user after user creation.
+            user_auth = authenticate(username=username, password=password)
+            login(request, user_auth)
+
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class UserSettingsView(LoginRequiredMixin, FormView):
@@ -71,7 +114,7 @@ class UserSettingsView(LoginRequiredMixin, FormView):
             user = self.request.user
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
-            user.email = form.cleaned_data['email']
+            #user.email = form.cleaned_data['email']
             user.save()
 
             user.settings.time_zone = form.cleaned_data['time_zone']

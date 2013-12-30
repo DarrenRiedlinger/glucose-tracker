@@ -6,6 +6,39 @@ from crispy_forms.layout import Button, Submit, Fieldset, HTML, Field
 from crispy_forms.bootstrap import FormActions
 from timezone_field import TimeZoneFormField
 
+from .validators import validate_email_unique, validate_username_unique
+
+
+class SignUpForm(forms.Form):
+    username = forms.CharField(max_length=30,
+                               validators=[validate_username_unique])
+    password = forms.CharField(max_length=128, widget=forms.PasswordInput())
+    email = forms.EmailField(max_length=75, validators=[validate_email_unique])
+    time_zone = TimeZoneFormField(label='Time Zone')
+
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-5'
+        self.helper.label_class = 'col-xs-3 col-md-3 col-lg-3'
+        self.helper.field_class = 'col-xs-9 col-md-9 col-lg-9'
+        self.helper.help_text_inline = False
+
+        self. helper.layout = Layout(
+            Fieldset(
+                'Setup Your Account',
+                Field('username', autofocus=True),
+                Field('password'),
+                Field('email', placeholder='e.g. john@gmail.com'),
+                Field('time_zone'),
+            ),
+            FormActions(
+                Submit('submit', 'Create My Account'),
+            ),
+        )
+
 
 class UserSettingsForm(forms.Form):
     """
@@ -14,7 +47,12 @@ class UserSettingsForm(forms.Form):
     username = forms.CharField(required=False)
     first_name = forms.CharField(label='First Name', required=False)
     last_name = forms.CharField(label='Last Name', required=False)
-    email = forms.EmailField(label='Email')
+    email = forms.EmailField(
+        label='Email',
+        required=False,
+        help_text='Please <a href="%s">contact us</a> if you need to change '
+                  'your email address.' % '/core/help/',
+    )
     time_zone = TimeZoneFormField(label='Time Zone')
 
     glucose_low = forms.IntegerField(
@@ -48,9 +86,9 @@ class UserSettingsForm(forms.Form):
             Fieldset(
                 'Profile',
                 Field('username', readonly=True),
+                Field('email', readonly=True),
                 Field('first_name'),
                 Field('last_name'),
-                Field('email'),
                 Field('time_zone'),
             ),
             Fieldset(
@@ -67,26 +105,3 @@ class UserSettingsForm(forms.Form):
                        % reverse('dashboard')),
             ),
         )
-
-#
-# class PasswordChangeForm(forms.Form):
-#     old_password = forms.PasswordInput()
-#     new_password1 = forms.PasswordInput()
-#     new_password2 = forms.PasswordInput()
-#
-#     def __init__(self, *args, **kwargs):
-#         super(PasswordChangeForm, self).__init__(*args, **kwargs)
-#
-#         self.helper = FormHelper()
-#         self.helper.form_method = 'post'
-#         self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-5'
-#
-#         self. helper.layout = Layout(
-#             Fieldset(
-#                 None,
-#                 Field('old_password'),
-#                 Field('new_password1'),
-#                 Field('new_password2'),
-#             ),
-#             FormActions(Submit('submit', 'Change My Password', css_class='pull-right'))
-#         )

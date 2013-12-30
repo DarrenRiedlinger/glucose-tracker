@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block heading %}
+<h3>
+    <span class="glyphicon glyphicon-check"></span>
+    Sign Up Now for a FREE Account. Takes less than a minute.
+</h3>
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+   {% crispy form %}
+{% endblock %}
