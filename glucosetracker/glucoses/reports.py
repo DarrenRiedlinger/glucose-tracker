@@ -15,7 +15,7 @@ from django.db.models import Avg, Min, Max
 from django.conf import settings
 from django.core.mail import EmailMessage
 
-import core
+from core import utils
 
 from .models import Glucose
 
@@ -79,9 +79,9 @@ class UserStats(object):
         """
         now = datetime.now(tz=self.user.settings.time_zone).date()
         subset = self.by_date(now - timedelta(days=90), now)
-        average = core.utils.round_value(
+        average = utils.round_value(
             subset.aggregate(Avg('value'))['value__avg'])
-        hba1c = core.utils.round_value(core.utils.calc_hba1c(average))
+        hba1c = utils.round_value(utils.calc_hba1c(average))
 
         css_class = 'text-default'
 
@@ -108,7 +108,7 @@ class UserStats(object):
         total = subset.count()
         lowest = subset.aggregate(Min('value'))['value__min']
         highest = subset.aggregate(Max('value'))['value__max']
-        average = core.utils.round_value(
+        average = utils.round_value(
             subset.aggregate(Avg('value'))['value__avg'])
         
         highs = subset.filter(value__gte=self.user_settings['high']).count()
@@ -133,11 +133,11 @@ class UserStats(object):
                 'value': '%s mg/dL' % average if average else 'None',
                 'css_class': self.get_css_class(average)
             },
-            'highs': '%s (%s%%)' % (highs, core.utils.percent(highs, total)),
-            'lows': '%s (%s%%)' % (lows, core.utils.percent(lows, total)),
+            'highs': '%s (%s%%)' % (highs, utils.percent(highs, total)),
+            'lows': '%s (%s%%)' % (lows, utils.percent(lows, total)),
             'within_target': '%s (%s%%)' % (
-                within_target, core.utils.percent(within_target, total)),
-            'other': '%s (%s%%)' % (other, core.utils.percent(other, total)),
+                within_target, utils.percent(within_target, total)),
+            'other': '%s (%s%%)' % (other, utils.percent(other, total)),
 
         }
 
@@ -209,7 +209,7 @@ class ChartData(object):
         data = {'categories': [], 'values': []}
         for avg in glucose_averages:
             data['categories'].append(avg['category__name'])
-            data['values'].append(core.utils.round_value(avg['avg_value']))
+            data['values'].append(utils.round_value(avg['avg_value']))
 
         return data
 
@@ -223,7 +223,7 @@ class ChartData(object):
         data = {'dates': [], 'values': []}
         for avg in glucose_averages:
             data['dates'].append(avg['record_date'].strftime('%m/%d'))
-            data['values'].append(core.utils.round_value(avg['avg_value']))
+            data['values'].append(utils.round_value(avg['avg_value']))
 
         return data
 
