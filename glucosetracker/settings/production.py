@@ -16,9 +16,6 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# The 'From:' header of admin-related emails.
-SERVER_EMAIL = os.environ['EMAIL_HOST_USER']
-
 ADMINS = (
     ('Local Admin', 'admin@glucosetracker.net'),
 )
@@ -30,6 +27,9 @@ CONTACTS = {
     'admin_email': 'admin@glucosetracker.net',
     'info_email': 'info@glucosetracker.net',
 }
+
+# The 'From:' header of admin-related emails.
+SERVER_EMAIL = CONTACTS['info_email']
 
 # For 'subscribers' app
 SEND_SUBSCRIBERS_EMAIL_CONFIRMATION = True
