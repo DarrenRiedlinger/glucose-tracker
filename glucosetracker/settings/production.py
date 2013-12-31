@@ -17,7 +17,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # The 'From:' header of admin-related emails.
-SERVER_EMAIL = 'info@glucosetracker.net'
+DEFAULT_FROM_EMAIL = 'info@glucosetracker.net'
 
 ADMINS = (
     ('Local Admin', 'admin@glucosetracker.net'),
