@@ -42,7 +42,7 @@ class HelpPageView(LoginRequiredMixin, FormView):
         form = self.get_form(form_class)
 
         if form.is_valid():
-            info_email = settings.CONTACTS['info_email']
+            info_email = settings.CONTACTS['support_email']
 
             message = 'Sent By: %s (%s)\n\n%s' % (
                 form.cleaned_data['email'],
