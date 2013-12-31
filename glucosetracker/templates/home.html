@@ -1,47 +1,125 @@
 {% extends 'base.html' %}
 
 {% block extracss %}
-<link href="{{ STATIC_URL }}bootstrap/css/jumbotron.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}bootstrap/css/carousel.css" rel="stylesheet">
 {% endblock %}
 
 {% block rootcontainer %}
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="jumbotron" style="background-color:#777; color:white">
       <div class="container">
-        <h1><b>Welcome!</b></h1>
-        <p>
-            <i>GlucoseTracker</i> is a <b>free</b>, <b>simple</b> and <b>easy to use</b>
-            web application for keeping track of your blood glucose levels and help you
-            manage your diabetes better.
-            <br><br>
-            The app is currently still under development, but feel free to enter your
-            email address below or <a href="mailto:info@glucosetracker.net">
-            email us</a> to get notified when it becomes available!
-        </p>
-
-        {% if success %}
-            <p class="text-success">Thank you! We will notify you when GlucoseTracker becomes available.</p>
-        {% elif exists %}
-          <p class="text-success">You've already entered this email address. Thank you!</p>
-        {% elif error %}
-            <p class="text-danger">An error occurred. Please try again.</p>
-        {% endif %}
-
-        <p>
-            <form class="form-horizontal" action="{% url 'subscribe' %}" method="post">
-                {% csrf_token %}
-                <div class="form-group col-xs-4">
-                  <input name="email" id="id_email" class="form-control input-lg" type="email"
-                     placeholder="Enter your email address" required autofocus>
-                </div>&nbsp;
-                <button type="submit" class="btn btn-primary btn-lg">Send</button>
-            </form>
-        </p>
-
-        <p><br>
-            If you'd like to see how the application looks so far, then
-            <a href="http://demo.glucosetracker.net/">click here for a live demo</a>.
-        </p>
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="text-center">Keep track of your blood glucose the easy way!</h1>
+                <p class="text-center">
+                    <i>GlucoseTracker</i> is a <b>simple</b> and <b>easy to use</b>
+                    web application for keeping track of your blood glucose levels.
+                    <br><br>
+                    It's <b>completely free</b> with no ads. Modern look and mobile friendly!
+                </p>
+                <p class="text-center"><br>
+                    <a class="btn btn-lg btn-success" href="{% url 'signup' %}" role="button">
+                        Sign Up Today
+                    </a>
+                </p>
+            </div>
+            <div class="col-md-5">
+                <a href="{{ STATIC_URL }}images/screenshots/glucosetracker_dashboard_001.png" class="thumbnail">
+                    <img src="{{ STATIC_URL }}images/screenshots/glucosetracker_dashboard_001.png">
+                </a>
+                <p class="text-center">
+                    <a href="https://twitter.com/glucosetracker" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @glucosetracker</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                </p>
+            </div>
+        </div>
       </div>
     </div>
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- START THE FEATURETTES -->
+
+      <div class="row featurette">
+        <div class="col-md-5">
+            <a href="{{ STATIC_URL }}images/screenshots/glucosetracker_charts_001.png" class="thumbnail">
+                <img class="featurette-image img-responsive" src="{{ STATIC_URL }}/images/screenshots/glucosetracker_charts_001.png">
+            </a>
+        </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Beautiful charts. <span class="text-muted">Visualize your data.</span></h2>
+          <p class="lead">Quickly see how you're doing by looking at the different graphs and charts made available
+          to you. Select values from the last 7, 14, 30, or 90 days.</p>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Advanced data filtering. <span class="text-muted">Create your own report.</span></h2>
+          <p class="lead">You can filter your data by date, category, glucose range, tags, or even search your notes.
+            When you're done, you can then export the result to a CSV or PDF file, or just simply print it out.
+          </p>
+        </div>
+        <div class="col-md-5">
+            <a href="{{ STATIC_URL }}images/screenshots/glucosetracker_filter_001.png" class="thumbnail">
+                <img class="featurette-image img-responsive" src="{{ STATIC_URL }}/images/screenshots/glucosetracker_filter_001.png">
+            </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+            <a href="{{ STATIC_URL }}images/screenshots/glucosetracker_email_001.png" class="thumbnail">
+                <img class="featurette-image img-responsive" src="{{ STATIC_URL }}/images/screenshots/glucosetracker_email_001.png">
+            </a>
+        </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Email your data. <span class="text-muted">Send your data directly to your doctor.</span></h2>
+          <p class="lead">No more carrying log books when you visit your doctor! Send your data via email instead as a CSV or
+            PDF attachment. Just select the file format, date range, enter the email address, and hit Send.
+          </p>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Mobile friendly. <span class="text-muted">Layout adapts to screen size.</span></h2>
+          <p class="lead">Prefer using your table or smartphone? No problem! GlucoseTracker was designed with mobile devices
+            in mind. The website will automatically adjust based on the screen size so it will always be easy for you to use.
+          </p>
+        </div>
+        <div class="col-md-5">
+            <a href="{{ STATIC_URL }}images/screenshots/glucosetracker_dashboard_mobile_001.png" class="thumbnail">
+                <img class="featurette-image img-responsive" src="{{ STATIC_URL }}/images/screenshots/glucosetracker_dashboard_mobile_001.png">
+            </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2013 <a href="http://www.calazan.com">Calazan.com</a></p>
+      </footer>
+
+    </div><!-- /.container -->
+{% endblock %}
+
+{% block extrajs %}
+<script src="{{ STATIC_URL }}bootstrap/js/holder.js"></script>
 {% endblock %}

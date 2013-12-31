@@ -23,9 +23,7 @@ def login_view(request):
     login_failed = False
 
     if request.POST:
-        # We're only allowing lowercase in usernames, so convert
-        # what the user entered to lowercase.
-        username = request.POST['username'].lower()
+        username = request.POST['username'].replace(' ', '').lower()
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -57,7 +55,7 @@ class SignUpView(FormView):
         form.full_clean()
 
         if form.is_valid():
-            username = form.cleaned_data['username'].lower()
+            username = form.cleaned_data['username'].replace(' ', '').lower()
             password = form.cleaned_data['password']
 
             user = User.objects.create(username=username)

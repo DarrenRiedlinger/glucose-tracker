@@ -11,7 +11,15 @@ def validate_email_unique(value):
 
 def validate_username_unique(value):
     exists = User.objects.filter(username=value)
+    invalid_usernames = [
+        'glucosetracker', 'glucose', 'diabetes',
+        'admin', 'help', 'helpdesk', 'sales', 'support',
+        'info', 'warning', 'success', 'danger', 'error', 'debug',
+        'alert', 'alerts',
+        'signup', 'signin', 'signout', 'login', 'logout', 'activate',
+        'register', 'password',
+    ]
 
-    if exists:
+    if exists or value in invalid_usernames:
         raise ValidationError('This username is not available. '
                               'Please try another.')

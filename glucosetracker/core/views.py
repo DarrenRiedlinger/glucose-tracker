@@ -13,13 +13,6 @@ from .forms import ContactForm
 class HomePageView(TemplateView):
     template_name = 'home.html'
 
-    # Remove method below when we're ready to go to production.
-    def get(self, request, *args, **kwargs):
-        """
-        Redirect to 'dashboard.'
-        """
-        return HttpResponseRedirect(reverse('dashboard'))
-
 
 class HelpPageView(LoginRequiredMixin, FormView):
     success_url = '.'
