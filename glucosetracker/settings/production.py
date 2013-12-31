@@ -16,6 +16,9 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+# The 'From:' header of admin-related emails.
+SERVER_EMAIL = os.environ['EMAIL_HOST_USER']
+
 ADMINS = (
     ('Local Admin', 'admin@glucosetracker.net'),
 )

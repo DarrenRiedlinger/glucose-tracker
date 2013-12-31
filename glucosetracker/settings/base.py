@@ -16,7 +16,7 @@ SITE_ID = 1
 
 # Run management command 'set_site_values to set these values
 SITE_NAME = 'GlucoseTracker.net'
-SITE_DOMAIN = 'glucosetracker.net'
+SITE_DOMAIN = 'www.glucosetracker.net'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
