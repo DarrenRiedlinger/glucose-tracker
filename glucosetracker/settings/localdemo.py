@@ -1,7 +1,4 @@
 # This configuration is for demo purposes and uses a local SQLite database.
-
-import os
-
 from .base import *
 
 DEBUG = True

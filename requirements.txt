@@ -13,11 +13,8 @@ django-crispy-forms==1.4.0
 django-datatables-view==1.6
 django-debug-toolbar==0.11.0
 django-floppyforms==1.1
-django-guardian==1.1.1
 django-taggit==0.10
 django-timezone-field==1.0
-django-userena==1.2.4
-easy-thumbnails==1.4
 factory-boy==2.2.1
 gunicorn==18.0
 html2text==3.200.3
@@ -26,6 +23,7 @@ newrelic==2.8.0.7
 psycopg2==2.5.1
 pytz==2013.7
 reportlab==2.7
+setproctitle==1.1.8
 six==1.4.1
 sqlparse==0.1.10
 static==0.4
