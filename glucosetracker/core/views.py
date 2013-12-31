@@ -42,7 +42,7 @@ class HelpPageView(LoginRequiredMixin, FormView):
         form = self.get_form(form_class)
 
         if form.is_valid():
-            info_email = settings.CONTACTS['support_email']
+            support_email = settings.CONTACTS['support_email']
 
             message = 'Sent By: %s (%s)\n\n%s' % (
                 form.cleaned_data['email'],
@@ -50,10 +50,10 @@ class HelpPageView(LoginRequiredMixin, FormView):
                 form.cleaned_data['message'])
 
             email = EmailMessage(
-                from_email=info_email,
+                from_email=support_email,
                 subject='[Help] %s ' % form.cleaned_data['subject'],
                 body=message,
-                to=[info_email])
+                to=[support_email])
 
             email.send()
 
