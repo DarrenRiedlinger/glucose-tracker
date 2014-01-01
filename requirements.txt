@@ -2,6 +2,7 @@ Django==1.6
 Pillow==2.2.2
 South==0.8.2
 argparse==1.2.1
+boto==2.21.2
 coverage==3.7
 dj-database-url==0.2.2
 dj-static==0.0.5
