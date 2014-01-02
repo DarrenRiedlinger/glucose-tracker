@@ -51,13 +51,25 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
               <ul class="nav navbar-nav navbar-right">
                   {% if user.is_authenticated %}
+                    <li><a href="{% url 'glucose_create' %}">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp;New Glucose</a>
+                    </li>
+
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                         <span class="glyphicon glyphicon-stats"></span>&nbsp;Reports <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'glucose_filter' %}">Filter Data</a></li>
+                      <li><a href="{% url 'glucose_charts' %}">Charts & Graphs</a></li>
+                      <li><a href="{% url 'glucose_email_report' %}">Email Report</a></li>
+                    </ul>
+                    </li>
+
                     <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-user"></span>&nbsp;
                         {{ user }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                      <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                      <li class="divider"></li>
                       <li><a href="{% url 'usersettings' %}">Account Settings</a></li>
                       <li><a href="{% url 'password_change' %}">Change Password</a></li>
                       <li class="divider"></li>

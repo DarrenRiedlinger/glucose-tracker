@@ -20,7 +20,6 @@ factory-boy==2.2.1
 gunicorn==18.0
 html2text==3.200.3
 ipython==1.1.0
-newrelic==2.8.0.7
 psycopg2==2.5.1
 pytz==2013.7
 reportlab==2.7
