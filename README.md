@@ -18,7 +18,7 @@ A simple web application for keeping tracking of blood glucose levels.  Written 
 * <b>A1C estimation.</b>  Estimate A1C based on data from the last 3 months.
 * <b>Mobile friendly.</b>  Layout adapts to screen size.
 
-Some point in the future:
+<b>Some point in the future:</b>
 
 * A simple Android app that works offline and auto-syncs to the remote database via REST calls.
 
