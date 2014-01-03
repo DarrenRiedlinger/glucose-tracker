@@ -5,6 +5,7 @@ Glucose Tracker
 A simple web application for keeping tracking of blood glucose levels.  Written in Python using the Django framework.
 
 <b>Main Site:</b> http://www.glucosetracker.net
+
 <b>Live Demo:</b> http://demo.glucosetracker.net
 
 <b>Features:</b>
