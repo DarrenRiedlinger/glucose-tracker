@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("glucoses", "0003_load_categoryfixture"),
+    )
+
     def forwards(self, orm):
         # Adding field 'UserSettings.default_category'
         db.add_column(u'accounts_usersettings', 'default_category',
