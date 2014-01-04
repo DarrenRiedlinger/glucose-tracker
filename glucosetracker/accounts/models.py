@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from timezone_field import TimeZoneField
 
 from core.models import TimeStampedModel
+from glucoses.models import Category
 
 
 class UserSettings(TimeStampedModel):
@@ -13,7 +14,10 @@ class UserSettings(TimeStampedModel):
     model.
     """
     user = models.OneToOneField(User, related_name='settings')
+
     time_zone = TimeZoneField(default=settings.TIME_ZONE)
+
+    default_category = models.ForeignKey(Category, null=True)
 
     glucose_low = models.PositiveIntegerField(
         null=False, blank=False, default=60)

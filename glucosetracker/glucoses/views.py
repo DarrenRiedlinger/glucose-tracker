@@ -69,8 +69,7 @@ def dashboard(request):
     Datatables plugin via Javascript.
     """
     form = GlucoseQuickAddForm()
-    form.fields['category'].initial = utils.get_initial_category(
-        request.user.settings.time_zone)
+    form.fields['category'].initial = utils.get_initial_category(request.user)
 
     return render_to_response(
         'core/dashboard.html',
@@ -196,7 +195,7 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
         record_time = datetime.now(tz=time_zone).time().strftime(TIME_FORMAT)
 
         return {
-            'category': utils.get_initial_category(time_zone),
+            'category': utils.get_initial_category(self.request.user),
             'record_date': record_date,
             'record_time': record_time,
         }

@@ -92,7 +92,8 @@ class UserSettingsView(LoginRequiredMixin, FormView):
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
-            'time_zone': settings.user.settings.time_zone,
+            'time_zone': settings.time_zone,
+            'default_category': settings.default_category,
             'glucose_low': settings.glucose_low,
             'glucose_high': settings.glucose_high,
             'glucose_target_min': settings.glucose_target_min,
@@ -116,6 +117,9 @@ class UserSettingsView(LoginRequiredMixin, FormView):
             user.save()
 
             user.settings.time_zone = form.cleaned_data['time_zone']
+
+            user.settings.default_category = form.cleaned_data['default_category']
+
             user.settings.glucose_low = form.cleaned_data['glucose_low']
             user.settings.glucose_high = form.cleaned_data['glucose_high']
             user.settings.glucose_target_min = form.cleaned_data[

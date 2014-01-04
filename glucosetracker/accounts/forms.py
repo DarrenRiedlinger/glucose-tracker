@@ -6,6 +6,8 @@ from crispy_forms.layout import Button, Submit, Fieldset, HTML, Field
 from crispy_forms.bootstrap import FormActions
 from timezone_field import TimeZoneFormField
 
+from glucoses.models import Category
+
 from .validators import validate_email_unique, validate_username_unique
 
 
@@ -55,6 +57,10 @@ class UserSettingsForm(forms.Form):
     )
     time_zone = TimeZoneFormField(label='Time Zone')
 
+    default_category = forms.ModelChoiceField(
+        Category.objects.all(), label='Default Category',
+        empty_label='Auto', required=False)
+
     glucose_low = forms.IntegerField(
         label='Low', min_value=0, max_value=3000,
         help_text="Below this value is a low blood glucose."
@@ -77,9 +83,9 @@ class UserSettingsForm(forms.Form):
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-5'
-        self.helper.label_class = 'col-xs-3 col-md-3 col-lg-3'
-        self.helper.field_class = 'col-xs-9 col-md-9 col-lg-9'
+        self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-6'
+        self.helper.label_class = 'col-xs-4 col-md-4 col-lg-4'
+        self.helper.field_class = 'col-xs-8 col-md-8 col-lg-8'
         self.helper.help_text_inline = False
 
         self. helper.layout = Layout(
@@ -90,6 +96,10 @@ class UserSettingsForm(forms.Form):
                 Field('first_name'),
                 Field('last_name'),
                 Field('time_zone'),
+            ),
+            Fieldset(
+                'Preferences',
+                Field('default_category'),
             ),
             Fieldset(
                 'Glucose Levels (mg/dL)',
