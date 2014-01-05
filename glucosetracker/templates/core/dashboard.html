@@ -58,19 +58,6 @@
                     </div>
                 </div>
 
-                <!--<div class="col-sm-4 col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title text-center">
-                                <b>Total Readings</b>
-                            </h3>
-                        </div>
-                        <div class="panel-body" style="padding-bottom:21px">
-                            <h3 id="id_num_records" class="text-center"></h3>
-                        </div>
-                    </div>
-                </div>-->
-
                 <div class="col-sm-6 col-md-6">
                     <div class="panel panel-default">
                         <div id="id_hba1c_panel" class="panel-heading" data-toggle="tooltip"
@@ -303,7 +290,6 @@ $(document).ready(function() {
 
     // For Twitter button
     function updateTwitterValues(text, via) {
-      $('#id_twitter_button').html('&nbsp;');
       $('#id_twitter_button').html('<a href="https://twitter.com/share" class="twitter-share-button" data-dnt="true" data-text="' + text +'" data-count="none" data-via="' + via +'">Tweet</a>');
       twttr.widgets.load();
     }
