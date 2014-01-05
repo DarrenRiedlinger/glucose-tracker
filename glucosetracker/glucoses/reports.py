@@ -122,8 +122,8 @@ class UserStats(object):
         average = utils.round_value(
             subset.aggregate(Avg('value'))['value__avg'])
         
-        highs = subset.filter(value__gte=self.user_settings['high']).count()
-        lows = subset.filter(value__lte=self.user_settings['low']).count()
+        highs = subset.filter(value__gt=self.user_settings['high']).count()
+        lows = subset.filter(value__lt=self.user_settings['low']).count()
         within_target = subset.filter(
             value__gte=self.user_settings['target_min'],
             value__lte=self.user_settings['target_max']
