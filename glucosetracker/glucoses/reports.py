@@ -48,24 +48,35 @@ class UserStats(object):
 
     @property
     def user_stats(self):
-        latest_entry_value = self.data.latest('id').value \
-            if self.data else None
-        latest_entry = {
-            'value': '%s mg/dL' % latest_entry_value \
-                if latest_entry_value else 'None',
-            'css_class': self.get_css_class(latest_entry_value),
-        }
-
-        num_records = self.data.count()
-
         stats = {
-            'latest_entry': latest_entry,
-            'num_records': num_records,
+            'latest_entry': self.latest_entry,
+            'num_records': self.data.count(),
             'hba1c': self.hba1c,
             'breakdown': self.get_breakdown(),
         }
 
         return stats
+
+    @property
+    def latest_entry(self):
+        latest_entry = self.data.latest('id') if self.data else None
+
+        latest_entry_value = 'None'
+        latest_entry_time = latest_entry_notes = ''
+        css_class = self.get_css_class(None)
+        if latest_entry:
+            latest_entry_value = '%s mg/dL' % latest_entry.value
+            latest_entry_time = latest_entry.record_time.strftime(TIME_FORMAT)
+            latest_entry_notes = latest_entry.notes
+            css_class = self.get_css_class(latest_entry.value)
+
+        return {
+            'value': latest_entry_value,
+            'record_time': latest_entry_time,
+            'notes': latest_entry_notes,
+            'css_class': css_class,
+        }
+
 
     @property
     def hba1c(self):

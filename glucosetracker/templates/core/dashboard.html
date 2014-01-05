@@ -51,8 +51,9 @@
                                 <b>Latest Reading</b>
                             </h5>
                         </div>
-                        <div class="panel-body" style="padding-bottom:21px">
-                             <h3 id="id_latest_entry"></h3>
+                        <div class="panel-body">
+                            <h3 id="id_latest_entry"></h3>
+                            <p id="id_twitter_button" class="text-center"></p>
                         </div>
                     </div>
                 </div>
@@ -78,8 +79,8 @@
                                 <b>HbA1c Estimate*</b>
                             </h3>
                         </div>
-                        <div class="panel-body" style="padding-bottom:19px">
-                            <h4 id="id_hba1c" class="text-danger"></h4>
+                        <div class="panel-body" style="padding-bottom:24px">
+                            <h3 id="id_hba1c"></h3>
                         </div>
                     </div>
                 </div>
@@ -210,6 +211,14 @@ $(document).ready(function() {
                     data['stats']['breakdown']['within_target'];
                 document.getElementById('id_other').innerHTML =
                     data['stats']['breakdown']['other'];
+
+                var twitter_text = "#bgnow "
+                    + data['stats']['latest_entry']['value']
+                    + " (" + data['stats']['latest_entry']['record_time']
+                    + ") " + data['stats']['latest_entry']['notes'];
+                // Remove leading and trailing spaces
+                twitter_text = twitter_text.trim();
+                updateTwitterValues(twitter_text, 'glucosetracker');
             }
         )};
 
@@ -291,6 +300,25 @@ $(document).ready(function() {
         });
         return false;
     });
+
+    // For Twitter button
+    function updateTwitterValues(text, via) {
+      $('#id_twitter_button').html('&nbsp;');
+      $('#id_twitter_button').html('<a href="https://twitter.com/share" class="twitter-share-button" data-dnt="true" data-text="' + text +'" data-count="none" data-via="' + via +'">Tweet</a>');
+      twttr.widgets.load();
+    }
+
+    !function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0];
+
+    if(!d.getElementById(id)){
+        js=d.createElement(s);
+        js.id=id;
+        js.src="https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js,fjs);
+    }}
+
+    (document,"script","twitter-wjs");
 } );
 </script>
 {% endblock %}
