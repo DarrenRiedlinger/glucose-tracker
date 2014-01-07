@@ -16,7 +16,7 @@
 {% endif %}
     
     <div class="row">
-        <div class="col-sm-6 col-md-6">
+        <div class="col-sm-12 col-md-12">
             <div class="btn-toolbar well" role="toolbar">
                 <div class="btn-group">
                     <a href="{% url 'glucose_create'%}">
@@ -36,11 +36,7 @@
                     <li><a href="{% url 'glucose_email_report' %}">E-mail Report</a></li>
                     </ul>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6">
-            <div class="btn-toolbar well" role="toolbar">
-                <div class="text-center">{% crispy form %}</div>
+                <div class="pull-right">{% crispy form %}</div>
             </div>
         </div>
     </div> <!-- end row -->
