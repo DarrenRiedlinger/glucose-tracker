@@ -26,11 +26,10 @@ class SignUpForm(forms.Form):
         self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-5'
         self.helper.label_class = 'col-xs-3 col-md-3 col-lg-3'
         self.helper.field_class = 'col-xs-9 col-md-9 col-lg-9'
-        self.helper.help_text_inline = False
 
         self. helper.layout = Layout(
             Fieldset(
-                'Setup Your Account',
+                'Create Your Account',
                 Field('username', autofocus=True),
                 Field('password'),
                 Field('email', placeholder='e.g. john@gmail.com'),

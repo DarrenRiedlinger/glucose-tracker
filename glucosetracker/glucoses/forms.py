@@ -186,8 +186,8 @@ class GlucoseInputForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_class = 'form-horizontal col-xs-12 col-md-6 col-lg-5'
-        self.helper.label_class = 'col-xs-2 col-md-2 col-lg-2'
-        self.helper.field_class = 'col-xs-10 col-md-10 col-lg-10'
+        self.helper.label_class = 'col-xs-3 col-md-2 col-lg-2'
+        self.helper.field_class = 'col-xs-9 col-md-10 col-lg-10'
         self.helper.add_input(Submit('submit', 'Save'))
         self.helper.add_input(Button(
             'cancel', 'Cancel', onclick='location.href="%s";' % \
@@ -196,6 +196,8 @@ class GlucoseInputForm(forms.ModelForm):
 
         # Remove the blank option from the select widget.
         self.fields['category'].empty_label = None
+        self.fields['category'].required = False
+
 
         # Specify which time formats are valid for this field. This setting is
         # necessary when using the bootstrap-datetimepicker widget as it
@@ -225,8 +227,6 @@ class GlucoseCreateForm(GlucoseInputForm):
 
     def __init__(self, *args, **kwargs):
         super(GlucoseCreateForm, self).__init__(*args, **kwargs)
-
-        self.fields['category'].required = False
 
         # Make record date and time not required. If these fields are empty
         # the current date and time will be used.
