@@ -23,7 +23,6 @@ def calc_hba1c(value):
         return 0
 
 
-
 def round_value(value):
     """
     Round the given value.
