@@ -1,5 +1,4 @@
 from django import forms
-from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Submit, Fieldset, HTML, Field
@@ -23,8 +22,9 @@ class ContactForm(forms.Form):
             HTML('''
             {% if messages %}
             {% for message in messages %}
-            <p {% if message.tags %} class="text-{{ message.tags }}"\
+            <p {% if message.tags %} class="alert alert-{{ message.tags }}"\
             {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
+            </p>
             '''),
             Fieldset(
                 'Contact Us',

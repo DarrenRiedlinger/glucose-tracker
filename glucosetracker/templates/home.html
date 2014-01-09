@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
 {% block extracss %}
 <link href="{{ STATIC_URL }}bootstrap/css/carousel.css" rel="stylesheet">
 {% endblock %}
@@ -16,12 +17,16 @@
                     web application for keeping track of your blood glucose levels.
                     <br><br>
                     It's <b>completely free</b> with no ads. Modern look and mobile friendly!
+                    <br><br>
+                    (Glucose readings logged so far: <b>{{ glucose_count|intcomma }}</b>)
                 </p>
-                <p class="text-center"><br>
+                <br>
+                <p class="text-center">
                     <a class="btn btn-lg btn-success" href="{% url 'signup' %}" role="button">
                         Sign Up Today
                     </a>
-                </p><br>
+                </p>
+                <br>
             </div>
             <div class="col-md-5">
                 <a href="{{ STATIC_URL }}images/screenshots/glucosetracker_dashboard_001.png" class="thumbnail">

@@ -1,5 +1,6 @@
 from django import forms
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Button, Submit, Fieldset, HTML, Field
@@ -28,11 +29,14 @@ class SignUpForm(forms.Form):
         self.helper.field_class = 'col-xs-9 col-md-9 col-lg-9'
 
         self. helper.layout = Layout(
+            HTML('''<p class="alert alert-info">Do you have <b>existing data in
+            CSV or Excel</b> format? Email it to <b>%s</b> and we'll try to
+            import it for you.</p>''' % settings.CONTACTS['support_email']),
             Fieldset(
                 'Create Your Account',
                 Field('username', autofocus=True),
                 Field('password'),
-                Field('email', placeholder='e.g. john@gmail.com'),
+                Field('email', placeholder='e.g. willywonka@gmail.com'),
                 Field('time_zone'),
             ),
             FormActions(
@@ -88,6 +92,13 @@ class UserSettingsForm(forms.Form):
         self.helper.help_text_inline = False
 
         self. helper.layout = Layout(
+            HTML('''
+            {% if messages %}
+            {% for message in messages %}
+            <p {% if message.tags %} class="alert alert-{{ message.tags }}"\
+            {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
+            </p>
+            '''),
             Fieldset(
                 'Profile',
                 Field('username', readonly=True),

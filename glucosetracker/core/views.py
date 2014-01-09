@@ -1,17 +1,23 @@
-from django.shortcuts import HttpResponseRedirect
 from django.views.generic import TemplateView, FormView
-from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
 
 from braces.views import LoginRequiredMixin
 
+from glucoses.models import Glucose
+
 from .forms import ContactForm
 
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(HomePageView, self).get_context_data(**kwargs)
+        context['glucose_count'] = Glucose.objects.count()
+
+        return context
 
 
 class HelpPageView(LoginRequiredMixin, FormView):
