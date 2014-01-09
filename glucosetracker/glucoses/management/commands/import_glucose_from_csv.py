@@ -13,15 +13,18 @@ TIME_FORMAT = '%I:%M %p'
 
 
 class Command(BaseCommand):
-    args = '<filepath...>'
+    args = '<filepath...> <username...>'
     help = 'Import data from a CSV file.'
 
     def handle(self, *args, **options):
-        if len(args) == 0:
-            sys.stdout.write('You must specify a filepath.\n')
+        if len(args) != 2:
+            sys.stdout.write('You must specify a filepath and username.\n')
             sys.exit(1)
 
         filepath = args[0]
+        username = args[1]
+
+        user = User.objects.get(username=username)
 
         csv_data = []
         with open(filepath, 'rb') as csvfile:
@@ -34,7 +37,7 @@ class Command(BaseCommand):
 
         for i in data_dict_list:
             Glucose.objects.create(
-                user=User.objects.get(username='jonathan'),
+                user=user,
                 value=i['value'],
                 category=i['category'],
                 record_date=i['record_date'],
