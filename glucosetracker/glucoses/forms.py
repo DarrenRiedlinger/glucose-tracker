@@ -146,26 +146,31 @@ class GlucoseEmailReportForm(forms.Form):
         self. helper.layout = Layout(
             MultiField(
                 None,
-                HTML('''
-                {% if messages %}
-                {% for message in messages %}
-                <p {% if message.tags %} class="text-{{ message.tags }}"\
-                {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
-                '''),
-                Div('report_format',
-                    Field('start_date', required=True),
-                    Field('end_date', required=True),
-                    css_class='well row col-sm-4 col-md-4',
-                ),
-                Div('subject',
-                    Field('recipient', placeholder='Email address',
-                          required=True, autofocus=True),
-                    'message',
-                    FormActions(
-                        Submit('submit', 'Send'),
-                        css_class='pull-right'
+                Div(
+                    HTML('''
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p {% if message.tags %}
+                    class="alert alert-{{ message.tags }}"
+                    {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
+                    '''),
+                    Div(
+                        'report_format',
+                        Field('start_date', required=True),
+                        Field('end_date', required=True),
+                        css_class='well col-sm-4 col-md-4',
                     ),
-                    css_class='row col-sm-8 col-md-8',
+                    Div('subject',
+                        Field('recipient', placeholder='Email address',
+                              required=True, autofocus=True),
+                        'message',
+                        FormActions(
+                            Submit('submit', 'Send'),
+                            css_class = 'pull-right'
+                        ),
+                        css_class='col-sm-8 col-md-8',
+                    ),
+                    css_class='row'
                 ),
             ),
         )
