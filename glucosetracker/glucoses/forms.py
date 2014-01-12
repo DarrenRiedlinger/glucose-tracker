@@ -185,6 +185,10 @@ class GlucoseEmailReportForm(forms.Form):
 
 
 class GlucoseInputForm(forms.ModelForm):
+    # This is a hidden field that holds the submit type value. Used to
+    # determine whether the user clicked 'Save' or 'Save & Add Another' in
+    # the Glucose Create Form.
+    submit_button_type = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(GlucoseInputForm, self).__init__(*args, **kwargs)
@@ -199,11 +203,9 @@ class GlucoseInputForm(forms.ModelForm):
             'cancel', 'Cancel', onclick='location.href="%s";' % \
                                         reverse('dashboard')))
 
-
         # Remove the blank option from the select widget.
         self.fields['category'].empty_label = None
         self.fields['category'].required = False
-
 
         # Specify which time formats are valid for this field. This setting is
         # necessary when using the bootstrap-datetimepicker widget as it
@@ -212,6 +214,13 @@ class GlucoseInputForm(forms.ModelForm):
         self.fields['record_time'].input_formats = valid_time_formats
 
         self. helper.layout = Layout(
+            HTML('''
+                {% if messages %}
+                {% for message in messages %}
+                <p {% if message.tags %}
+                class="alert alert-{{ message.tags }}"
+                {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
+                '''),
             Field('value', placeholder='Value in mg/dL', required=True,
                   autofocus=True),
             'category',
@@ -219,6 +228,7 @@ class GlucoseInputForm(forms.ModelForm):
             'record_time',
             'notes',
             Field('tags', placeholder='e.g. exercise, sick, medication'),
+            Field('submit_button_type', type='hidden')
         )
 
     class Meta:
@@ -238,6 +248,9 @@ class GlucoseCreateForm(GlucoseInputForm):
         # the current date and time will be used.
         self.fields['record_date'].required = False
         self.fields['record_time'].required = False
+
+        self.helper.add_input(Submit('submit_and_add', 'Save & Add Another',
+                                     css_class='pull-right'))
 
 
 class GlucoseUpdateForm(GlucoseInputForm):

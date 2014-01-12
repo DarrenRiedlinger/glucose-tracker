@@ -16,6 +16,13 @@ $(function () {
     $('#id_record_date').datetimepicker({
         pickTime: false
     });
+
+    // Sets the value of the submit_button_type field if the 'Submit & Add
+    // Another button is clicked.
+    $('#submit-id-submit_and_add').click(function() {
+        $('#id_submit_button_type').val('submit_and_add');
+    });
 });
+
 </script>
 {% endblock %}

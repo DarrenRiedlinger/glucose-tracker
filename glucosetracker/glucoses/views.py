@@ -152,7 +152,7 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
                 'message': 'Glucose data for %s.' % self.request.user}
 
     def form_valid(self, form):
-        messages.add_message(self.request, messages.SUCCESS, 'Email sent!')
+        messages.add_message(self.request, messages.SUCCESS, 'Email Sent!')
         return super(GlucoseEmailReportView, self).form_valid(form)
 
     def form_invalid(self, form):
@@ -201,6 +201,17 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
         }
 
     def form_valid(self, form):
+        # If the 'Save & Add Another' button is clicked, the submit_button_type
+        # field will be set to 'submit_and_add' by Javascript. We'll change
+        # the success URL to go back to the Add Glucose page and display a
+        # successful message in this case.
+        if form.cleaned_data['submit_button_type'] == 'submit_and_add':
+            self.success_url = '/glucoses/add/'
+            value = form.cleaned_data['value']
+            messages.add_message(self.request, messages.SUCCESS,
+                                 "Glucose '%s' successfully added. You may "
+                                 "add another." % value)
+
         # Set the value of the 'user' field to the currently logged-in user.
         form.instance.user = self.request.user
 

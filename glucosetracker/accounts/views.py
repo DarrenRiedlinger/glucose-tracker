@@ -101,7 +101,7 @@ class UserSettingsView(LoginRequiredMixin, FormView):
         }
 
     def form_valid(self, form):
-        messages.add_message(self.request, messages.SUCCESS, 'Settings saved!')
+        messages.add_message(self.request, messages.SUCCESS, 'Settings Saved!')
         return super(UserSettingsView, self).form_valid(form)
 
     def post(self, request, *args, **kwargs):
