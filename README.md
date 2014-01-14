@@ -2,7 +2,7 @@ Glucose Tracker
 ===============
 <a href="https://travis-ci.org/jcalazan/glucose-tracker"><img src="https://travis-ci.org/jcalazan/glucose-tracker.png"></a>
 
-A simple web application for keeping tracking of blood glucose levels.  Written in Python using the Django framework.
+A simple web application for keeping track of blood glucose levels.  Written in Python using the Django framework.
 
 <b>Main Site:</b> http://www.glucosetracker.net
 
@@ -11,7 +11,7 @@ A simple web application for keeping tracking of blood glucose levels.  Written 
 <b>Features:</b>
 
 * <b>Simple, easy to use.</b>  Entering glucose data should be faster than finding a pen and paper and writing down the number.  Fields have pre-set values where it makes sense (such as the date, time, and category based on time of day).
-* <b>Send glucose data via email.</b>  Email it to your doctor before your visit, no more carrying log books (and you're saving trees)!  Can be sent as an attachment or included in the email as an HTML table.
+* <b>Send glucose data via email.</b>  Email it to your doctor before your visit, no more carrying log books (and you're saving trees)!  Can be sent as a CSV or PDF attachment.
 * <b>Reporting.</b>  Simple reports to see trends on how your diabetes is doing.  Highlight how many times you have lows and highs. Show averages by day and category using nice-looking charts and graphs.
 * <b>Data filtering.</b>  Advanced filtering: filter by glucose range, date range, category, tag, and notes.
 * <b>Tagging.</b>  An optional tag field to help further organize and make sense of your data. For example, it might be useful to add tags to a record such as: exercise, sick, insulin, fasting, etc.
