@@ -279,6 +279,9 @@ $(document).ready(function() {
                 else {
                     alert(message['error']);
                     $('#id_value').focus().select();
+
+                    // Re-enable the submit button.
+                    $('#submit-id-submit').prop('disabled', false);
                 }
             },
             error: function(data) {
