@@ -25,8 +25,7 @@ def deploy():
         3. Activate virtualenv.
         4. Run pip install using the requirements.txt file.
         5. Run South migrations.
-        6. Run tests.
-        7. Restart gunicorn WSGI server using supervisor.
+        6. Restart gunicorn WSGI server using supervisor.
     """
     with cd(app_directory):
 
@@ -40,9 +39,5 @@ def deploy():
         south_command = 'python glucosetracker/manage.py migrate --all ' \
                         '--settings=%s' % settings_file
         sudo('%s && %s' % (venv_command, south_command), user=owner)
-
-        coverage_command = 'coverage run --source=. glucosetracker/manage.py ' \
-                           'test -v 2'
-        sudo('%s && %s' % (venv_command, coverage_command), user=owner)
 
         sudo('supervisorctl restart glucosetracker')
