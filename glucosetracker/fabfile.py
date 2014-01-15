@@ -7,6 +7,7 @@ env.hosts = ['www.glucosetracker.net']
 owner = 'glucosetracker'
 
 app_name = 'glucosetracker'
+app_directory = '/webapps/glucosetracker/glucose-tracker'
 settings_file = 'settings.production'
 
 
@@ -27,7 +28,7 @@ def deploy():
         6. Run tests.
         7. Restart gunicorn WSGI server using supervisor.
     """
-    with cd('/webapps/glucosetracker/glucose-tracker'):
+    with cd(app_directory):
 
         sudo('git pull', user=owner)
 
