@@ -33,15 +33,15 @@ def deploy():
 
         venv_command = 'source ../bin/activate'
 
-        pip_command = 'pip install -r glucosetracker/requirements.txt'
+        pip_command = 'pip install -r requirements.txt'
         sudo('%s && %s' % (venv_command, pip_command), user=owner)
 
-        south_command = 'python manage.py migrate --all --settings=%s' % \
-            settings_file
+        south_command = 'python glucosetracker/manage.py migrate --all ' \
+                        '--settings=%s' % settings_file
         sudo('%s && %s' % (venv_command, south_command), user=owner)
 
         coverage_command = 'coverage run --source=. glucosetracker/manage.py ' \
                            'test -v 2'
         sudo('%s && %s' % (venv_command, coverage_command), user=owner)
 
-        sudo('supervisorctl glucosetracker restart')
+        sudo('supervisorctl restart glucosetracker')
