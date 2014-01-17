@@ -68,7 +68,6 @@ class SignUpView(FormView):
             user_settings.time_zone = form.cleaned_data['time_zone']
             user_settings.save()
 
-
             # Automatically authenticate the user after user creation.
             user_auth = authenticate(username=username, password=password)
             login(request, user_auth)

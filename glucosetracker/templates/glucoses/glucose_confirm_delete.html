@@ -10,7 +10,7 @@
         <p>Deleting glucose <b>{{ glucose.value }} ({{ glucose.category }})</b>. Are you sure?</p>
         <br>
         <button type="submit" class="btn btn-primary" action="submit">Yes, I'm sure</button>
-        <button type="button" class="btn" onclick="location.href=&quot;{% url 'glucose_update' glucose.id %}&quot;;">Cancel</button>
+        <button type="button" class="btn" onclick="location.href=&quot;{% url 'dashboard' %}&quot;;">Cancel</button>
     </form>
 </div>
 {% endblock %}

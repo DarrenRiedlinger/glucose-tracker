@@ -14,4 +14,4 @@ deploy:
     - "python glucosetracker/manage.py set_site_values --settings=settings.heroku"
     - "python glucosetracker/manage.py load_random_glucose_data jsmith --settings=settings.heroku"
     - restart
-script: "coverage run --source=. glucosetracker/manage.py test -v 2"
+script: "coverage run --source=. glucosetracker/manage.py test -v 2 --settings=glucosetracker.settings.test"

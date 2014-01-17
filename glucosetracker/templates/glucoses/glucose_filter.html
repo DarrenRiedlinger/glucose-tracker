@@ -39,10 +39,11 @@
                     <thead>
                         <tr>
                             <th width="10%"><center>Value</center></th>
-                            <th width="20%">Category</th>
+                            <th width="15%">Category</th>
                             <th width="15%">Date</th>
                             <th width="15%">Time</th>
-                            <th width="40%">Notes</th>
+                            <th width="35%">Notes</th>
+                            <th width="10%"></th>
                         </tr>
                     </thead>
                 </table>
@@ -79,7 +80,9 @@ $(document).ready(function() {
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "{{ data }}",
-        "aaSorting": [ [2,'desc'], [3,'desc']]
+        "aaSorting": [ [2,'desc'], [3,'desc']],
+        // Disable sorting for the Actions column.
+        "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 5 ] } ]
     });
 
     // Submit the filter form and refresh the table data
