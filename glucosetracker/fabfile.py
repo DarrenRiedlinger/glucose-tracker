@@ -12,7 +12,7 @@ settings_file = 'settings.production'
 
 
 def prepare_deployment():
-    local('coverage run manage.py test -v 2')
+    local('coverage run manage.py test -v 2 --settings=settings.test')
 
 
 def deploy():
