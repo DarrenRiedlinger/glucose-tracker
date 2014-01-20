@@ -101,6 +101,7 @@ class UserSettingsView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         messages.add_message(self.request, messages.SUCCESS, 'Settings Saved!')
+
         return super(UserSettingsView, self).form_valid(form)
 
     def post(self, request, *args, **kwargs):
@@ -112,7 +113,7 @@ class UserSettingsView(LoginRequiredMixin, FormView):
             user = self.request.user
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
-            #user.email = form.cleaned_data['email']
+            user.email = form.cleaned_data['email']
             user.save()
 
             user.settings.time_zone = form.cleaned_data['time_zone']

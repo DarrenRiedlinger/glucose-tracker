@@ -1,6 +1,7 @@
 from django import forms
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Button, Submit, Fieldset, HTML, Field
@@ -52,12 +53,7 @@ class UserSettingsForm(forms.Form):
     username = forms.CharField(required=False)
     first_name = forms.CharField(label='First Name', required=False)
     last_name = forms.CharField(label='Last Name', required=False)
-    email = forms.EmailField(
-        label='Email',
-        required=False,
-        help_text='Please <a href="%s">contact us</a> if you need to change '
-                  'your email address.' % '/core/help/',
-    )
+    email = forms.EmailField(label='Email', required=False)
     time_zone = TimeZoneFormField(label='Time Zone')
 
     default_category = forms.ModelChoiceField(
@@ -102,7 +98,7 @@ class UserSettingsForm(forms.Form):
             Fieldset(
                 'Profile',
                 Field('username', readonly=True),
-                Field('email', readonly=True),
+                Field('email'),
                 Field('first_name'),
                 Field('last_name'),
                 Field('time_zone'),
@@ -125,3 +121,20 @@ class UserSettingsForm(forms.Form):
                        % reverse('dashboard')),
             ),
         )
+
+    def clean_email(self):
+        """
+        Validates the email field.
+
+        Check if the email field changed. If true, check whether the new email
+        address already exists in the database and raise an error if it does.
+        """
+        email = self.cleaned_data['email']
+        user = User.objects.get(username=self.cleaned_data['username'])
+
+        if email != user.email:
+            if User.objects.filter(email=email):
+                raise forms.ValidationError('Another account is already using '
+                                            'this email address.')
+
+        return email

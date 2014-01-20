@@ -9,6 +9,7 @@ def validate_email_unique(value):
         raise ValidationError('Someone is already using this email address. '
                               'Please try another.')
 
+
 def validate_username_unique(value):
     exists = User.objects.filter(username=value)
     invalid_usernames = [
