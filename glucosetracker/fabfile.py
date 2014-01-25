@@ -11,7 +11,7 @@ app_directory = '/webapps/glucosetracker/glucose-tracker'
 settings_file = 'settings.production'
 
 
-def prepare_deployment():
+def run_tests():
     local('coverage run manage.py test -v 2 --settings=settings.test')
 
 
