@@ -9,10 +9,17 @@ class CustomUserAdmin(UserAdmin):
     list_display = [
         'username',
         'email',
-        'is_superuser',
+        'settings_time_zone',
         'last_login',
         'date_joined',
     ]
+
+    def settings_time_zone(self, instance):
+        """
+        This method allows us to access the time_zone attribute of Settings
+        to display in the Django Admin.
+        """
+        return instance.settings.time_zone
 
 
 class UserSettingsAdmin(admin.ModelAdmin):
