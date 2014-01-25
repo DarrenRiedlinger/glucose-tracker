@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "glucoses.unit", "fields": {"name": "mg/dL"}}, {"pk": 2, "model": "glucoses.unit", "fields": {"name": "mmol/L"}}]

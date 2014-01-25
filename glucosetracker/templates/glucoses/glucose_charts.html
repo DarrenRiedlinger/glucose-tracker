@@ -160,7 +160,7 @@ $(document).ready(function() {
         $.getJSON(path,
             function(data) {
                 avgByCategoryOptions.xAxis.categories = data['chart_data']['categories'];
-                avgByCategoryOptions.series[0].name = 'Avg Glucose (mg/dL)';
+                avgByCategoryOptions.series[0].name = 'Avg Glucose ({{ user.settings.glucose_unit }})';
                 avgByCategoryOptions.series[0].data = data['chart_data']['values'];
                 var chart = new Highcharts.Chart(avgByCategoryOptions);
         });
@@ -190,7 +190,7 @@ $(document).ready(function() {
         $.getJSON(path,
             function(data) {
                 avgByDayOptions.xAxis.categories = data['chart_data']['dates'];
-                avgByDayOptions.series[0].name = 'Avg Glucose (mg/dL)';
+                avgByDayOptions.series[0].name = 'Avg Glucose ({{ user.settings.glucose_unit }})';
                 avgByDayOptions.series[0].data = data['chart_data']['values'];
                 var chart = new Highcharts.Chart(avgByDayOptions);
         });

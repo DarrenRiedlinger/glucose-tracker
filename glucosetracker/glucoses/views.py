@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.views.generic import CreateView, UpdateView, DeleteView, \
     FormView, TemplateView
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, HttpResponse
@@ -12,6 +12,8 @@ from django.template import RequestContext
 
 from braces.views import LoginRequiredMixin
 from django_datatables_view.base_datatable_view import BaseDatatableView
+
+from core.utils import glucose_by_unit_setting, to_mg
 
 from . import utils
 from .models import Glucose
@@ -43,7 +45,13 @@ def filter_view(request):
     data = reverse('glucose_list_json')
 
     if request.method == 'POST' and request.is_ajax:
-        params = request.POST
+        # We need to create a copy of request.POST because it's immutable and
+        # we need to convert the content of the Value field to mg/dL if the
+        # user's glucose unit setting is set to mmol/L.
+        params = request.POST.copy()
+        if request.user.settings.glucose_unit.name == 'mmol/L':
+            params['start_value'] = to_mg(params['start_value'])
+            params['end_value'] = to_mg(params['end_value'])
 
         # Create the URL query string and strip the last '&' at the end.
         data = ('%s?%s' % (reverse('glucose_list_json'), ''.join(
@@ -73,7 +81,8 @@ def dashboard(request):
 
     return render_to_response(
         'core/dashboard.html',
-        {'form': form},
+        {'form': form,
+         'glucose_unit_name': request.user.settings.glucose_unit.name},
         context_instance=RequestContext(request),
     )
 
@@ -111,12 +120,20 @@ def stats_json(request):
 @login_required
 def quick_add(request):
     if request.method == 'POST' and request.is_ajax:
-        form = GlucoseCreateForm(request.POST)
+        # We need to create a copy of request.POST because it's immutable and
+        # we need to convert the content of the Value field to mg/dL if the
+        # user's glucose unit setting is set to mmol/L.
+        post_values = request.POST.copy()
+        if request.user.settings.glucose_unit.name == 'mmol/L':
+            post_values['value'] = to_mg(post_values['value'])
+
+        form = GlucoseCreateForm(post_values)
         if form.is_valid():
             user = request.user
 
             obj = form.save(commit=False)
-            obj.user = request.user
+            obj.user = user
+
             obj.record_date = datetime.now(tz=user.settings.time_zone).date()
             obj.record_time = datetime.now(tz=user.settings.time_zone).time()
             obj.save()
@@ -127,7 +144,8 @@ def quick_add(request):
         else:
             message = {
                 'success': False,
-                'error': 'Please enter whole numbers only from 1 to 3000.'
+                'error': 'Value must be between 0 and 3000 (whole numbers only '
+                         'if using mg/dL).'
             }
 
             return HttpResponse(json.dumps(message))
@@ -200,6 +218,7 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
             'record_time': record_time,
         }
 
+
     def form_valid(self, form):
         # If the 'Save & Add Another' button is clicked, the submit_button_type
         # field will be set to 'submit_and_add' by Javascript. We'll change
@@ -228,6 +247,54 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
 
         return super(GlucoseCreateView, self).form_valid(form)
 
+    def post(self, request, *args, **kwargs):
+        # We need to create a copy of request.POST because it's immutable and
+        # we need to convert the content of the Value field to mg/dL if the
+        # user's glucose unit setting is set to mmol/L.
+        request.POST = request.POST.copy()
+        if request.user.settings.glucose_unit.name == 'mmol/L':
+            request.POST['value'] = to_mg(request.POST['value'])
+
+        return super(GlucoseCreateView, self).post(request, *args, **kwargs)
+
+
+class GlucoseUpdateView(LoginRequiredMixin, UpdateView):
+    model = Glucose
+    context_object_name = 'glucose'
+    success_url = '/dashboard/'
+    template_name = 'glucoses/glucose_update.html'
+    form_class = GlucoseUpdateForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        # If the record's user doesn't match the currently logged-in user,
+        # deny viewing/updating of the object by showing the 403.html
+        # forbidden page. This can occur when the user changes the id in
+        # the URL field to a record that the user doesn't own.
+        if self.object.user != request.user:
+            raise PermissionDenied
+        else:
+            return super(GlucoseUpdateView, self).get(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        obj = Glucose.objects.get(pk=self.kwargs['pk'])
+
+        # Convert the value based on user's glucose unit setting.
+        obj.value = glucose_by_unit_setting(self.request.user, obj.value)
+
+        return obj
+
+    def post(self, request, *args, **kwargs):
+        # We need to create a copy of request.POST because it's immutable and
+        # we need to convert the content of the Value field to mg/dL if the
+        # user's glucose unit setting is set to mmol/L.
+        request.POST = request.POST.copy()
+        if request.user.settings.glucose_unit.name == 'mmol/L':
+            request.POST['value'] = to_mg(request.POST['value'])
+
+        return super(GlucoseUpdateView, self).post(request, *args, **kwargs)
+
 
 class GlucoseDeleteView(LoginRequiredMixin, DeleteView):
     model = Glucose
@@ -243,7 +310,11 @@ class GlucoseDeleteView(LoginRequiredMixin, DeleteView):
         if self.object.user != request.user:
             raise PermissionDenied
         else:
-            return super(GlucoseDeleteView, self).get(request, *args, **kwargs)
+            # Convert the value based on user's glucose unit setting.
+            self.object.value = glucose_by_unit_setting(request.user,
+                                                        self.object.value)
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
 
 
 class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
@@ -255,20 +326,24 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
     max_display_length = 500
 
     def render_column(self, row, column):
-        user_settings = self.request.user.settings
+        user = self.request.user
+        user_settings = user.settings
         low = user_settings.glucose_low
         high = user_settings.glucose_high
         target_min = user_settings.glucose_target_min
         target_max = user_settings.glucose_target_max
 
         if column == 'value':
+            value_by_unit_setting = glucose_by_unit_setting(user, row.value)
             edit_url = reverse('glucose_update', args=(row.id,))
             if row.value < low or row.value > high:
-                return self.get_value_cell_style(edit_url, row.value, 'red')
+                return self.get_value_cell_style(edit_url, value_by_unit_setting,
+                                                 'red')
             elif row.value >= target_min and row.value <= target_max:
-                return self.get_value_cell_style(edit_url, row.value, 'green')
+                return self.get_value_cell_style(edit_url, value_by_unit_setting,
+                                                 'green')
             else:
-                return self.get_value_cell_style(edit_url, row.value)
+                return self.get_value_cell_style(edit_url, value_by_unit_setting)
         elif column == 'category':
             return '%s' % row.category.name
         elif column == 'record_date':
@@ -334,23 +409,3 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
             qs = qs.filter(tags__name=tags)
 
         return qs
-
-
-class GlucoseUpdateView(LoginRequiredMixin, UpdateView):
-    model = Glucose
-    context_object_name = 'glucose'
-    success_url = '/dashboard/'
-    template_name = 'glucoses/glucose_update.html'
-    form_class = GlucoseUpdateForm
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-
-        # If the record's user doesn't match the currently logged-in user,
-        # deny viewing/updating of the object by showing the 403.html
-        # forbidden page. This can occur when the user changes the id in
-        # the URL field to a record that the user doesn't own.
-        if self.object.user != request.user:
-            raise PermissionDenied
-        else:
-            return super(GlucoseUpdateView, self).get(request, *args, **kwargs)

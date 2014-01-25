@@ -15,7 +15,7 @@ from django.db.models import Avg, Min, Max
 from django.conf import settings
 from django.core.mail import EmailMessage
 
-from core import utils
+from core import utils as core_utils
 
 from .models import Glucose
 
@@ -30,6 +30,10 @@ class UserStats(object):
     def __init__(self, user):
         self.user = user
         self.data = Glucose.objects.by_user(self.user)
+        self.glucose_unit_name = user.settings.glucose_unit.name
+
+    def glucose_by_unit_setting(self, value):
+        return core_utils.glucose_by_unit_setting(self.user, value)
 
     @property
     def user_settings(self):
@@ -65,7 +69,9 @@ class UserStats(object):
         latest_entry_time = latest_entry_notes = ''
         css_class = self.get_css_class(None)
         if latest_entry:
-            latest_entry_value = '%s mg/dL' % latest_entry.value
+            latest_entry_value = '%s %s' % \
+                                 (self.glucose_by_unit_setting(latest_entry.value),
+                                  self.glucose_unit_name)
             latest_entry_time = latest_entry.record_time.strftime(TIME_FORMAT)
             latest_entry_notes = latest_entry.notes
             css_class = self.get_css_class(latest_entry.value)
@@ -90,9 +96,9 @@ class UserStats(object):
         """
         now = datetime.now(tz=self.user.settings.time_zone).date()
         subset = self.by_date(now - timedelta(days=90), now)
-        average = utils.round_value(
+        average = core_utils.round_value(
             subset.aggregate(Avg('value'))['value__avg'])
-        hba1c = utils.round_value(utils.calc_hba1c(average))
+        hba1c = core_utils.round_value(core_utils.calc_hba1c(average))
 
         css_class = 'text-default'
 
@@ -104,7 +110,9 @@ class UserStats(object):
             else:
                 css_class = 'text-primary'
 
-        value_html = '%s%%<br><small>(%s mg/dL)</small>' % (hba1c, average) \
+        value_html = '%s%%<br><small>(%s %s)</small>' % \
+                     (hba1c, self.glucose_by_unit_setting(average),
+                      self.glucose_unit_name) \
             if hba1c else 'None<br><small>(None)</small>'
 
         return {
@@ -119,7 +127,7 @@ class UserStats(object):
         total = subset.count()
         lowest = subset.aggregate(Min('value'))['value__min']
         highest = subset.aggregate(Max('value'))['value__max']
-        average = utils.round_value(
+        average = core_utils.round_value(
             subset.aggregate(Avg('value'))['value__avg'])
         
         highs = subset.filter(value__gt=self.user_settings['high']).count()
@@ -133,22 +141,28 @@ class UserStats(object):
         return {
             'total': total,
             'lowest': {
-                'value': '%s mg/dL' % lowest if lowest else 'None',
+                'value': '%s %s' % (self.glucose_by_unit_setting(lowest),
+                                    self.glucose_unit_name) \
+                    if lowest else 'None',
                 'css_class': self.get_css_class(lowest),
             },
             'highest': {
-                'value': '%s mg/dL' % highest if highest else 'None',
+                'value': '%s %s' % (self.glucose_by_unit_setting(highest),
+                                    self.glucose_unit_name) \
+                    if highest else 'None',
                 'css_class': self.get_css_class(highest),
             },  
             'average': {
-                'value': '%s mg/dL' % average if average else 'None',
+                'value': '%s %s' % (self.glucose_by_unit_setting(average),
+                                    self.glucose_unit_name) \
+                    if average else 'None',
                 'css_class': self.get_css_class(average)
             },
-            'highs': '%s (%s%%)' % (highs, utils.percent(highs, total)),
-            'lows': '%s (%s%%)' % (lows, utils.percent(lows, total)),
+            'highs': '%s (%s%%)' % (highs, core_utils.percent(highs, total)),
+            'lows': '%s (%s%%)' % (lows, core_utils.percent(lows, total)),
             'within_target': '%s (%s%%)' % (
-                within_target, utils.percent(within_target, total)),
-            'other': '%s (%s%%)' % (other, utils.percent(other, total)),
+                within_target, core_utils.percent(within_target, total)),
+            'other': '%s (%s%%)' % (other, core_utils.percent(other, total)),
 
         }
 
@@ -219,8 +233,10 @@ class ChartData(object):
 
         data = {'categories': [], 'values': []}
         for avg in glucose_averages:
+            rounded_value = core_utils.round_value(avg['avg_value'])
+            data['values'].append(
+                core_utils.glucose_by_unit_setting(user, rounded_value))
             data['categories'].append(avg['category__name'])
-            data['values'].append(utils.round_value(avg['avg_value']))
 
         return data
 
@@ -233,18 +249,26 @@ class ChartData(object):
 
         data = {'dates': [], 'values': []}
         for avg in glucose_averages:
+            rounded_value = core_utils.round_value(avg['avg_value'])
+            data['values'].append(
+                core_utils.glucose_by_unit_setting(user, rounded_value))
             data['dates'].append(avg['record_date'].strftime('%m/%d'))
-            data['values'].append(utils.round_value(avg['avg_value']))
 
         return data
 
 
-class GlucoseCsvReport(object):
+class GlucoseBaseReport(object):
 
     def __init__(self, start_date, end_date, user):
         self.start_date = start_date
         self.end_date = end_date
         self.user = user
+
+    def glucose_by_unit_setting(self, value):
+        return core_utils.glucose_by_unit_setting(self.user, value)
+
+
+class GlucoseCsvReport(GlucoseBaseReport):
 
     def generate(self):
         data = Glucose.objects.by_date(
@@ -258,7 +282,7 @@ class GlucoseCsvReport(object):
 
             for item in data:
                 writer.writerow([
-                    item.value,
+                    self.glucose_by_unit_setting(item.value),
                     item.category,
                     item.record_date.strftime(DATE_FORMAT),
                     item.record_time.strftime(TIME_FORMAT),
@@ -282,12 +306,10 @@ class GlucoseCsvReport(object):
         email.send()
 
 
-class GlucosePdfReport(object):
+class GlucosePdfReport(GlucoseBaseReport):
 
     def __init__(self, start_date, end_date, user):
-        self.start_date = start_date
-        self.end_date = end_date
-        self.user = user
+        super(GlucosePdfReport, self).__init__(start_date, end_date, user)
 
         self.styles = getSampleStyleSheet()
         self.styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER))
@@ -318,16 +340,17 @@ class GlucosePdfReport(object):
         data = []
         for i in qs:
             value = i.value
+            value_by_unit_setting = self.glucose_by_unit_setting(value)
 
             # Bold the text if the value is high or low based on the user's
             # settings
             low = self.user.settings.glucose_low
             high = self.user.settings.glucose_high
             if value < low or value > high:
-                value = '<b>%s</b>' % value
+                value_by_unit_setting = '<b>%s</b>' % value_by_unit_setting
 
             data.append({
-                'value': self.to_paragraph(value),
+                'value': self.to_paragraph(value_by_unit_setting),
                 'category': i.category,
                 'date': i.record_date.strftime(DATE_FORMAT),
                 'time': i.record_time.strftime(TIME_FORMAT),

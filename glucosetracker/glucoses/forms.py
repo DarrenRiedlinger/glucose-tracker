@@ -9,6 +9,8 @@ from crispy_forms.layout import Button, Submit, MultiField, Div, HTML, \
     Field, Reset
 from crispy_forms.bootstrap import FormActions
 
+from core.utils import to_mg
+
 from .models import Glucose, Category
 
 
@@ -60,8 +62,8 @@ class GlucoseFilterForm(forms.Form):
             Field('start_date', placeholder='From (mm/dd/yyyy)'),
             Field('end_date', placeholder='To (mm/dd/yyyy)'),
             'category',
-            Field('start_value', placeholder='From'),
-            Field('end_value', placeholder='To'),
+            Field('start_value', placeholder='From', step='any'),
+            Field('end_value', placeholder='To', step='any'),
             'notes',
             Field('tags', placeholder='e.g. exercise, sick, medication'),
             FormActions(
@@ -92,7 +94,6 @@ class GlucoseQuickAddForm(forms.ModelForm):
     set to the user's current local date and time using Javascript (see
     dashboard.html template).
     """
-
     def __init__(self, *args, **kwargs):
         super(GlucoseQuickAddForm, self).__init__(*args, **kwargs)
 
@@ -106,8 +107,13 @@ class GlucoseQuickAddForm(forms.ModelForm):
         self.fields['category'].empty_label = None
 
         self.helper.layout = Layout(
-            Field('value', placeholder='Value (mg/dL)',
-                  required=True, autofocus=True),
+            HTML('''
+            <div id="div_id_value" class="form-group"> <div class="controls">
+            <input autofocus="True" class="numberinput form-control"
+            id="id_value" name="value"
+            placeholder="Value ({{ user.settings.glucose_unit.name }})"
+            required="True" type="number" step="any" min="0"/></div></div>
+            '''),
             Field('category'),
             Field('record_date', type='hidden'),
             Field('record_time', type='hidden'),
@@ -221,8 +227,8 @@ class GlucoseInputForm(forms.ModelForm):
                 class="alert alert-{{ message.tags }}"
                 {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
                 '''),
-            Field('value', placeholder='Value in mg/dL', required=True,
-                  autofocus=True),
+            Field('value', placeholder='Value', required=True, autofocus=True,
+                  min=0, step='any'),
             'category',
             'record_date',
             'record_time',
@@ -230,6 +236,7 @@ class GlucoseInputForm(forms.ModelForm):
             Field('tags', placeholder='e.g. exercise, sick, medication'),
             Field('submit_button_type', type='hidden')
         )
+
 
     class Meta:
         model = Glucose

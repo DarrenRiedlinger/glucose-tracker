@@ -30,7 +30,7 @@ def round_value(value):
     If the value is 0 or None, then simply return 0.
     """
     if value:
-       return math.ceil(value*100)/100
+       return round(float(value), 1)
     else:
         return 0
 
@@ -45,3 +45,30 @@ def percent(part, whole):
         return round_value(100 * float(part)/float(whole))
     else:
         return 0
+
+
+def to_mmol(value):
+    """
+    Convert a given value in mg/dL to mmol/L rounded to 1 decimal place.
+    """
+    return round((float(value) / 18.018), 1)
+
+
+def to_mg(value):
+    """
+    Convert a given value in mmol/L to mg/dL rounded to nearest integer.
+    """
+    return int(round((float(value) * 18.018), 0))
+
+
+def glucose_by_unit_setting(user, value):
+    """
+    Return the glucose value based on the unit setting.
+
+    Glucose values are stored in mg/dL in the database. If a user's setting
+    is set to mmol/L, convert the value.
+    """
+    if user.settings.glucose_unit.name=='mmol/L':
+        return to_mmol(value)
+    else:
+        return value

@@ -7,7 +7,6 @@ from django.contrib.auth.views import (
     password_reset_confirm,
     password_reset_complete
 )
-
 from django.conf.urls import patterns, url
 
 from .views import login_view, UserSettingsView, SignUpView

@@ -23,6 +23,7 @@ factory-boy==2.2.1
 gunicorn==18.0
 html2text==3.200.3
 ipython==1.1.0
+newrelic==2.10.0.8
 paramiko==1.12.1
 psycopg2==2.5.1
 pycrypto==2.6.1

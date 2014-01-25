@@ -232,7 +232,7 @@ $(document).ready(function() {
         $.getJSON(chartDataUrl,
             function(data) {
                 avgByDayOptions.xAxis.categories = data['chart_data']['dates'];
-                avgByDayOptions.series[0].name = 'Avg Glucose (mg/dL)';
+                avgByDayOptions.series[0].name = 'Avg Glucose ({{ user.settings.glucose_unit }})';
                 avgByDayOptions.series[0].data = data['chart_data']['values'];
                 var chart = new Highcharts.Chart(avgByDayOptions);
          });
@@ -293,6 +293,7 @@ $(document).ready(function() {
         });
         return false;
     });
+
 
     // For Twitter button
     function updateTwitterValues(text, via) {

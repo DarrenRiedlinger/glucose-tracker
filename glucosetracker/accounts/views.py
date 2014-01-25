@@ -9,6 +9,8 @@ from django.contrib.auth import authenticate, login, logout
 from axes.decorators import watch_login
 from braces.views import LoginRequiredMixin
 
+from core.utils import glucose_by_unit_setting, to_mg
+
 from .models import UserSettings
 from .forms import UserSettingsForm, SignUpForm
 
@@ -65,6 +67,7 @@ class SignUpView(FormView):
 
             # Create an entry for the User Settings.
             user_settings = UserSettings.objects.create(user=user)
+            user_settings.glucose_unit = form.cleaned_data['glucose_unit']
             user_settings.time_zone = form.cleaned_data['time_zone']
             user_settings.save()
 
@@ -92,11 +95,14 @@ class UserSettingsView(LoginRequiredMixin, FormView):
             'last_name': user.last_name,
             'email': user.email,
             'time_zone': settings.time_zone,
+            'glucose_unit': settings.glucose_unit,
             'default_category': settings.default_category,
-            'glucose_low': settings.glucose_low,
-            'glucose_high': settings.glucose_high,
-            'glucose_target_min': settings.glucose_target_min,
-            'glucose_target_max': settings.glucose_target_max,
+            'glucose_low': glucose_by_unit_setting(user, settings.glucose_low),
+            'glucose_high': glucose_by_unit_setting(user, settings.glucose_high),
+            'glucose_target_min': glucose_by_unit_setting(
+                user, settings.glucose_target_min),
+            'glucose_target_max': glucose_by_unit_setting(
+                user, settings.glucose_target_max),
         }
 
     def form_valid(self, form):
@@ -118,14 +124,28 @@ class UserSettingsView(LoginRequiredMixin, FormView):
 
             user.settings.time_zone = form.cleaned_data['time_zone']
 
+            glucose_unit = form.cleaned_data['glucose_unit']
+            user.settings.glucose_unit = glucose_unit
+
             user.settings.default_category = form.cleaned_data['default_category']
 
-            user.settings.glucose_low = form.cleaned_data['glucose_low']
-            user.settings.glucose_high = form.cleaned_data['glucose_high']
-            user.settings.glucose_target_min = form.cleaned_data[
-                'glucose_target_min']
-            user.settings.glucose_target_max = form.cleaned_data[
-                'glucose_target_max']
+            glucose_low = form.cleaned_data['glucose_low']
+            glucose_high = form.cleaned_data['glucose_high']
+            glucose_target_min = form.cleaned_data['glucose_target_min']
+            glucose_target_max = form.cleaned_data['glucose_target_max']
+
+            # If user's glucose unit setting is set to mmol/L, convert the
+            # values to mg/dL.
+            if glucose_unit.name == 'mmol/L':
+                glucose_low = to_mg(glucose_low)
+                glucose_high = to_mg(glucose_high)
+                glucose_target_min = to_mg(glucose_target_min)
+                glucose_target_max = to_mg(glucose_target_max)
+
+            user.settings.glucose_low = glucose_low
+            user.settings.glucose_high = glucose_high
+            user.settings.glucose_target_min = glucose_target_min
+            user.settings.glucose_target_max = glucose_target_max
             user.settings.save()
 
             return self.form_valid(form)

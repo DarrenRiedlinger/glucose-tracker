@@ -9,3 +9,39 @@
 {% block content %}
    {% crispy form %}
 {% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function() {
+    // If the glucose_unit field changes, capture the new value and make
+    // adjustments to the current values of the glucose level fields
+    // accordingly.
+    $('#id_glucose_unit').change(function(){
+        var glucose_low = $('#id_glucose_low').val();
+        var glucose_high = $('#id_glucose_high').val();
+        var glucose_target_min = $('#id_glucose_target_min').val();
+        var glucose_target_max = $('#id_glucose_target_max').val();
+
+        var unit_id = $('#id_glucose_unit').val();
+
+        $('#id_glucose_low').val(convert_glucose_unit(unit_id, glucose_low));
+        $('#id_glucose_high').val(convert_glucose_unit(unit_id, glucose_high));
+        $('#id_glucose_target_min').val(convert_glucose_unit(unit_id, glucose_target_min));
+        $('#id_glucose_target_max').val(convert_glucose_unit(unit_id, glucose_target_max));
+    });
+
+    // Convert the given value to mg/dL or mmol/L based on the glucose unit id.
+    // Note that id 1 is mg/dL, 2 is mmol/L.
+    function convert_glucose_unit(id, value) {
+        if (id == 2) {
+            var result = Math.round((value / 18.018) * 10) / 10;
+        } else {
+            var result = Math.round(value * 18.018);
+        }
+
+        return result;
+    }
+
+} );
+</script>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
 from taggit.managers import TaggableManager
@@ -15,19 +15,14 @@ class GlucoseManager(models.Manager):
         """
         return self.select_related().filter(user=user)
 
-    def by_date(self, start_date, end_date, user=None, **kwargs):
+    def by_date(self, start_date, end_date, user, **kwargs):
         """
         Filter objects by date range.
         """
-        if user:
-            resultset = self.select_related().filter(
-                user=user,
-                record_date__gte=start_date,
-                record_date__lte=end_date)
-        else:
-            resultset = self.select_related().filter(
-                record_date__gte=start_date,
-                record_date__lte=end_date)
+        resultset = self.by_user(user).filter(
+            record_date__gte=start_date,
+            record_date__lte=end_date,
+        )
 
         return resultset.order_by('-record_date', '-record_time')
 
@@ -60,7 +55,7 @@ class GlucoseManager(models.Manager):
 
         return result
 
-    def by_category(self, start_date, end_date, user=None, **kwargs):
+    def by_category(self, start_date, end_date, user, **kwargs):
         """
         Group objects by category and take the count.
         """
@@ -70,7 +65,7 @@ class GlucoseManager(models.Manager):
             .annotate(count=models.Count('value'))\
             .order_by('category')
 
-    def avg_by_category(self, start_date, end_date, user=None):
+    def avg_by_category(self, start_date, end_date, user):
         """
         Group objects by category and take the average of the values.
         """
@@ -80,7 +75,7 @@ class GlucoseManager(models.Manager):
             .annotate(avg_value= models.Avg('value'))\
             .order_by('category')
 
-    def avg_by_day(self, start_date, end_date, user=None):
+    def avg_by_day(self, start_date, end_date, user):
         """
         Group objects by record date and take the average of the values.
         """
@@ -95,8 +90,8 @@ class Glucose(TimeStampedModel):
     objects = GlucoseManager()
 
     user = models.ForeignKey(User)
-    value = models.PositiveIntegerField(validators=[MaxValueValidator(3000),
-                                                    MinValueValidator(1)])
+    value = models.PositiveIntegerField(validators=[MaxValueValidator(54054),
+                                                    MinValueValidator(0)])
     category = models.ForeignKey('Category')
     record_date = models.DateField('Date')
     record_time = models.TimeField('Time')
@@ -119,3 +114,10 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
         ordering = ['id']
+
+
+class Unit(models.Model):
+    name = models.CharField(unique=True, max_length=6)
+
+    def __unicode__(self):
+        return self.name
