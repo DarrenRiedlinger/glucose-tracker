@@ -144,8 +144,7 @@ def quick_add(request):
         else:
             message = {
                 'success': False,
-                'error': 'Value must be between 0 and 3000 (whole numbers only '
-                         'if using mg/dL).'
+                'error': 'Invalid value.'
             }
 
             return HttpResponse(json.dumps(message))
