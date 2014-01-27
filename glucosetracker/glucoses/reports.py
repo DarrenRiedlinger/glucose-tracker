@@ -63,7 +63,8 @@ class UserStats(object):
 
     @property
     def latest_entry(self):
-        latest_entry = self.data.latest('id') if self.data else None
+        latest_entry = self.data.order_by('-record_date', '-record_time')[0] \
+            if self.data else None
 
         latest_entry_value = 'None'
         latest_entry_time = latest_entry_notes = ''

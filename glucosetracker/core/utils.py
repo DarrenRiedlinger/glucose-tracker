@@ -22,7 +22,7 @@ def calc_hba1c(value):
 
 def round_value(value):
     """
-    Round the given value.
+    Round the given value to 1 decimal place.
 
     If the value is 0 or None, then simply return 0.
     """
