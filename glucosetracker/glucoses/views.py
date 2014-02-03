@@ -50,8 +50,11 @@ def filter_view(request):
         # user's glucose unit setting is set to mmol/L.
         params = request.POST.copy()
         if request.user.settings.glucose_unit.name == 'mmol/L':
-            params['start_value'] = to_mg(params['start_value'])
-            params['end_value'] = to_mg(params['end_value'])
+            # Only do the conversion if the values are not None or empty.
+            if params['start_value']:
+                params['start_value'] = to_mg(params['start_value'])
+            if params['end_value']:
+                params['end_value'] = to_mg(params['end_value'])
 
         # Create the URL query string and strip the last '&' at the end.
         data = ('%s?%s' % (reverse('glucose_list_json'), ''.join(
