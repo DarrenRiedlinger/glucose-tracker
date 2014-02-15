@@ -356,7 +356,7 @@ class GlucoseListJson(LoginRequiredMixin, BaseDatatableView):
             edit_link = """<a href="%s">
                 <img src="/static/images/icons/icon_changelink.gif"></a>""" % \
                 reverse('glucose_update', args=(row.id,))
-            delete_link = """<a href="%s?next=/glucoses/filter/">
+            delete_link = """<a href="%s">
                 <img src="/static/images/icons/icon_deletelink.gif"></a>""" % \
                 reverse('glucose_delete', args=(row.id,))
             return '<center>%s&nbsp;%s</center>' % (edit_link, delete_link)
