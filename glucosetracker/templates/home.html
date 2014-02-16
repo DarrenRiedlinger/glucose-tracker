@@ -19,10 +19,8 @@
                     <br><br>
                     It's <b>completely free</b> with no ads. Modern look and mobile friendly!
                     <br><br>
-                    (Glucose readings logged so far: <b>{{ glucose_count|intcomma }}</b>)
-                </p>
-                <br>
-                <p class="text-center">
+                    <b>{{ glucose_count|intcomma }}</b> Glucose Readings Logged
+                    <br><br>
                     <a class="btn btn-lg btn-success" href="{% url 'signup' %}" role="button">
                         Sign Up Today
                     </a>
@@ -35,7 +33,6 @@
                 </a>
                 <p class="text-center">
                     <a href="https://twitter.com/glucosetracker" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @glucosetracker</a>
-                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
                 </p>
             </div>
         </div>
@@ -120,12 +117,33 @@
       <!-- FOOTER -->
       <footer>
         <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2014 GlucoseTracker.net</a></p>
+        <p>
+            &copy; 2014 GlucoseTracker.net by <a href="http://www.calazan.com">Jonathan Calazan</a>
+            | <a href="https://www.facebook.com/glucose.tracker/info">About GlucoseTracker</a>
+            | <a href="mailto:info@glucosetracker.net">Contact Us</a>
+        </p>
       </footer>
 
     </div><!-- /.container -->
 {% endblock %}
 
 {% block extrajs %}
+<!-- Facebook Like Button -->
+<!--<div id="fb-root"></div>-->
+<!--<script>(function(d, s, id) {-->
+    <!--var js, fjs = d.getElementsByTagName(s)[0];-->
+    <!--if (d.getElementById(id)) return;-->
+    <!--js = d.createElement(s); js.id = id;-->
+    <!--js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";-->
+    <!--fjs.parentNode.insertBefore(js, fjs);-->
+<!--}(document, 'script', 'facebook-jssdk'));</script>-->
+
+<!-- Twitter Follow Button -->
+<script>!function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+    if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
+    fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+</script>
+
 <script src="{{ STATIC_URL }}bootstrap/js/holder.js"></script>
 {% endblock %}
