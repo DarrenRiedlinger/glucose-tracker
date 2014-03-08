@@ -1,0 +1,8 @@
+---
+- name: Install apache2 and other required packages
+  apt: name={{ item }} state=present
+  with_items:
+   - nginx
+
+- name: nginx service state
+  service: name=nginx state=started enabled=yes
