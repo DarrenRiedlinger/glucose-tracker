@@ -1,0 +1,22 @@
+{% if not apache_http_port == 80 %}
+Listen {{ apache_http_port }}
+{% endif %}
+<VirtualHost *:{{ apache_http_port }}>
+    ServerAdmin webmaster@localhost
+
+    DocumentRoot {{ application_path }}
+
+    # WSGI Settings
+    WSGIScriptAlias / {{ application_path }}/wsgi/{{ django_wsgi_file }}
+    WSGIDaemonProcess / python-path={{ application_path }}:{{ virtualenv_path }}/lib/python2.7/site-packages
+    WSGIProcessGroup /
+    WSGIPassAuthorization On
+
+    Alias /static/ /noodle/static/noodleapi/
+
+    ErrorLog /var/log/apache2/error.log
+
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+</VirtualHost>

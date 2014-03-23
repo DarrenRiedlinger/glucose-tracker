@@ -1,0 +1,6 @@
+---
+
+- name: Create Apache2 configuration file for Noodle API
+  template: src=default.j2 dest=/etc/apache2/sites-available/default
+  notify:
+    - restart apache2

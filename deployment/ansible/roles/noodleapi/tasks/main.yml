@@ -1,0 +1,10 @@
+---
+
+- include: prepare_database.yml
+  when: prepare_database
+
+- include: prepare_virtualenv.yml
+
+- include: run_django_commands.yml
+
+- include: copy_apache_config.yml

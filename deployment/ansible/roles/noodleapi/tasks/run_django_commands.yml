@@ -1,0 +1,36 @@
+---
+
+- name: Run the Django generate_mongo_data command
+  django_manage: command=generate_mongo_data
+                 app_path={{ application_path }}
+                 virtualenv={{ virtualenv_path }}
+                 settings={{ django_settings_file }}
+  when: run_django_generate_mongo_data
+
+- name: Run the Django syncdb command
+  django_manage: command=syncdb
+                 app_path={{ application_path }}
+                 virtualenv={{ virtualenv_path }}
+                 settings={{ django_settings_file }}
+  when: run_django_syncdb
+
+- name: Create a superuser/admin account
+  django_manage: command='createsuperuser --userName admin --noinput'
+                 app_path={{ application_path }}
+                 virtualenv={{ virtualenv_path }}
+                 settings={{ django_settings_file }}
+  ignore_errors: yes
+
+- name: Run South migrations
+  django_manage: command=migrate
+                 app_path={{ application_path }}
+                 virtualenv={{ virtualenv_path }}
+                 settings={{ django_settings_file }}
+  when: run_django_south_migration
+
+- name: Run the Django collecstatic command
+  django_manage: command=collectstatic
+                 app_path={{ application_path }}
+                 virtualenv={{ virtualenv_path }}
+                 settings={{ django_settings_file }}
+  when: run_django_collectstatic

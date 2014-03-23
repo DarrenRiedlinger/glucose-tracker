@@ -1,7 +1,25 @@
 ---
-- name: install base packages
-  apt: name={{ item }} state=installed update_cache=yes
+
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Install base packages
+  apt: name={{ item }} force=yes state=installed
   with_items:
-   - build-essential
-   - python-dev
-   - git
+    - build-essential
+    - git
+    - python-dev
+    - python-pip
+    - python-pycurl
+    - supervisor
+
+
+- name: Install newrelic
+  pip: name=newrelic
+
+
+# Note that we're specifying the version number here as we don't want to use
+# the latest version. The latest version of virtualenv is using a newer version
+# of pip which doesn't work work with some of the packages we use in Django.
+- name: Install virtualenv
+  pip: name=virtualenv version=1.10.1

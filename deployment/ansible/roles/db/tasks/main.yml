@@ -1,0 +1,32 @@
+---
+
+- name: Install PostgreSQL
+  apt: name={{ item }} state=installed
+  with_items:
+    - postgresql-{{ postgresql_version }}
+    - postgresql-contrib
+    - libpq-dev
+    - python-psycopg2
+
+- name: Install PostgreSQL config file
+  template: src=postgresql.conf
+            dest=/etc/postgresql/{{ postgresql.version }}/main/postgresql.conf
+            owner={{ postgresql.user }} group={{ postgresql.group }}
+  notify:
+    - restart postgresql
+
+- name: Ensure the PostgreSQL service is running
+  service: name=postgresql state=started
+
+- name: Ensure database is created
+  postgresql_db: db={{ db_name }}
+
+- name: Ensure user has access to the database
+  postgresql_user: db={{ db_name }}
+                   name={{ db_user }}
+                   password={{ db_password }}
+                   priv=ALL
+
+- name: Ensure user does not hae unnecessary privileges
+  postgresql_user: name={{ db_user }}
+                    role_attr_flags=NOSUPERUSER,NOCREATEDB

@@ -1,2 +1,10 @@
 ---
-- include: install_nginx.yml
+
+- name: Install Apache2 and other required modules
+  apt: name={{ item }} state=installed
+  with_items:
+    - gunicorn
+    - nginx
+
+- name: Ensure Nginx service is started
+  service: name=nginx state=started enabled=yes

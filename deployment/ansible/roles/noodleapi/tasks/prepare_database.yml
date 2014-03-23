@@ -1,0 +1,9 @@
+---
+
+- name: Create application database
+  mysql_db: name={{ noodleapi_db_name }} state=present
+
+- name: Create application database user
+  mysql_user: name={{ noodleapi_db_user }}
+              password={{ noodleapi_db_password }}
+              priv=*.*:ALL host='%' state=present

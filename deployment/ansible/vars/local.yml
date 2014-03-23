@@ -1,0 +1,37 @@
+---
+
+# Gunicorn settings
+wsgi_port: 8000
+
+
+# Nginx settings
+nginx_http_port: 80
+nginx_https_port: 443
+
+
+# SSL files.
+ssl_cert_path: /base/files/ssl_self_signed/noodle_org.crt
+ssl_key_path: /base/files/ssl_self_signed/noodle_org.key
+
+
+# PostgreSQL settings.
+postgresql_version: 9.1
+db_user: glucosetracker
+db_name: glucosetracker
+db_password: password
+
+
+# Application settings.
+application_name: GlucoseTracker (LOCAL)
+project_path: /webapps/glucosetracker/glucose-tracker
+application_path: $project_path/glucosetracker
+requirements_file: $project_path/requirements.txt
+virtualenv_path: /webapps/glucosetracker
+
+django_settings_file: settings.local
+django_wsgi_file: local.py
+
+run_django_generate_mongo_data: yes
+run_django_syncdb: yes
+run_django_south_migration: yes
+run_django_collectstatic: yes
