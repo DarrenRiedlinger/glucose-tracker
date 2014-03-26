@@ -7,13 +7,14 @@
   gather_facts: no
 
 - name: Create {{ application_name }} virtual machine via vagrant
-  hosts: vagrant
+  hosts: all
   sudo: yes
   remote_user: vagrant
   sudo_user: root
   vars_files:
-    - vars/base.yml
-    - vars/local.yml
+    - group_vars/all
+    - group_vars/dbservers
+    - group_vars/webservers
 
   roles:
     - base

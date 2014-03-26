@@ -1,0 +1,8 @@
+---
+
+# PostgreSQL settings.
+postgresql_version: 9.1
+
+db_user: glucosetracker
+db_name: glucosetracker
+db_password: password

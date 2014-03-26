@@ -1,3 +1,4 @@
 *.pyc
 *.sqlite
-*.vagrant
+.vagrant
+vagrant_ansible_inventory_default

@@ -1,0 +1,9 @@
+---
+
+# Git settings.
+git_repo: git@github.com:jcalazan/glucose-tracker.git
+
+
+# SSL files.
+ssl_cert_path: /base/files/ssl_self_signed/noodle_org.crt
+ssl_key_path: /base/files/ssl_self_signed/noodle_org.key
