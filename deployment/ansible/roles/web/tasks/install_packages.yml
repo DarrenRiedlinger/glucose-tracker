@@ -1,0 +1,10 @@
+---
+
+- name: Install Gunicorn and Nginx
+  apt: name={{ item }} state=installed
+  with_items:
+    - gunicorn
+    - nginx
+
+- name: Ensure Nginx service is started
+  service: name=nginx state=started enabled=yes

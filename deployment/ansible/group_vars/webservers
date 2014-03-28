@@ -10,11 +10,13 @@ nginx_https_port: 443
 
 
 # Application settings.
-application_name: GlucoseTracker (LOCAL)
-project_path: /webapps/glucosetracker/glucose-tracker
-application_path: $project_path/glucosetracker
-requirements_file: $project_path/requirements.txt
+application_name: glucosetracker
 virtualenv_path: /webapps/glucosetracker
+project_path: "{{ virtualenv_path }}/glucose-tracker"
+application_path: "{{ project_path }}/glucosetracker"
+requirements_file: "{{ project_path }}/requirements.txt"
+
+prepare_git_repo: no
 
 django_settings_file: settings.local
 django_wsgi_file: local.py

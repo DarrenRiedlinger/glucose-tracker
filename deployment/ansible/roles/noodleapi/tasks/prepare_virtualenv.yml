@@ -1,8 +1,0 @@
----
-
-- name: Create a virtualenv
-  command: virtualenv {{ virtualenv_path }} --no-site-packages
-           creates={{ virtualenv_path }}
-
-- name: Install packages inside the virtualenv
-  pip: virtualenv={{ virtualenv_path }} requirements={{ requirements_file }}

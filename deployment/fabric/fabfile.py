@@ -22,7 +22,7 @@ def deploy():
     Steps:
         1. Change to the app's directory.
         2. Stash and clear any changes in the local git repo.
-	3. Pull changes from the remote master branch in git.
+        3. Pull changes from the remote master branch in git.
         4. Activate virtualenv.
         5. Run pip install using the requirements.txt file.
         6. Run South migrations.
@@ -30,9 +30,7 @@ def deploy():
     """
     with cd(app_directory):
 
-	sudo('git stash', user=owner)
-	sudo('git stash clear', user=owner)
-        sudo('git pull', user=owner)
+        sudo('git reset origin --hard origin/master', user=owner)
 
         venv_command = 'source ../bin/activate'
 

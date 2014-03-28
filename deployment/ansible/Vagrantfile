@@ -15,10 +15,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Shared folder from the host machine to the guest machine.
-  config.vm.synced_folder "../../glucosetracker", "/webapps/glucosetracker"
+  config.vm.synced_folder "../../../glucose-tracker", "/webapps/glucosetracker/glucose-tracker"
 
   config.vm.provision "ansible" do |ansible|
-    #ansible.inventory_path = "inventory/local"
     ansible.playbook = "vagrant.yml"
     ansible.host_key_checking = false
     ansible.verbose = "vvvv"

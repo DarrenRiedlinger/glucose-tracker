@@ -1,16 +1,12 @@
 ---
 
-- name: Wait for the virtual machine's SSH daemon to be ready
-  hosts: vagrant
-  tasks:
-    - wait_for: port=22 delay=3 timeout=300
-  gather_facts: no
-
 - name: Create {{ application_name }} virtual machine via vagrant
   hosts: all
   sudo: yes
   remote_user: vagrant
   sudo_user: root
+  vars:
+    - prepare_git_repo: no
   vars_files:
     - group_vars/all
     - group_vars/dbservers
@@ -19,4 +15,4 @@
   roles:
     - base
     - db
-    #- web
+    - web

@@ -1,7 +1,7 @@
 ---
 
 # Git settings.
-git_repo: git@github.com:jcalazan/glucose-tracker.git
+git_repo: https://github.com/jcalazan/glucose-tracker.git
 
 
 # SSL files.
