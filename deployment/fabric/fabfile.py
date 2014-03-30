@@ -30,6 +30,7 @@ def deploy():
     """
     with cd(app_directory):
 
+        sudo('git fetch', user=owner)
         sudo('git reset --hard origin/master', user=owner)
 
         venv_command = 'source ../bin/activate'
