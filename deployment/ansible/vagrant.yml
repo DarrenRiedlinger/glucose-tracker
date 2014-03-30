@@ -6,7 +6,7 @@
   sudo_user: root
   remote_user: vagrant
   vars:
-    - update_apt_cache: no
+    - update_apt_cache: yes
   vars_files:
     - group_vars/all
     - group_vars/dbservers
