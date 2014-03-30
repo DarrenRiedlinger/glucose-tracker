@@ -42,4 +42,8 @@ def deploy():
                         '--settings=%s' % settings_file
         sudo('%s && %s' % (venv_command, south_command), user=owner)
 
+        collectstatic_command = 'python glucosetracker/manage.py collecstatic --noinput ' \
+                        '--settings=%s' % settings_file
+        sudo('%s && %s' % (venv_command, collectstatic_command), user=owner)
+
         sudo('supervisorctl restart glucosetracker')
