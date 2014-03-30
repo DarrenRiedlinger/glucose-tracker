@@ -1,9 +1,15 @@
 ---
 
-- include: install_packages.yml
+- include: create_users_and_groups.yml
 
-- include: prepare_virtualenv.yml
+- include: setup_nginx.yml
 
-- include: prepare_git_repo.yml
+- include: setup_virtualenv.yml
 
-- include: prepare_django_app.yml
+- include: setup_supervisor.yml
+
+- include: setup_git_repo.yml
+
+- include: setup_django_app.yml
+
+- include: set_file_permissions.yml

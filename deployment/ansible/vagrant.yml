@@ -3,14 +3,15 @@
 - name: Create {{ application_name }} virtual machine via vagrant
   hosts: all
   sudo: yes
-  remote_user: vagrant
   sudo_user: root
+  remote_user: vagrant
   vars:
-    - prepare_git_repo: no
+    - update_apt_cache: no
   vars_files:
     - group_vars/all
     - group_vars/dbservers
     - group_vars/webservers
+    - env_vars/local
 
   roles:
     - base

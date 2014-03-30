@@ -1,7 +1,7 @@
 ---
 
 - name: Install PostgreSQL
-  apt: name={{ item }} state=installed
+  apt: name={{ item }} update_cache={{ update_apt_cache }} state=installed
   with_items:
     - postgresql-{{ postgresql_version }}
     - postgresql-contrib

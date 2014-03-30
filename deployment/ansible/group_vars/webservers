@@ -1,27 +1,25 @@
 ---
 
-# Gunicorn settings
-wsgi_port: 8000
-
-
-# Nginx settings
-nginx_http_port: 80
-nginx_https_port: 443
-
-
 # Application settings.
 application_name: glucosetracker
 virtualenv_path: /webapps/glucosetracker
 project_path: "{{ virtualenv_path }}/glucose-tracker"
 application_path: "{{ project_path }}/glucosetracker"
+application_log_dir: "{{ virtualenv_path }}/logs"
+application_log_file: "{{ application_log_dir }}/gunicorn_supervisor.log"
 requirements_file: "{{ project_path }}/requirements.txt"
 
-prepare_git_repo: no
 
-django_settings_file: settings.local
-django_wsgi_file: local.py
+# Gunicorn settings
+gunicorn_user: glucosetracker
+gunicorn_group: webapps
 
-run_django_generate_mongo_data: yes
-run_django_syncdb: yes
-run_django_south_migration: yes
-run_django_collectstatic: yes
+
+# Nginx settings
+nginx_http_port: 80
+nginx_https_port: 443
+nginx_access_log_file: "{{ application_log_dir }}/nginx_access.log"
+nginx_error_log_file: "{{ application_log_dir }}/nginx_error.log"
+nginx_static_dir: "{{ virtualenv_path }}/static/"
+nginx_media_dir: "{{ virtualenv_path }}/media/"
+

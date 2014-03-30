@@ -1,6 +1,0 @@
----
-
-- name: Create the Gunicorn config file
-  template: src=default.j2 dest=/etc/apache2/sites-available/default
-  notify:
-    - restart gunicorn

@@ -1,0 +1,33 @@
+---
+
+# Database settings.
+db_user: glucosetracker
+db_name: glucosetracker
+db_password: password
+
+
+# Nginx settings.
+nginx_server_name: 192.168.33.10
+ssl_src_dir: ssl_self_signed
+ssl_cert_file: glucosetracker_net.crt
+ssl_key_file: glucosetracker_net.key
+
+
+# SMTP settings.
+smtp_user: admin@example.com
+smtp_password: mypassword
+
+
+# Application settings.
+setup_git_repo: no
+
+load_random_glucose_data: yes
+test_user: jsmith
+
+django_settings_file: settings.local
+django_wsgi_file: local.py
+
+run_django_generate_mongo_data: yes
+run_django_syncdb: yes
+run_django_south_migration: yes
+run_django_collectstatic: yes

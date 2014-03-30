@@ -2,4 +2,4 @@
 
 - name: Prepare the Git repo
   git: repo={{ git_repo }} dest={{ project_path }} accept_hostkey=yes
-  when: prepare_git_repo
+  when: setup_git_repo

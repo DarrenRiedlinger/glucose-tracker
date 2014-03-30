@@ -1,10 +1,7 @@
 ---
 
-- name: Update apt cache
-  apt: update_cache=yes
-
 - name: Install base packages
-  apt: name={{ item }} force=yes state=installed
+  apt: name={{ item }} update_cache={{ update_apt_cache }} force=yes state=installed
   with_items:
     - build-essential
     - git
