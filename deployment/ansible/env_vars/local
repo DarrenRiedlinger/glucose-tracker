@@ -7,10 +7,13 @@ db_password: password
 
 
 # Gunicorn settings.
+gunicorn_num_workers: 3
+
 # Setting this to 1 will restart the Gunicorn process each time you
 # make a request, basically reloading the code. Very handy when
 # developing. Set to 0 for unlimited requests (default).
 gunicorn_max_requests: 1
+
 
 # Nginx settings.
 nginx_server_name: 192.168.33.10
@@ -31,7 +34,6 @@ load_random_glucose_data: yes
 test_user: jsmith
 
 django_settings_file: settings.local
-django_wsgi_file: local.py
 
 run_django_generate_mongo_data: yes
 run_django_syncdb: yes

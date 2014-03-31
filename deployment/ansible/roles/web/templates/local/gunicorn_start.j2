@@ -5,7 +5,7 @@ DJANGODIR={{ application_path }}
 SOCKFILE={{ virtualenv_path }}/run/gunicorn.sock
 USER={{ gunicorn_user }}
 GROUP={{ gunicorn_group }}
-NUM_WORKERS=3
+NUM_WORKERS={{ gunicorn_num_workers }}
 
 # Set this to 0 for unlimited requests. During development, you might want to
 # set this to 1 to automatically restart the process on each request (i.e. your
