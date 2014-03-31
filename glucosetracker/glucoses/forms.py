@@ -9,8 +9,6 @@ from crispy_forms.layout import Button, Submit, MultiField, Div, HTML, \
     Field, Reset
 from crispy_forms.bootstrap import FormActions
 
-from core.utils import to_mg
-
 from .models import Glucose, Category
 
 

@@ -7,6 +7,11 @@ USER={{ gunicorn_user }}
 GROUP={{ gunicorn_group }}
 NUM_WORKERS=3
 
+# Set this to 0 for unlimited requests. During development, you might want to
+# set this to 1 to automatically restart the process on each request (i.e. your
+# code will be reloaded for every request).
+MAX_REQUESTS={{ gunicorn_max_requests }}
+
 echo "Starting $NAME as `whoami`"
 
 # Activate the virtual environment
@@ -23,6 +28,7 @@ exec python manage.py run_gunicorn \
 		--settings={{ django_settings_file }} \
  		--name $NAME \
   		--workers $NUM_WORKERS \
+  		--max-requests $MAX_REQUESTS \
   		--user=$USER --group=$GROUP \
   		--log-level=debug \
   		--bind=unix:$SOCKFILE
