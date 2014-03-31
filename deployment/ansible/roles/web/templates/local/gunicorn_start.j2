@@ -9,21 +9,24 @@ NUM_WORKERS=3
 
 # Set this to 0 for unlimited requests. During development, you might want to
 # set this to 1 to automatically restart the process on each request (i.e. your
-# code will be reloaded for every request).
+# code will be reloaded on every request).
 MAX_REQUESTS={{ gunicorn_max_requests }}
 
 echo "Starting $NAME as `whoami`"
 
-# Activate the virtual environment
+# Activate the virtual environment.
 cd $DJANGODIR
 source ../../bin/activate
+
+# Set additional environment variables.
 source ../../bin/postactivate
 
-# Create the run directory if it doesn't exist
+# Create the run directory if it doesn't exist.
 RUNDIR=$(dirname $SOCKFILE)
 test -d $RUNDIR || mkdir -p $RUNDIR
 
-# Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
+# Programs meant to be run under supervisor should not daemonize themselves
+# (do not use --daemon).
 exec python manage.py run_gunicorn \
 		--settings={{ django_settings_file }} \
  		--name $NAME \
