@@ -7,8 +7,9 @@
   copy: src={{ ssl_src_dir }}/ dest=/etc/ssl/
 
 - name: Create the Nginx configuration file
-  template: src=local/nginx_site_config.j2
+  template: src=nginx_site_config.j2
             dest=/etc/nginx/sites-available/{{ application_name }}
+            backup=yes
   notify: restart nginx
 
 - name: Ensure that the default site is disabled

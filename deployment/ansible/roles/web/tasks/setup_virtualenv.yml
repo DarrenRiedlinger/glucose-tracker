@@ -5,11 +5,12 @@
            creates={{ virtualenv_path }}/bin/activate
 
 - name: Create the Gunicorn script file
-  template: src=local/gunicorn_start.j2
+  template: src=gunicorn_start.j2
             dest={{ virtualenv_path }}/bin/gunicorn_start
             owner={{ gunicorn_user }}
             group={{ gunicorn_group }}
             mode=0755
+            backup=yes
 
 - name: Create the application log folder
   file: path={{ application_log_dir }}
@@ -23,8 +24,9 @@
            creates={{ application_log_file }}
 
 - name: Create the virtualenv postactivate script to set environment variables
-  template: src=local/virtualenv_postactivate.j2
+  template: src=virtualenv_postactivate.j2
             dest={{ virtualenv_path }}/bin/postactivate
+            backup=yes
 
 - name: Set permission to the application log file
   file: path={{ application_log_file }}

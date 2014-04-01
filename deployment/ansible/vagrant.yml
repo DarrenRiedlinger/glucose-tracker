@@ -6,12 +6,13 @@
   sudo_user: root
   remote_user: vagrant
   vars:
+    - setup_git_repo: no
     - update_apt_cache: yes
   vars_files:
+    - env_vars/local
     - group_vars/all
     - group_vars/dbservers
     - group_vars/webservers
-    - env_vars/local
 
   roles:
     - base
