@@ -1,5 +1,5 @@
 [webservers]
-192.168.33.10
+ec2-54-186-6-82.us-west-2.compute.amazonaws.com
 
 [dbservers]
-192.168.33.10
+ec2-54-186-6-82.us-west-2.compute.amazonaws.com

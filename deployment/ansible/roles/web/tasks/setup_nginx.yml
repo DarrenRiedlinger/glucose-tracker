@@ -1,7 +1,7 @@
 ---
 
 - name: Install Nginx
-  apt: name=nginx update_cache={{ update_apt_cache }} state=installed
+  apt: pkg=nginx update_cache={{ update_apt_cache }} state=installed
 
 - name: Copy the SSL certs to the remote server
   copy: src={{ ssl_src_dir }}/ dest=/etc/ssl/
@@ -17,7 +17,7 @@
            removes=/etc/nginx/sites-enabled/default
   notify: restart nginx
 
-- name: Ensure that application site is enabled
+- name: Ensure that the application site is enabled
   command: ln -s /etc/nginx/sites-available/{{ application_name }}
            /etc/nginx/sites-enabled/{{ application_name }}
            creates=/etc/nginx/sites-enabled/{{ application_name }}
