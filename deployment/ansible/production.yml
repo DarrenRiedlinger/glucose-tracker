@@ -15,6 +15,6 @@
     - group_vars/webservers
 
   roles:
-#    - base
-#    - db
+    - base
+    - db
     - web

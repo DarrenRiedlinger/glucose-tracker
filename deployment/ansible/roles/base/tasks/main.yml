@@ -1,7 +1,7 @@
 ---
 
 - name: Install base packages
-  apt: pkg={{ item }} update_cache={{ update_apt_cache }} force=yes state=installed
+  apt: name={{ item }} update_cache={{ update_apt_cache }} force=yes state=installed
   with_items:
     - build-essential
     - git
@@ -9,10 +9,12 @@
     - python-pip
     - python-pycurl
     - supervisor
+  tags: packages
 
 
 - name: Install newrelic
   pip: name=newrelic
+  tags: packages
 
 
 # Note that we're specifying the version number here as we don't want to use
@@ -20,3 +22,4 @@
 # of pip which doesn't work work with some of the packages we use in Django.
 - name: Install virtualenv
   pip: name=virtualenv version=1.10.1
+  tags: packages
