@@ -4,12 +4,12 @@
   cron: name="hourly db backup"
         special_time=hourly
         user={{ gunicorn_user }}
-        job="source {{ project_path }}/scripts/run_backup.sh hourly"
+        job="bash {{ project_path }}/scripts/run_backup.sh hourly"
   when: setup_cron_jobs
 
 - name: Ensure that a daily db backup job exists
   cron: name="daily db backup"
         special_time=daily
         user={{ gunicorn_user }}
-        job="source {{ project_path }}/scripts/run_backup.sh daily"
+        job="bash {{ project_path }}/scripts/run_backup.sh daily"
   when: setup_cron_jobs

@@ -35,3 +35,8 @@
         group={{ gunicorn_group }}
         mode=0664
         state=file
+
+- name: Create the maintenance page
+  template: src=maintenance_off.html
+            dest={{ virtualenv_path }}/maintenance_off.html
+            mode=0664
