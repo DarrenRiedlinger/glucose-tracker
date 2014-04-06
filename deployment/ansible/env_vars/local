@@ -7,7 +7,7 @@ db_password: password
 
 
 # Gunicorn settings.
-gunicorn_num_workers: 3
+gunicorn_num_workers: 1
 
 # Setting this to 1 will restart the Gunicorn process each time
 # you make a request, basically reloading the code. Very handy

@@ -37,6 +37,7 @@ server {
         if (-f {{ virtualenv_path }}/maintenance_on.html) {
             return 503;
         }
+
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto https;
         proxy_set_header Host $http_host;
@@ -55,6 +56,7 @@ server {
     location = /500.html {
         root {{ application_path }}/templates/;
     }
+
     error_page 503 /maintenance_on.html;
     location = /maintenance_on.html {
         root {{ virtualenv_path }}/;

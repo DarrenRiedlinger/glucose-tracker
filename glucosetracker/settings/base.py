@@ -83,6 +83,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
     # 3rd-party context processors
     'stickymessages.context_processors.latest_sticky_message',
+
+    # GlucoseTracker context processors
+    'core.context_processors.third_party_tracking_ids',
 )
 
 MIDDLEWARE_CLASSES = (
