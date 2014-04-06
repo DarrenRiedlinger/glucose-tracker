@@ -13,3 +13,5 @@
 - include: set_file_permissions.yml
 
 - include: setup_nginx.yml
+
+- include: setup_cron_jobs.yml

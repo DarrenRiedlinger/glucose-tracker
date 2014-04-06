@@ -4,9 +4,10 @@
   hosts: all
   sudo: yes
   sudo_user: root
-  remote_user: ubuntu
+  remote_user: jonathan
   vars:
     - setup_git_repo: yes
+    - setup_cron_jobs: yes
     - update_apt_cache: yes
   vars_files:
     - env_vars/production

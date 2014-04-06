@@ -26,6 +26,7 @@
 - name: Create the virtualenv postactivate script to set environment variables
   template: src=virtualenv_postactivate.j2
             dest={{ virtualenv_path }}/bin/postactivate
+            mode=0640
             backup=yes
 
 - name: Set permission to the application log file

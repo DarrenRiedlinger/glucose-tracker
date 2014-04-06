@@ -1,5 +1,5 @@
 [webservers]
-ec2-54-186-72-76.us-west-2.compute.amazonaws.com
+162.209.104.159
 
 [dbservers]
-ec2-54-186-72-76.us-west-2.compute.amazonaws.com
+162.209.104.159

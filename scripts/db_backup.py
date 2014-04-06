@@ -44,6 +44,9 @@ def main():
         parser.error('Invalid argument.')
         sys.exit(1)
 
+    if not os.path.exists(BACKUP_PATH):
+        os.makedirs(BACKUP_PATH)
+
     destination = r'%s/%s' % (BACKUP_PATH, filename)
 
     print 'Backing up %s database to %s' % (DB_NAME, destination)
