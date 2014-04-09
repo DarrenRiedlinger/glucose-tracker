@@ -7,13 +7,12 @@ upstream wsgi_server {
 }
 
 server {
-        listen      80;
-        server_name {{ nginx_server_name }};
-        rewrite     ^ https://$server_name$request_uri? permanent;
+    listen      80;
+    server_name {{ nginx_server_name }};
+    rewrite     ^ https://$server_name$request_uri? permanent;
 }
 
 server {
-
     listen  443;
     server_name {{ nginx_server_name }};
 	ssl on;
