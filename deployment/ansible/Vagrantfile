@@ -17,9 +17,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Shared folder from the host machine to the guest machine.
   config.vm.synced_folder "../../../glucose-tracker", "/webapps/glucosetracker/glucose-tracker"
 
+  # Ansible provisioner.
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "vagrant.yml"
     ansible.host_key_checking = false
     ansible.verbose = "v"
   end
+
+  # Restart the app with supervisorctl in case it failed to start (due to the shared
+  # folder not being available on server bootup).
+  config.vm.provision :shell, :inline => "sudo supervisorctl restart glucosetracker"
 end
