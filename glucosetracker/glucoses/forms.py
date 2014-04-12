@@ -185,6 +185,7 @@ class GlucoseEmailReportForm(forms.Form):
         self.fields['start_date'].initial = last_90_days.strftime(DATE_FORMAT)
         self.fields['end_date'].initial = now.strftime(DATE_FORMAT)
 
+        self.fields['report_format'].initial = 'pdf'
         self.fields['subject'].initial = '[GlucoseTracker] Glucose Data Report'
 
 

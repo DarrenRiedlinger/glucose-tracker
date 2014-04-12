@@ -19,7 +19,11 @@ ALLOWED_HOSTS = ['*']
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-EMAIL_HOST = 'smtp.sendgrid.com'
+# 3rd-party apps tracking IDs.
+INTERCOM_APP_ID = None
+GOOGLE_ANALYTICS_TRACKING_ID = None
+
+EMAIL_HOST = os.environ['EMAIL_HOST']
 EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587

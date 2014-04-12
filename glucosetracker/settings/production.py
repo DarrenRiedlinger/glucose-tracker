@@ -10,10 +10,8 @@ ALLOWED_HOSTS = ['*']
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-# Intercom.io settings.
+# 3rd-party apps tracking IDs.
 INTERCOM_APP_ID = 'a6d0326564469dfd7f7d9b1bfc909ee3815a85a8'
-
-# Google settings.
 GOOGLE_ANALYTICS_TRACKING_ID = 'UA-45698014-1'
 
 EMAIL_HOST = os.environ['EMAIL_HOST']
