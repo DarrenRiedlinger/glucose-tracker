@@ -51,8 +51,8 @@ class GlucoseFilterForm(forms.Form):
         self.helper.form_action = '.'
 
         self.fields['tags'] = forms.ChoiceField(
-            choices=self.get_tags(Glucose.objects.filter(user=user)
-                .exclude(tags__name__isnull=True)),
+            choices=self.get_tags(Glucose.objects.filter(user=user).exclude(
+                tags__name__isnull=True)),
             required=False)
 
         self. helper.layout = Layout(
@@ -63,7 +63,7 @@ class GlucoseFilterForm(forms.Form):
             Field('start_value', placeholder='From', step='any'),
             Field('end_value', placeholder='To', step='any'),
             'notes',
-            Field('tags', placeholder='e.g. exercise, sick, medication'),
+            Field('tags'),
             FormActions(
                 Submit('submit', 'Filter'),
                 Reset('reset', 'Reset'),
@@ -232,7 +232,7 @@ class GlucoseInputForm(forms.ModelForm):
             'record_date',
             'record_time',
             'notes',
-            Field('tags', placeholder='e.g. exercise, sick, medication'),
+            Field('tags', placeholder='e.g. fasting, sick, "after meal"'),
             Field('submit_button_type', type='hidden')
         )
 
