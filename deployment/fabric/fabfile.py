@@ -12,7 +12,7 @@ settings_file = 'settings.production'
 
 
 def run_tests():
-    local('coverage run manage.py test -v 2 --settings=settings.test')
+    local('cd ../../glucosetracker && coverage run manage.py test -v 2 --settings=settings.test')
 
 
 def deploy():

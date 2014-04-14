@@ -1,4 +1,5 @@
 *.pyc
 *.sqlite
+.coverage
 .vagrant
 vagrant_ansible_inventory_default
