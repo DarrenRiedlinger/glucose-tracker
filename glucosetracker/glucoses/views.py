@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.views.generic import CreateView, UpdateView, DeleteView, \
     FormView, TemplateView
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, HttpResponse
@@ -168,8 +168,11 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
     template_name = 'glucoses/glucose_email_report.html'
 
     def get_initial(self):
-        return {'recipient': self.request.user.email,
-                'message': 'Glucose data for %s.' % self.request.user}
+        message = 'Glucose data for %s.\n\nDo not reply to this email. This ' \
+                  'email was sent by: %s' % (self.request.user,
+                                             self.request.user.email)
+
+        return {'recipient': self.request.user.email, 'message': message}
 
     def form_valid(self, form):
         messages.add_message(self.request, messages.SUCCESS, 'Email Sent!')

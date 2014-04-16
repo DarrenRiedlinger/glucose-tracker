@@ -11,9 +11,9 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, \
     Table, TableStyle
 
-from django.db.models import Avg, Min, Max
 from django.conf import settings
 from django.core.mail import EmailMessage
+from django.db.models import Avg, Min, Max
 
 from core import utils as core_utils
 
@@ -396,6 +396,9 @@ class GlucosePdfReport(GlucoseBaseReport):
         return pdf
 
     def email(self, recipient, subject='', message=''):
+        footer = '----------\nSent from https://%s' % settings.SITE_DOMAIN
+        message = '%s\n\n\n%s' % (message, footer)
+
         email = EmailMessage(from_email=settings.CONTACTS['info_email'],
                              subject=subject, body=message, to=[recipient])
 
