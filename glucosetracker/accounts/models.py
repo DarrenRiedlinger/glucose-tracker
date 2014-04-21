@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from timezone_field import TimeZoneField
 
 from core.models import TimeStampedModel
-
 from glucoses.models import Category, Unit
 
 
@@ -29,6 +28,10 @@ class UserSettings(TimeStampedModel):
         null=False,  blank=False, default=70)
     glucose_target_max = models.PositiveIntegerField(
         null=False, blank=False, default=120)
+
+    def username(self):
+        return self.user.username
+    username.admin_order_field = 'user__username'
 
     class Meta:
         verbose_name_plural = 'User Settings'

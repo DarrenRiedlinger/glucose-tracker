@@ -5,7 +5,7 @@ from accounts.models import UserSettings
 
 class UserSettingsAdmin(admin.ModelAdmin):
     list_display = [
-        'user',
+        'username',
         'glucose_unit',
         'default_category',
         'time_zone',
