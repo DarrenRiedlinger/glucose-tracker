@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from timezone_field import TimeZoneField
 
 from core.models import TimeStampedModel
+
 from glucoses.models import Category, Unit
 
 
