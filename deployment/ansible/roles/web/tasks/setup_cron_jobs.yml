@@ -5,6 +5,7 @@
         special_time=hourly
         user={{ gunicorn_user }}
         job="bash {{ project_path }}/scripts/run_twitter_auto_follow.sh"
+        state=present
   when: setup_cron_jobs
   tags: cron
 
@@ -13,6 +14,7 @@
         special_time=hourly
         user={{ gunicorn_user }}
         job="bash {{ project_path }}/scripts/run_backup.sh hourly"
+        state=present
   when: setup_cron_jobs
   tags: cron
 
@@ -21,5 +23,6 @@
         special_time=daily
         user={{ gunicorn_user }}
         job="bash {{ project_path }}/scripts/run_backup.sh daily"
+        state=present
   when: setup_cron_jobs
   tags: cron
