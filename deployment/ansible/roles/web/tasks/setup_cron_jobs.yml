@@ -8,7 +8,6 @@
   when: setup_cron_jobs
   tags: cron
 
-
 - name: Ensure that an hourly db backup job exists
   cron: name="hourly db backup"
         special_time=hourly
