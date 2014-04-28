@@ -2,6 +2,7 @@
 
 - name: Install packages required by the Django app inside virtualenv
   pip: virtualenv={{ virtualenv_path }} requirements={{ requirements_file }}
+  tags: django
 
 - name: Run the Django syncdb command
   shell: . {{ virtualenv_path }}/bin/activate
