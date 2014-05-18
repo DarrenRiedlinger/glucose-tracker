@@ -14,6 +14,10 @@ def import_glucose_from_csv(user, csv_file):
     """
     Import glucose CSV data.
 
+    We'll process all rows first and create Glucose model objects from them
+    and perform a bulk create. This way, no records will be inserted unless
+    all records are good.
+
     Assumed order: value, category, record_date, record_time, notes
     """
     csv_data = []
@@ -21,21 +25,25 @@ def import_glucose_from_csv(user, csv_file):
     for row in reader:
         csv_data.append(row)
 
+    glucose_objects = []
+
     # Assume first row is the header, so let's skip it.
     for row in csv_data[1:]:
         try:
             category = Category.objects.get(name__iexact=row[1].strip())
         except ObjectDoesNotExist:
-            category = Category.objects.get(
-                name__iexact='No Category'.strip())
-        Glucose.objects.create(
+            category = Category.objects.get(name__iexact='No Category'.strip())
+
+        glucose_objects.append(Glucose(
             user=user,
             value=int(row[0]),
             category=category,
             record_date=datetime.strptime(row[2], DATE_FORMAT),
             record_time=datetime.strptime(row[3], TIME_FORMAT),
             notes=row[4],
-        )
+        ))
+
+    Glucose.objects.bulk_create(glucose_objects)
 
 
 def get_initial_category(user):
