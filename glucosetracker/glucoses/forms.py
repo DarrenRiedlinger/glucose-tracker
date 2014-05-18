@@ -333,7 +333,7 @@ class GlucoseImportForm(forms.Form):
                         Submit('submit', 'Import'),
                         css_class='pull-right',
                     ),
-                    css_class='well col-sm-8 col-md-8',
+                    css_class='well col-xs-10 col-sm-8 col-md-8',
                 ),
             ),
         )
