@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import datetime, timedelta
 
 from django.views.generic import CreateView, UpdateView, DeleteView, \
@@ -7,6 +8,7 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, HttpResponse
 from django.template import RequestContext
 
@@ -15,15 +17,48 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from core.utils import glucose_by_unit_setting, to_mg
 
-from . import utils
+from .utils import get_initial_category, import_glucose_from_csv
 from .models import Glucose
 from .reports import GlucoseCsvReport, GlucosePdfReport, ChartData, UserStats
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
-    GlucoseEmailReportForm, GlucoseFilterForm
+    GlucoseEmailReportForm, GlucoseFilterForm, GlucoseImportForm
 
 
 DATE_FORMAT = '%m/%d/%Y'
 TIME_FORMAT = '%I:%M %p'
+
+logger = logging.getLogger(__name__)
+
+
+@login_required
+def import_data(request):
+    if request.method == 'POST':
+        form = GlucoseImportForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                logger.info('Importing data from uploaded CSV file for user: %s',
+                            request.user)
+                import_glucose_from_csv(request.user, request.FILES['file'])
+            except ValueError, e:
+                logger.error('Could not import data from uploaded CSV file for'
+                             ' user: %s. Details: %s', request.user, e)
+                message = 'Could not import your data. Make sure that it follows' \
+                          ' the suggested format. (Error Details: %s)' % e
+                messages.add_message(request, messages.WARNING, message)
+                return render_to_response(
+                    'glucoses/glucose_import.html',
+                    {'form': form},
+                    context_instance=RequestContext(request),
+                )
+            return HttpResponseRedirect(reverse('dashboard'))
+    else:
+        form = GlucoseImportForm()
+
+    return render_to_response(
+        'glucoses/glucose_import.html',
+        {'form': form},
+        context_instance=RequestContext(request),
+    )
 
 
 @login_required
@@ -80,7 +115,7 @@ def dashboard(request):
     Datatables plugin via Javascript.
     """
     form = GlucoseQuickAddForm()
-    form.fields['category'].initial = utils.get_initial_category(request.user)
+    form.fields['category'].initial = get_initial_category(request.user)
 
     return render_to_response(
         'core/dashboard.html',
@@ -170,7 +205,7 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
     def get_initial(self):
         message = 'Glucose data for %s.\n\nDo not reply to this email.\n\n' \
                   'This email was sent by: %s' % (self.request.user,
-                                             self.request.user.email)
+                                                  self.request.user.email)
 
         return {'recipient': self.request.user.email, 'message': message}
 
@@ -197,6 +232,12 @@ class GlucoseEmailReportView(LoginRequiredMixin, FormView):
                                           form.cleaned_data['end_date'],
                                           request.user)
 
+            logger.info(
+                'Sending email report from user: %s, subject: %s, recipient: %s',
+                request.user,
+                form.cleaned_data['subject'],
+                form.cleaned_data['recipient']
+            )
             report.email(form.cleaned_data['recipient'],
                          form.cleaned_data['subject'],
                          form.cleaned_data['message'])
@@ -218,7 +259,7 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
         record_time = datetime.now(tz=time_zone).time().strftime(TIME_FORMAT)
 
         return {
-            'category': utils.get_initial_category(self.request.user),
+            'category': get_initial_category(self.request.user),
             'record_date': record_date,
             'record_time': record_time,
         }
