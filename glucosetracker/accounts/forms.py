@@ -32,9 +32,6 @@ class SignUpForm(forms.Form):
         self.helper.field_class = 'col-xs-8 col-md-8 col-lg-8'
 
         self. helper.layout = Layout(
-            HTML('''<p class="alert alert-info">Do you have <b>existing data in
-            CSV or Excel</b> format? Email it to <b>%s</b> and we'll try to
-            import it for you.</p>''' % settings.CONTACTS['support_email']),
             Fieldset(
                 'Create Your Account',
                 Field('username', autofocus=True),
