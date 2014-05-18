@@ -6,10 +6,11 @@ from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Button, Submit, MultiField, Div, HTML, \
-    Field, Reset
+    Field, Fieldset, Reset
 from crispy_forms.bootstrap import FormActions
 
 from .models import Glucose, Category
+from .fields import RestrictedFileField
 
 
 DATE_FORMAT = '%m/%d/%Y'
@@ -170,7 +171,7 @@ class GlucoseEmailReportForm(forms.Form):
                         'message',
                         FormActions(
                             Submit('submit', 'Send'),
-                            css_class = 'pull-right'
+                            css_class='pull-right'
                         ),
                         css_class='col-sm-8 col-md-8',
                     ),
@@ -219,13 +220,15 @@ class GlucoseInputForm(forms.ModelForm):
         self.fields['record_time'].input_formats = valid_time_formats
 
         self. helper.layout = Layout(
-            HTML('''
+            HTML(
+                '''
                 {% if messages %}
                 {% for message in messages %}
                 <p {% if message.tags %}
                 class="alert alert-{{ message.tags }}"
                 {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
-                '''),
+                '''
+            ),
             Field('value', placeholder='Value', required=True, autofocus=True,
                   min=0, step='any'),
             'category',
@@ -273,3 +276,64 @@ class GlucoseUpdateForm(GlucoseInputForm):
         self.helper.add_input(Button('delete', 'Delete',
                                      onclick='location.href="%s";' % delete_url,
                                      css_class='btn-danger pull-right'))
+
+
+class GlucoseImportForm(forms.Form):
+    # File size limited to 2MB
+    file = RestrictedFileField(
+        label='CSV File (Max Size 2MB)',
+        content_types=['text/csv'],
+        max_upload_size=2097152,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(GlucoseImportForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+
+        self. helper.layout = Layout(
+            MultiField(
+                None,
+                Fieldset(
+                    'Instructions',
+                    HTML(
+                        '''
+                        To properly import your data, the CSV file must follow
+                        this order and format: <br><br>
+                        <ol>
+                        <li>Value</li>
+                        <li>Category (if no matching category in our system,
+                        'No Category' will be assigned)</li>
+                        <li>Date (in m/d/yyyy format, e.g. 5/6/2014 or
+                        05/06/2014)</li>
+                        <li> Time (in h:m am/pm format, e.g. 8:01 AM or
+                        08:01 PM)</li>
+                        <li>Notes</li>
+                        </ol>
+                        <p>You can also download this template as a guide:
+                        <a href="{{ STATIC_URL }}samples/csv_import_template.csv">
+                        csv_import_template.csv</a></p>
+                        <br>
+                        '''
+                    ),
+                ),
+                HTML(
+                    '''
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p {% if message.tags %}
+                    class="alert alert-{{ message.tags }}"
+                    {% endif %}>{{ message }}</p>{% endfor %}{% endif %}
+                    '''
+                ),
+                Div(
+                    'file',
+                    FormActions(
+                        Submit('submit', 'Import'),
+                        css_class='pull-right',
+                    ),
+                    css_class='well col-xs-8 col-sm-8 col-md-8',
+                ),
+            ),
+        )

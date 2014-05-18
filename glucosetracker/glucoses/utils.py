@@ -1,6 +1,41 @@
+import csv
 from datetime import datetime
 
-from .models import Category
+from django.core.exceptions import ObjectDoesNotExist
+
+from .models import Category, Glucose
+
+
+DATE_FORMAT = '%m/%d/%Y'
+TIME_FORMAT = '%I:%M %p'
+
+
+def import_glucose_from_csv(user, csv_file):
+    """
+    Import glucose CSV data.
+
+    Assumed order: value, category, record_date, record_time, notes
+    """
+    csv_data = []
+    reader = csv.reader(csv_file, delimiter=',', quotechar='"')
+    for row in reader:
+        csv_data.append(row)
+
+    # Assume first row is the header, so let's skip it.
+    for row in csv_data[1:]:
+        try:
+            category = Category.objects.get(name__iexact=row[1].strip())
+        except ObjectDoesNotExist:
+            category = Category.objects.get(
+                name__iexact='No Category'.strip())
+        Glucose.objects.create(
+            user=user,
+            value=int(row[0]),
+            category=category,
+            record_date=datetime.strptime(row[2], DATE_FORMAT),
+            record_time=datetime.strptime(row[3], TIME_FORMAT),
+            notes=row[4],
+        )
 
 
 def get_initial_category(user):

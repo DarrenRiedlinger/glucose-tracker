@@ -36,6 +36,12 @@ test_user: jsmith
 
 aws_access_key_id: na
 aws_secret_access_key: na
+
+twitter_api_key: na
+twitter_api_secret: na
+twitter_access_token: na
+twitter_token_secret: na
+
 django_secret_key: akr2icmg1n8%z^3fe3c+)5d0(t^cy-2_25rrl35a7@!scna^1#
 
 run_django_syncdb: yes

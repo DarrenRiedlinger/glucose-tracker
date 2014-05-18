@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from .views import (
-    dashboard,
+    import_data,
     filter_view,
     quick_add,
     stats_json,
@@ -14,7 +14,13 @@ from .views import (
     GlucoseListJson,
 )
 
+
 urlpatterns = patterns('',
+    url(
+        regex=r'^import/',
+        view=import_data,
+        name='glucose_import',
+    ),
     url(
         regex=r'^filter/',
         view=filter_view,

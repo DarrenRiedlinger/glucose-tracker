@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, HttpResponse
 from django.template import RequestContext
 
@@ -15,15 +16,42 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from core.utils import glucose_by_unit_setting, to_mg
 
-from . import utils
+from .utils import get_initial_category, import_glucose_from_csv
 from .models import Glucose
 from .reports import GlucoseCsvReport, GlucosePdfReport, ChartData, UserStats
 from .forms import GlucoseCreateForm, GlucoseUpdateForm, GlucoseQuickAddForm, \
-    GlucoseEmailReportForm, GlucoseFilterForm
+    GlucoseEmailReportForm, GlucoseFilterForm, GlucoseImportForm
 
 
 DATE_FORMAT = '%m/%d/%Y'
 TIME_FORMAT = '%I:%M %p'
+
+
+@login_required
+def import_data(request):
+    if request.method == 'POST':
+        form = GlucoseImportForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                import_glucose_from_csv(request.user, request.FILES['file'])
+            except ValueError, e:
+                message = 'Could not import data. Make sure your data follows' \
+                          ' the suggested format. (Error Details: %s)' % e
+                messages.add_message(request, messages.WARNING, message)
+                return render_to_response(
+                    'glucoses/glucose_import.html',
+                    {'form': form},
+                    context_instance=RequestContext(request),
+                )
+            return HttpResponseRedirect(reverse('dashboard'))
+    else:
+        form = GlucoseImportForm()
+
+    return render_to_response(
+        'glucoses/glucose_import.html',
+        {'form': form},
+        context_instance=RequestContext(request),
+    )
 
 
 @login_required
@@ -80,7 +108,7 @@ def dashboard(request):
     Datatables plugin via Javascript.
     """
     form = GlucoseQuickAddForm()
-    form.fields['category'].initial = utils.get_initial_category(request.user)
+    form.fields['category'].initial = get_initial_category(request.user)
 
     return render_to_response(
         'core/dashboard.html',
@@ -218,7 +246,7 @@ class GlucoseCreateView(LoginRequiredMixin, CreateView):
         record_time = datetime.now(tz=time_zone).time().strftime(TIME_FORMAT)
 
         return {
-            'category': utils.get_initial_category(self.request.user),
+            'category': get_initial_category(self.request.user),
             'record_date': record_date,
             'record_time': record_time,
         }
