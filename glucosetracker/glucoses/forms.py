@@ -282,7 +282,7 @@ class GlucoseImportForm(forms.Form):
     # File size limited to 2MB
     file = RestrictedFileField(
         label='CSV File (Max Size 2MB)',
-        content_types=['text/csv'],
+        content_types=['text/csv', 'application/csv'],
         max_upload_size=2097152,
     )
 
