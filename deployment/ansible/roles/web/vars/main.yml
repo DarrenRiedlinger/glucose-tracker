@@ -1,5 +1,9 @@
 ---
 
+# Git settings.
+git_repo: https://github.com/jcalazan/glucose-tracker.git
+
+
 # Application settings.
 project_name: glucose-tracker
 application_name: glucosetracker
