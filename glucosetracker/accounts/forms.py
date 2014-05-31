@@ -136,7 +136,7 @@ class UserSettingsForm(forms.Form):
         user = User.objects.get(username=self.cleaned_data['username'])
 
         if email != user.email:
-            if User.objects.filter(email=email):
+            if User.objects.filter(email__iexact=email):
                 raise forms.ValidationError('Another account is already using '
                                             'this email address.')
 
