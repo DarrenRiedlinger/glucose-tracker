@@ -134,6 +134,10 @@ INSTALLED_APPS = (
     'core',
     'glucoses',
     'subscribers',
+
+    # For HelpDesk
+    'django.contrib.markup',
+    'helpdesk',
 )
 
 # Django-crispy-forms settings

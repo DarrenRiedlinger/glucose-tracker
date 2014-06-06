@@ -26,3 +26,8 @@ urlpatterns += patterns('',
         'document_root': settings.STATIC_ROOT,
     }),
 )
+
+# Helpdesk
+urlpatterns += patterns('',
+    url(r'helpdesk/', include('helpdesk.urls')),
+    )
