@@ -36,3 +36,5 @@ static==0.4
 tweepy==2.2
 wsgiref==0.1.2
 django-helpdesk
+django-markup-deprecated
+Markdown
