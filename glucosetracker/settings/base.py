@@ -136,7 +136,7 @@ INSTALLED_APPS = (
     'subscribers',
 
     # For HelpDesk
-    'django.contrib.markup',
+    #'django.contrib.markup',
     'helpdesk',
 )
 
